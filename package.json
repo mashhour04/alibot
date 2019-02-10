@@ -44,6 +44,7 @@
   ],
   "devDependencies": {
     "eslint": "^5.13.0",
+    "eslint-loader": "^2.1.2",
     "react-dev-utils": "^7.0.1",
     "redux-devtools": "^3.5.0"
   },
