@@ -9,6 +9,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 
+import { PrivateRoute } from '../components/PrivateRoute';
 
 // core components
 import Footer from "../_components/Footer/Footer.jsx";
@@ -20,7 +21,7 @@ import AppNavbar from '../_components/AppNavBar';
 // import Bookings from '../_components/Bookings';
 // import Tables from '../_components/tables/index';
 import SideBar from '../_components/SideBar';
-// import MyTables from '../_views/MyTables/MyTables';
+import MyTables from '../_views/MyTables/MyTables';
 import { vendorActions } from '../_actions/vendor.actions';
 import { userActions } from '../_actions/user.actions';
 
@@ -31,8 +32,9 @@ const switchRoutes = (
         {dashboardRoutes.map((prop, key) => {
             if (prop.redirect)
                 return <Redirect from={prop.path} to={prop.to} key={key} />;
-            return <Route path={prop.path} component={prop.component} key={key} />;
+            return <PrivateRoute path={prop.path} component={prop.component} key={key} />;
         })}
+        <PrivateRoute component={MyTables} key={2} />;
     </Switch>
 );
 
@@ -65,7 +67,7 @@ class HomePage extends React.Component {
     }
     componentDidUpdate(e) {
         if (e.history.location.pathname !== e.location.pathname) {
-            this.refs.mainPanel.scrollTop = 0;
+            // this.refs.mainPanel.scrollTop = 0;
             if (this.state.mobileOpen) {
                 this.setState({ mobileOpen: false });
             }
@@ -89,10 +91,10 @@ class HomePage extends React.Component {
                         <div className="content-wrapper">
                             {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
                             {this.getRoute() ? (
-                                <div >
+                                <div>
                                     <div>{switchRoutes}</div>
                                 </div>
-                            ) : (   
+                            ) : (
                                     <div>{switchRoutes}</div>
                                 )}
                             { this.getRoute() ? <div><Footer /></div> : null}

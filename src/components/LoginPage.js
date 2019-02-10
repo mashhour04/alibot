@@ -40,6 +40,7 @@ class LoginPage extends Component {
     }
 
     render() {
+        const { user } = this.props;
         return (
             <div className="login-pages">
                 <Container>

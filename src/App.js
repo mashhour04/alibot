@@ -8,7 +8,8 @@ import { history, store } from './_helpers';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 
-import { PrivateRoute } from './components/PrivateRoute';
+import { PrivateRoute, PublicRoute } from './components/PrivateRoute';
+// import PrivateRoute from 'react-private-route'
 
 // import { Switch } from "react-router-dom";
 
@@ -17,12 +18,14 @@ import "./_assets/css/material-dashboard-react.css?v=1.5.0";
 import indexRoutes from "./_routes/index.jsx";
 
 import './App.css';
+import { HomePage } from './HomePage/HomePage';
 // with only buildpack
 
 
 class App extends Component {
 
   render() {
+    const isAuthenticated = localStorage.getItem('user');
     if (alert.message) {
       toastr.error(alert.message);
     }
@@ -31,10 +34,10 @@ class App extends Component {
         <div heigh="100%">
           <Router history={history}>
             <div heigh="100%">
-            <Route exact path="/register" component={RegisterPage} />
-            <Route exact path="/login"  component={LoginPage} />
-              {indexRoutes.map((prop, key) => <PrivateRoute exact path={prop.path} component={prop.component} key={key} />)}
-              {/* <PrivateRoute path="/" component={HomePage} /> */}
+            <PublicRoute exact path="/register" component={RegisterPage} />
+            <PublicRoute exact path="/login"  component={LoginPage} />
+              {indexRoutes.map((prop, key) => <PrivateRoute path={prop.path} component={prop.component} key={key} isAuthenticated={isAuthenticated}/>)}
+             <Route component={isAuthenticated ? HomePage : LoginPage} />
             </div>
           </Router>
           <ReduxToastr
