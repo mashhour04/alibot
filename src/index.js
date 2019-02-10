@@ -10,7 +10,7 @@ import 'react-table/react-table.css';
 import "./_assets/images/favicon.png";
 
 import "./_assets/css/js-offcanvas.css";
-import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import './react-bootstrap-table-all.min.css';
 
 // Font Icons 
 import "./_assets/css/fontawesome-all.css";
