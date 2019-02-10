@@ -1,0 +1,60 @@
+/*datatables*/
+table.table-bordered.dataTable tbody th,
+table.table-bordered.dataTable tbody td,
+table.table-bordered.dataTable thead th {
+    text-align: center;
+}
+div.dataTables_wrapper div.dataTables_length,
+div.dataTables_wrapper div.dataTables_filter,
+div.dataTables_wrapper div.dataTables_info,
+div.dataTables_wrapper div.dataTables_paginate {
+    text-align: left;
+}
+.dataTables_info {
+    display: none;
+}
+.form-tabletable-search .text-right {
+    text-align: left;
+}
+.form-table-search .dataTables_length,
+.form-table-search .dataTables_info {
+    display: none;
+}
+.cs-searchbox .search-wrapper input {
+    min-width: 100%;
+}
+.table .text-center .btn {
+    margin: 20px 0;
+}
+.table thead th,
+.table tfoot th {
+    font-size: 14px;
+    font-weight: 500;
+}
+.table td {
+    font-size: .8rem
+}
+/*card*/
+.card-body {
+    padding: 15px;
+}
+.card-body p,
+.card-body ul li {
+    font-size: 14px;
+}
+.card-header h5 {
+    text-align: center;
+}
+.card-body h4 {
+    margin-bottom: 12px;
+}
+
+@media(max-width:600px) {
+    /* .cs-searchbox .search-wrapper input {
+        width: 100px
+    }*/
+    .table-card .card-header {
+        font-size: .9rem;
+        padding: .75rem
+    }
+}

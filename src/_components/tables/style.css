@@ -1,0 +1,69 @@
+  /* Jquery File Upload */
+  .ajax-upload-dragdrop {
+    border-color: #f3f3f3;
+    border-style: dotted;
+    max-width: 100%;
+  }
+  
+  .ajax-upload-dragdrop span b {
+    font-size: .8125rem;
+    color: #000000;
+    font-weight: initial;
+  }
+  
+  .ajax-upload-dragdrop .ajax-file-upload {
+    background: #439aff;
+    box-shadow: none;
+    height: auto;
+  }
+  
+  .ajax-file-upload-container {
+    min-height: 100px;
+  }
+  
+  .ajax-file-upload-container .ajax-file-upload-statusbar {
+    max-width: 100%;
+  }
+  
+  /* Js-grid */
+  .jsgrid .jsgrid-button {
+    background-image: url(../../_assets/images/sprites/jsgrid-icons.png);
+  }
+  
+  .jsgrid .jsgrid-grid-header {
+    border: 1px solid #f3f3f3;
+    border-top: 0;
+  }
+  
+  .jsgrid .jsgrid-table th {
+    font-weight: initial;
+    font-weight: 600;
+  }
+  
+  .jsgrid .jsgrid-table .jsgrid-filter-row input[type=number] {
+    padding: .56rem 0;
+  }
+  
+  .jsgrid .jsgrid-header-sort:before {
+    margin-top: 10px;
+    float: right;
+  }
+  
+  .jsgrid .jsgrid-header-sort-asc:before {
+    border-color: transparent transparent #000000;
+  }
+  
+  .jsgrid .jsgrid-header-sort-desc:before {
+    border-color: #000000 transparent transparent;
+  }
+  
+  .jsgrid .jsgrid-pager {
+    line-height: 2;
+  }
+  
+  .jsgrid .jsgrid-pager-current-page {
+    padding: 0.5rem 0.75rem;
+    font-weight: initial;
+    line-height: 1.25;
+  }
+  
