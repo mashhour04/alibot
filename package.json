@@ -43,6 +43,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "react-dev-utils": "^7.0.1",
     "redux-devtools": "^3.5.0"
   },
   "jest": {
