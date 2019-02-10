@@ -76,10 +76,10 @@ function getUser() {
 
 function handleResponse(response) {
     console.log('the response', response);
-    if (response.status !== 200) {
-        toastr.error('Failed!', 'Internal Server Error');
-        return new Promise(() => { });
-    }
+    // if (response.status !== 200) {
+    //     toastr.error('Failed!', 'Internal Server Error');
+    //     return new Promise(() => { });
+    // }
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
