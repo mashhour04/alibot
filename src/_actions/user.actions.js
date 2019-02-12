@@ -41,7 +41,7 @@ function login(username, password) {
                 user => {
                     console.log('user', user);
                     dispatch(success(user));  
-                    // window.location.href = '/';
+                    window.location.href = '/';
                 },
                 error => {
                     dispatch(failure(error));
