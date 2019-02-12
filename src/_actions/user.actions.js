@@ -4,6 +4,7 @@ import { alertActions } from './alert.actions';
 import { history } from '../_helpers';
 import { toastr } from 'react-redux-toastr';
 
+
 export const userActions = {
     register,
     login,
@@ -18,7 +19,7 @@ function register({ profile, account, vendor }) {
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/');
+                    window.location.href = '/';
                 },
                 error => {
                     dispatch(failure(error));
@@ -38,8 +39,9 @@ function login(username, password) {
         userService.login(username, password)
             .then(
                 user => {
-                    dispatch(success(user));
-                    history.push('/');
+                    console.log('user', user);
+                    dispatch(success(user));  
+                    // window.location.href = '/';
                 },
                 error => {
                     dispatch(failure(error));

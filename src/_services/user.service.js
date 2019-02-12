@@ -1,5 +1,6 @@
 import { authHeader } from '../_helpers';
 import { toastr } from 'react-redux-toastr';
+
 export const userService = {
     register,
     login,
@@ -22,7 +23,6 @@ function login(username, password) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
             }
-
             return user;
         })
 }
@@ -81,10 +81,9 @@ function handleResponse(response) {
     //     return new Promise(() => { });
     // }
     return response.text().then(text => {
-        const data = text && JSON.parse(text);
+        const data = (text) ? toJSON(text) : text;
         if (!response.ok) {
-            console.log('data received', data);
-            toastr.error('failed!', data.message);
+            const message = data.message || text;
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
@@ -96,9 +95,19 @@ function handleResponse(response) {
                 errors.forEach((error) => {
                     toastr.error('Error!', `${error.param} is ${error.msg}`)
                 });
+            } else {
+                toastr.error('failed!', message);
             }
             return Promise.reject(error);
         }
         return data;
     });
+}
+
+function toJSON(string) {
+    try {
+        return JSON.parse(string);
+    } catch(err) {
+        return string;
+    }
 }
