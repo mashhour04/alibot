@@ -2,6 +2,7 @@ import { authHeader } from '../_helpers';
 import { toastr } from 'react-redux-toastr';
 export const vendorService = {
     getVendor,
+    getBookings,
     insertTable,
     updateTable,
 };
@@ -51,6 +52,23 @@ function updateTable(u) {
         body: JSON.stringify(body),
         headers: authHeader()
     };
+
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+function getBookings({ skip, limit }) {
+    let url = `/backend/api/bookings`;
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    console.log('skip and limit', skip, limit);
+    if (typeof skip !== undefined && typeof limit !== undefined) { requestOptions.qs = { skip, limit }; }
+
+    if(requestOptions.qs) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
+        delete requestOptions.qs;
+    }
 
     return fetch(url, requestOptions).then(handleResponse);
 }

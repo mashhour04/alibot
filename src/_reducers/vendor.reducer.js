@@ -56,3 +56,20 @@ export function movies(state = [], action) {
         return state
     }
 }
+
+export function bookings(state = [], action) {
+    switch (action.type) {
+    case vendorConstants.GET_BOOKINGS_REQUEST:
+        return {
+        loading: true
+        };
+    case vendorConstants.GET_BOOKINGS_SUCCESS:
+        return action.bookings;
+    case vendorConstants.GET_BOOKINGS_FAILURE:
+        return { 
+        error: action.error
+        };
+    default:
+        return state
+    }
+}

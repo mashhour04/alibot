@@ -5,6 +5,7 @@ import { history } from '../_helpers';
 
 export const vendorActions = {
     getVendor,
+    getBookings,
     updateTable,
     insertTable
 };
@@ -16,7 +17,7 @@ function getVendor({ skip, limit }) {
         vendorService.getVendor({ skip, limit })
             .then(
                 vendor => dispatch(success(vendor)),
-                error => { 
+                error => {
                     dispatch(failure(error));
                     dispatch(alertActions.error(error))
                 }
@@ -48,12 +49,12 @@ function updateTable({ row, name, value }) {
     function failure(error) { return { type: vendorConstants.UPDATE_TABLES_FAILURE, error } }
 }
 
-function insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth}) {
+function insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth }) {
 
     return dispatch => {
-        dispatch(request({ capacity, hoursOfDay, daysOfWeek, daysOfMonth}));
+        dispatch(request({ capacity, hoursOfDay, daysOfWeek, daysOfMonth }));
 
-        vendorService.insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth})
+        vendorService.insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth })
             .then(
                 response => {
                     dispatch(success(response));
@@ -67,4 +68,23 @@ function insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth}) {
     function request(body) { return { type: vendorConstants.INSERT_TABLES_REQUREST, body } }
     function success(body) { return { type: vendorConstants.INSERT_TABLES_SUCCESS, body } }
     function failure(error) { return { type: vendorConstants.INSERT_TABLES_FAILURE, error } }
+}
+
+function getBookings({ skip, limit }) {
+    return dispatch => {
+        dispatch(request());
+
+        vendorService.getBookings({ skip, limit })
+            .then(
+                bookings => dispatch(success(bookings)),
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error))
+                }
+            );
+    };
+
+    function request() { return { type: vendorConstants.GET_BOOKINGS_REQUEST } }
+    function success(bookings) { return { type: vendorConstants.GET_BOOKINGS_SUCCESS, bookings } }
+    function failure(error) { return { type: vendorConstants.GET_BOOKINGS_FAILURE, error } }
 }

@@ -73,8 +73,9 @@ class CustomTableCell extends Component {
 
     renderCell = (element, prop) => {
         if (!Array.isArray(element)) {
-            return (element)
-        } 
+           console.log('element', element, 'prop', prop);
+            return element;
+        }
         return (
             <FormControl fullWidth={true}>
                 <Select
