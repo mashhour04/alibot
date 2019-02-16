@@ -27199,7 +27199,7 @@
   .navbar .navbar-brand-wrapper .navbar-brand img {
     width: calc(240px - 80px);
     max-width: 100%;
-    height: 34px;
+    height: 53px;
     margin: auto;
     vertical-align: middle;
   }
@@ -27210,7 +27210,7 @@
   }
   
   .navbar .navbar-brand-wrapper .brand-logo-mini img {
-    width: calc(70px - 30px);
+    width: calc(7s0px - 30px);
     max-width: 100%;
     margin: auto;
   }

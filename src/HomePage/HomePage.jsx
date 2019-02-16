@@ -21,7 +21,7 @@ import AppNavbar from '../_components/AppNavBar';
 // import Bookings from '../_components/Bookings';
 // import Tables from '../_components/tables/index';
 import SideBar from '../_components/SideBar';
-import MyTables from '../_views/MyTables/MyTables';
+import BookingsTable from '../_views/BookingsTable/BookingsTable';
 import { vendorActions } from '../_actions/vendor.actions';
 import { userActions } from '../_actions/user.actions';
 
@@ -34,7 +34,7 @@ const switchRoutes = (
                 return <Redirect from={prop.path} to={prop.to} key={key} />;
             return <PrivateRoute path={prop.path} component={prop.component} key={key} />;
         })}
-        <PrivateRoute component={MyTables} key={2} />;
+        <PrivateRoute component={BookingsTable} key={0} />;
     </Switch>
 );
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import moment from 'moment';
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 // core components
@@ -50,18 +50,7 @@ class MyTables extends Component {
       return { id: _id, capacity, ...availability };
     });
 
-    const bookingsData = (bookings.loading) ? [] : bookings.map(({ userId, status, vendorPathId, date, phone }, index) => {
-      phone = (phone) ? phone : 'N/A';
-      return { 
-      id: index + 1,
-      name: `${userId.firstName} ${userId.lastName}`,
-      date: moment(date).locale('fr').format('LLLL'),
-      capacity: vendorPathId.capacity,
-      table: vendorPathId._id,
-      status,
-      phone
-      };
-    });
+   
     console.log('inital bookings', bookings);
     return (
       <GridContainer>
@@ -85,26 +74,7 @@ class MyTables extends Component {
           </Card>
         }
         </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          {bookings.loading ? <CircularIndeterminate></CircularIndeterminate> : <Card plain>
-            <CardHeader plain color="primary">
-              <h4 className={classes.cardTitleWhite}>
-                Bookings Management
-              </h4>
-              <p className={classes.cardCategoryWhite}>
-                Here are the the latest reservations to your vendor
-              </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="primary"
-                tableHead={["#", "Name", "Date", "Number of People", "Table", "Status", "Phone"]}
-                tableData={bookingsData}
-              />
-            </CardBody>
-          </Card>}
 
-        </GridItem>
       </GridContainer>
     );
   }

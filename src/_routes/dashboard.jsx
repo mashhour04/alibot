@@ -7,6 +7,7 @@ import Person from "@material-ui/icons/Person";
 
 import UserProfile from "../_views/UserProfile/UserProfile.jsx";
 import MyTables from "../_views/MyTables/MyTables.jsx";
+import BookingsTable from "../_views/BookingsTable/BookingsTable.jsx";
 import OldTables from "../_components/tables/index";
 const dashboardRoutes = [
   {
@@ -14,7 +15,7 @@ const dashboardRoutes = [
     sidebarName: "Dashboard",
     navbarName: "Material Dashboard",
     icon: Dashboard,
-    component: MyTables
+    component: BookingsTable
   },
   {
     path: "/user",
