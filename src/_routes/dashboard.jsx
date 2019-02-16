@@ -8,7 +8,7 @@ import Person from "@material-ui/icons/Person";
 import UserProfile from "../_views/UserProfile/UserProfile.jsx";
 import MyTables from "../_views/MyTables/MyTables.jsx";
 import BookingsTable from "../_views/BookingsTable/BookingsTable.jsx";
-import OldTables from "../_components/tables/index";
+import ComingSoon from "../_views/ComingSoon/ComingSoon.jsx"
 const dashboardRoutes = [
   {
     path: "/dashboard",
@@ -30,6 +30,13 @@ const dashboardRoutes = [
     navbarName: "Table List",
     icon: "content_paste",
     component: MyTables
+  },
+  {
+    path: "/create-deal",
+    sidebarName: "Create Deal",
+    navbarName: "Create-Deal",
+    icon: Person,
+    component: ComingSoon
   }
 ];
 
