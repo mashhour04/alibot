@@ -40,7 +40,7 @@ function updateTable(u) {
     const tableId = u.row._id || u.row.id;
     console.log('tableId', tableId);
     let update = {} ;
-    if (u.name === 'capacity') {
+    if (u.name === 'capacity' || u.name === 'name') {
         update[u.name] = u.value;
     } else {
         update.availability = { [u.name]: u.value };

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import classNames from "classnames";
+
 import PropTypes from "prop-types";
-// @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
+
 import { FormControl, Select, MenuItem, Checkbox, ListItemText } from '@material-ui/core';
 import Input from "@material-ui/core/Input";
 // @material-ui/icons
@@ -16,7 +15,7 @@ import CustomInput from "../CustomInput/CustomInput";
 class CustomTableCell extends Component {
 
     onCellClick = (row, prop, key) => {
-        if (prop === 'capacity') {
+        if (prop === 'capacity' || prop === 'name') {
             let { row } = this.props;
             row.editing = prop;
 

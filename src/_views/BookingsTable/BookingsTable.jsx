@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
+
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -67,10 +68,10 @@ class Bookings extends Component {
                         <CardHeader plain color="primary">
                             <h4 className={classes.cardTitleWhite}>
                                 Bookings Management
-            </h4>
+                            </h4>
                             <p className={classes.cardCategoryWhite}>
                                 Here are the the latest reservations to your vendor
-            </p>
+                            </p>
                         </CardHeader>
                         <CardBody>
                             <Table

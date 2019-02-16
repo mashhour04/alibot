@@ -46,8 +46,10 @@ class MyTables extends Component {
 
   render() {
     const { classes, tables, bookings, vendor } = this.props;
-    const tablesData = tables.map(({ _id, capacity, availability }) => {
-      return { id: _id, capacity, ...availability };
+    const tablesData = tables.map(({ name, capacity, availability, _id }, index) => {
+      name = (name) ? name : `Table${index + 1}`;
+      name = name.replace(/\s+/g,'');
+      return { name, capacity, ...availability, _id};
     });
 
    
@@ -66,7 +68,7 @@ class MyTables extends Component {
             <CardBody>
               <Table
                 tableHeaderColor="primary"
-                tableHead={["#", "Capacity", "Hours", "Week Days", "Month Days"]}
+                tableHead={["Table", "Capacity", "Hours", "Week Days", "Month Days"]}
                 tableData={tablesData}
 
               />
