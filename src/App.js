@@ -7,6 +7,7 @@ import ReduxToastr from 'react-redux-toastr';
 import { history, store } from './_helpers';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import { PrivateRoute, PublicRoute } from './components/PrivateRoute';
 // import PrivateRoute from 'react-private-route'
@@ -18,6 +19,7 @@ import "./_assets/css/material-dashboard-react.css?v=1.5.0";
 import indexRoutes from "./_routes/index.jsx";
 
 import './App.css';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import { HomePage } from './HomePage/HomePage';
 // with only buildpack
 
@@ -31,9 +33,9 @@ class App extends Component {
     }
     return (
       <Provider store={store}>
-        <div heigh="100%">
+        <PerfectScrollbar>
           <Router history={history}>
-            <div heigh="100%">
+            <div height="100%">
             <PublicRoute exact path="/register" component={RegisterPage} />
             <PublicRoute exact path="/login"  component={LoginPage} />
               {indexRoutes.map((prop, key) => <PrivateRoute path={prop.path} component={prop.component} key={key} isAuthenticated={isAuthenticated}/>)}
@@ -49,7 +51,7 @@ class App extends Component {
             transitionOut="fadeOut"
             progressBar
             closeOnToastrClick />
-        </div>
+        </PerfectScrollbar>
       </Provider>
 
     );

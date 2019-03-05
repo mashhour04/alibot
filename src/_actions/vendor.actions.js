@@ -7,6 +7,7 @@ export const vendorActions = {
     getVendor,
     getBookings,
     updateTable,
+    deleteTable,
     insertTable
 };
 
@@ -34,6 +35,26 @@ function updateTable({ row, name, value }) {
         dispatch(request({ row, name, value }));
 
         vendorService.updateTable({ row, name, value })
+            .then(
+                response => {
+                    dispatch(success(response));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(body) { return { type: vendorConstants.UPDATE_TABLES_REQUREST, body } }
+    function success(body) { return { type: vendorConstants.UPDATE_TABLES_SUCCESS, body } }
+    function failure(error) { return { type: vendorConstants.UPDATE_TABLES_FAILURE, error } }
+}
+
+function deleteTable({ row }) {
+    return dispatch => {
+        dispatch(request({ row }));
+
+        vendorService.deleteTable({ row })
             .then(
                 response => {
                     dispatch(success(response));

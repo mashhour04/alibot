@@ -5,6 +5,7 @@ export const vendorService = {
     getBookings,
     insertTable,
     updateTable,
+    deleteTable,
 };
 
 function getVendor({skip, limit}) {
@@ -35,6 +36,7 @@ function insertTable(table) {
     console.log('creating table', requestOptions);
     return fetch(url, requestOptions).then(handleResponse);
 }
+
 function updateTable(u) {
     const url = `/backend/api/tables/update`;
     const tableId = u.row._id || u.row.id;
@@ -46,6 +48,23 @@ function updateTable(u) {
         update.availability = { [u.name]: u.value };
     }
     
+    const body = { tableId, update } ;
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: authHeader()
+    };
+
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+function deleteTable(u) {
+    const url = `/backend/api/tables/update`;
+    const tableId = u.row._id || u.row.id;
+    let update = {
+        removed: true
+    };
+
     const body = { tableId, update } ;
     const requestOptions = {
         method: 'POST',

@@ -64,6 +64,9 @@ body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
     font-weight: 300;
     line-height: 1.5em;
+    overscroll-behavior-y: contain !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 
 blockquote footer:before, blockquote small:before {

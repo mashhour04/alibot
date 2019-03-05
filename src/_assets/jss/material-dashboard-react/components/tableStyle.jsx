@@ -13,6 +13,9 @@ const tableStyle = theme => ({
   warningTableHeader: {
     color: warningColor
   },
+  actionButton: {
+    margin: theme.spacing.unit,
+  },
   primaryTableHeader: {
     color: primaryColor
   },
@@ -54,13 +57,6 @@ const tableStyle = theme => ({
     width: "100%",
     marginTop: theme.spacing.unit * 3,
     overflowX: "auto"
-  },
-  paper: {
-    position: 'relative',
-    width: theme.spacing.unit * 60,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
   },
   modalCardHeader: {
     padding: '5%',

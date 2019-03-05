@@ -72,7 +72,7 @@ class CustomTableCell extends Component {
 
     renderCell = (element, prop) => {
         if (!Array.isArray(element)) {
-           console.log('element', element, 'prop', prop);
+
             return element
         }
         return (

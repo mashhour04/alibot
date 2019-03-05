@@ -3,8 +3,17 @@ import { connect } from 'react-redux';
 import moment from 'moment/min/moment-with-locales';
 
 
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import Button from "@material-ui/core/Button";
+import Add from "@material-ui/icons/Add";
+import Modal from '@material-ui/core/Modal';
+import { InputLabel, Input, Select, MenuItem, Checkbox, ListItemText, FormControl } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+
 
 // core components
 import GridItem from "../../_components/Grid/GridItem.jsx";
@@ -13,10 +22,12 @@ import Table from "../../_components/Table/Table.jsx";
 import Card from "../../_components/Card/Card.jsx";
 import CardHeader from "../../_components/Card/CardHeader.jsx";
 import CardBody from "../../_components/Card/CardBody.jsx";
+import CardFooter from "../../_components/Card/CardFooter";
 import CircularIndeterminate from '../../_components/CircularIndeterminate/Loading.jsx';
+import CustomInput from "../../_components/CustomInput/CustomInput";
 
 
-const styles = {
+const styles = theme => ({
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
             color: "rgba(255,255,255,.62)",
@@ -43,13 +54,51 @@ const styles = {
             fontWeight: "400",
             lineHeight: "1"
         }
+    },
+    paper: {
+        position: 'relative',
+        width: theme.spacing.unit * 60,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
     }
-};
+});
 
+function getModalStyle() {
+    const top = 50 + Math.random();
+    const left = 50 + Math.random();
+    console.log('style', top);
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
 class Bookings extends Component {
+
+    state = {
+        insertOpen: false,
+        selectedDate: new Date()
+    }
+
+    insertCloseHandler = () => {
+        this.setState({
+            insertOpen: false
+        })
+    }
+
+    handleDateChange = date => {
+        this.setState({ selectedDate: date });
+    };
+
     render() {
         const { classes, bookings } = this.props;
-        const bookingsData = (bookings.loading || bookings.error) ? [] : bookings.map(({ userId, status, vendorPathId, date, phone }, index) => {
+        const { selectedDate } = this.state;
+        let bookingsData = (bookings.loading || bookings.error) ? [] : bookings.filter(o => o.userId && o.vendorPathId);
+        bookingsData = bookingsData.filter(({ vendorPathId }) => {
+            return vendorPathId;
+        })
+        bookingsData = bookingsData.map(({ userId, status, vendorPathId, date, phone }, index) => {
             phone = (phone) ? phone : 'N/A';
             return {
                 id: index + 1,
@@ -74,11 +123,86 @@ class Bookings extends Component {
                             </p>
                         </CardHeader>
                         <CardBody>
+                            <Button onClick={() => this.setState({ insertOpen: true })}><Add></Add>Insert</Button>
                             <Table
                                 tableHeaderColor="primary"
                                 tableHead={["#", "Name", "Date", "Number of People", "Table", "Status", "Phone"]}
                                 tableData={bookingsData}
                             />
+                            <Modal
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                                open={this.state.insertOpen}
+                                onClose={this.insertCloseHandler}
+                            >
+                                <div style={getModalStyle()} className={classes.paper}>
+                                    <Card>
+                                        <CardHeader color="primary">
+                                            <h4 className={classes.cardTitleWhite}>Enter Booking</h4>
+                                            <p className={classes.cardCategoryWhite}>Enter Booking Data</p>
+                                        </CardHeader>
+                                        <CardBody>
+                                            <GridContainer>
+                                                <GridItem xs={12} sm={12} md={12}>
+                                                    <CustomInput
+                                                        labelText={'Name'}
+                                                        id="Name"
+                                                        formControlProps={{
+                                                            fullWidth: true
+                                                        }}
+                                                        inputProps={{
+                                                            name: 'capacity',
+                                                            type: 'number',
+                                                            onChange: this.handleChange
+                                                        }}
+                                                    />
+                                                </GridItem>
+                                            </GridContainer>
+                                            <GridContainer>
+                                                <GridItem xs={12} xm={12} md={12}>
+                                                <DatePicker
+                                                        margin="normal"
+                                                        label="Date picker"
+                                                        value={selectedDate}
+                                                        onChange={this.handleDateChange}
+                                                    />
+                                                </GridItem>
+                                                </GridContainer>
+                                            {/* <MuiPickersUtilsProvider>
+                                                <Grid container className={classes.grid} justify="space-around">
+                                                    <DatePicker
+                                                        margin="normal"
+                                                        label="Date picker"
+                                                        value={selectedDate}
+                                                        onChange={this.handleDateChange}
+                                                    />
+                                                    <TimePicker
+                                                        margin="normal"
+                                                        label="Time picker"
+                                                        value={selectedDate}
+                                                        onChange={this.handleDateChange}
+                                                    />
+                                                </Grid>
+                                            </MuiPickersUtilsProvider> */}
+                                            <GridContainer>
+
+                                                <GridItem xs={12} sm={12} md={12}>
+                                                    <FormControl
+                                                        fullWidth={true}
+                                                        className={classes.formControl}
+                                                    >
+                                                        <InputLabel className={classes.labelRoot} htmlFor="select-multiple-checkbox">Available Hours</InputLabel>
+
+                                                    </FormControl>
+                                                </GridItem>
+                                            </GridContainer>
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button onClick={this.handleSubmit} id="profile" color="primary">Add Table</Button>
+                                        </CardFooter>
+                                    </Card>
+                                </div>
+                            </Modal>
                         </CardBody>
                     </Card>}
 
