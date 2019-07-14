@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 
 import { FormControl, Select, MenuItem, Checkbox, ListItemText } from '@material-ui/core';
+import withStyles from "@material-ui/core/styles/withStyles";
 import Input from "@material-ui/core/Input";
 // @material-ui/icons
 import TableCell from "@material-ui/core/TableCell";
@@ -11,6 +12,9 @@ import TableCell from "@material-ui/core/TableCell";
 import { vendorActions } from "../../_actions/vendor.actions";
 import statics from "../../_assets/statics/tables.json";
 import CustomInput from "../CustomInput/CustomInput";
+
+//Style
+import cellStyle from "../../_assets/jss/material-dashboard-react/components/cellStyle.jsx";
 
 class CustomTableCell extends Component {
 
@@ -108,4 +112,4 @@ CustomTableCell.propTypes = {
 const mapStateToProps = (state) => {
     return {}
 }
-export default connect(mapStateToProps)(CustomTableCell);
+export default connect(mapStateToProps)(withStyles(cellStyle)(CustomTableCell));

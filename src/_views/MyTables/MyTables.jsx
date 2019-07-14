@@ -101,11 +101,11 @@ class MyTables extends Component {
     const { classes, tables, bookings, vendor } = this.props;
     const { modalOpen } = this.state;
 
-    const tablesData = tables.map(({ name, capacity, availability, _id }, index) => {
+    const tablesData = tables.map(({ name, capacity, availability, altId, _id }, index) => {
       name = (name) ? name : `Table${index + 1}`;
       name = name.replace(/\s+/g, '');
       delete availability.daysOfMonth;
-      return { name, capacity, ...availability, _id };
+      return { name, capacity, ...availability, altId, _id };
     });
 
 

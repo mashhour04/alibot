@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import { connect } from 'react-redux';
 // @material-ui/core ../../_components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -14,6 +15,8 @@ import CardAvatar from "../../_components/Card/CardAvatar.jsx";
 import CardBody from "../../_components/Card/CardBody.jsx";
 import CardFooter from "../../_components/Card/CardFooter.jsx";
 
+//Upload
+import Avatar from 'react-avatar-edit'
 import avatar from "../../_assets/img/faces/marc.jpg";
 
 import { userActions } from '../../_actions/user.actions';
@@ -43,6 +46,12 @@ class UserProfile extends Component {
     this.onProfileChange = this.onProfileChange.bind(this);
     this.onVendorChange = this.onVendorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      avatar,
+      preview: null,
+      selectedFile: null,
+    }
   }
 
   onProfileChange(event) {
@@ -53,6 +62,40 @@ class UserProfile extends Component {
     // this.setState({
     //   profile
     // })
+  }
+  onClose = () => {
+    this.setState({ preview: null })
+  }
+
+  onCrop = (preview) => {
+    this.setState({ preview })
+  }
+
+  fileChangedHandler = (event) => {
+    let { vendor } = this.props;
+    vendor = vendor.vendor || {};
+    const vendorId = vendor._id;
+    if(!vendorId) { return; }
+    const selectedFile = event.target.files[0];
+    // this.setState({ selectedFile: event.target.files[0] });
+    if (!selectedFile) { return; }
+    const formData = new FormData()
+    formData.append(
+      'myFile',
+      selectedFile,
+      selectedFile.name,
+    )
+    axios.post(`backend/upload/profile/${vendorId}`, formData).then(response => {
+      console.log('successfull updated vendor profile pic', response.data);
+      // if (response.data && response.data.file) {
+      //   this.setState({
+      //     avatar: `/backend/avatar/${response.data.file.filename}`
+      //   })
+      //   console.log('changed avatar from uplading', this.state.avatar);
+      // }
+    }).catch(err => {
+
+    });
   }
 
   onVendorChange(event) {
@@ -71,11 +114,12 @@ class UserProfile extends Component {
     console.log('log state', update);
     this.setState({ submitted: true });
     this.props.dispatch(userActions.update(update, id));
-}
+  }
   render() {
     const { classes, profile } = this.props;
     let { vendor } = this.props;
-    vendor = vendor.vendor || {}; 
+    vendor = vendor.vendor || {};
+    console.log('vendor avatar, ', vendor.avatar)
     return (
       <div>
         <GridContainer>
@@ -91,7 +135,7 @@ class UserProfile extends Component {
                     <CustomInput
                       labelText={profile.username ? `Username (${profile.username})` : 'Username'}
                       id="username"
-                      placeholder = { profile.username }
+                      placeholder={profile.username}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -110,7 +154,7 @@ class UserProfile extends Component {
                       formControlProps={{
                         fullWidth: true
                       }}
-                      inputProps = {{
+                      inputProps={{
                         name: 'email',
                         onChange: this.onProfileChange
                       }}
@@ -121,12 +165,12 @@ class UserProfile extends Component {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       labelText={profile.firstName ? `First Name (${profile.firstName})` : 'First Name'}
-                      placeholder = { profile.firstName }
+                      placeholder={profile.firstName}
                       id="first-name"
                       formControlProps={{
                         fullWidth: true
                       }}
-                      inputProps = {{
+                      inputProps={{
                         name: 'firstName',
                         onChange: this.onProfileChange
                       }}
@@ -139,14 +183,14 @@ class UserProfile extends Component {
                       formControlProps={{
                         fullWidth: true
                       }}
-                      inputProps = {{
+                      inputProps={{
                         name: 'lastName',
                         onChange: this.onProfileChange
                       }}
                     />
                   </GridItem>
                 </GridContainer>
-        
+
               </CardBody>
               <CardFooter>
                 <Button onClick={this.handleSubmit} id="profile" color="primary">Update Profile</Button>
@@ -154,23 +198,18 @@ class UserProfile extends Component {
             </Card>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
+
+            {/*
             <Card profile>
-              <CardAvatar profile>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  <img src={avatar} alt="..." />
-                </a>
-              </CardAvatar>
+
               <CardBody profile>
                 <h6 className={classes.cardCategory}> </h6>
-                <h4 className={classes.cardTitle}>{profile.firstName} {profile.lastName}</h4>
-                <p className={classes.description}>
-                  Don't be scared of the truth because we need to restart the
-                  human foundation in truth And I love you like Kanye loves Kanye
-                  I love Rick Owens’ bed design but the back is...
-                </p>
-              
+                <h4 className={classes.cardTitle}>{profile.firstName} {profile.lastName}</h4> 
+
+                
               </CardBody>
             </Card>
+            */}
           </GridItem>
         </GridContainer>
         <GridContainer>
@@ -179,24 +218,50 @@ class UserProfile extends Component {
               <CardHeader color="success">
                 <h4 className={classes.cardTitleWhite}>Edit Vendor</h4>
                 <p className={classes.cardCategoryWhite}>Edit Info about your vendor</p>
+
+                <CardAvatar profile>
+                  <input
+                    ref={fileInput => this.fileInput = fileInput}
+                    accept="image/*"
+                    className={classes.input}
+                    style={{ display: 'none' }}
+                    id="raised-button-file"
+                    multiple
+                    type="file"
+                    onChange={this.fileChangedHandler}
+                  />
+                  <a href="#pablo" onClick={e => {
+                    e.preventDefault();
+                    this.fileInput.click()
+                  }}>
+                    <img src={"/backend/avatar/"+vendor._id} alt="..." style={{
+                      width: "100%",
+                      height: "auto",
+                      maxheight: "130px",
+                      maxWidth: "130px",
+                      borderRadius: "50%"
+                    }} />
+                  </a>
+
+                </CardAvatar>
               </CardHeader>
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
-                      labelText={vendor.name ? `Vendor Name (${vendor.name})`: 'Vendor Name'}
+                      labelText={vendor.name ? `Vendor Name (${vendor.name})` : 'Vendor Name'}
                       id="vendor-name"
                       formControlProps={{
                         fullWidth: true
                       }}
                     />
                   </GridItem>
-                  
+
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText={vendor.address && vendor.address.city ? `City (${vendor.name})`: 'City'}
+                      labelText={vendor.address && vendor.address.city ? `City (${vendor.name})` : 'City'}
                       id="city"
                       formControlProps={{
                         fullWidth: true
@@ -226,7 +291,7 @@ class UserProfile extends Component {
                   <GridItem xs={12} sm={12} md={12}>
                     <InputLabel style={{ color: "#AAAAAA" }}>About vendor</InputLabel>
                     <CustomInput
-                      labelText={vendor.description && vendor.description ? `${vendor.description}`: 'Here you write a description about your vendor and what it does.' }
+                      labelText={vendor.description && vendor.description ? `${vendor.description}` : 'Here you write a description about your vendor and what it does.'}
                       id="about-me"
                       formControlProps={{
                         fullWidth: true

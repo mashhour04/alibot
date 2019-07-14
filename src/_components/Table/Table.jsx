@@ -61,12 +61,12 @@ class CustomTable extends Component {
                 return (
                   <TableRow key={key}>
                     {Object.keys(row).map((prop, key) => {
+                      if(prop === '_id') { return;  }
                       return (
                         <CustomTableCell cellProps={{
                           key,
                           className: classes.tableCell
                         }} row={row} prop={prop} key={key} >
-
                         </CustomTableCell>
                       );
                     })}

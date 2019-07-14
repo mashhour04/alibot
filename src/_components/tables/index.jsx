@@ -209,7 +209,7 @@ class Tables extends Component {
                             pagination
                         // cellEdit={cellEditFactory({ mode: 'click', blurToSave: true })}
                         >
-                            <TableHeaderColumn dataField='id' isKey={true} >Table ID</TableHeaderColumn>
+                            <TableHeaderColumn dataField='altId' isKey={true} >Table ID</TableHeaderColumn>
                             <TableHeaderColumn dataField='capacity' editable={{ type: 'text' }}>Capacity</TableHeaderColumn>
                             <TableHeaderColumn dataFormat={this.availbilityFormat} dataField='week' editable={false}>Week Days</TableHeaderColumn>
                         </BootstrapTable>

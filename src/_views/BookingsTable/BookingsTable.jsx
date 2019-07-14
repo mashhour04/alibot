@@ -13,6 +13,7 @@ import { InputLabel, Input, Select, MenuItem, Checkbox, ListItemText, FormContro
 import Grid from '@material-ui/core/Grid';
 
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
 
 
 // core components
@@ -98,16 +99,18 @@ class Bookings extends Component {
         bookingsData = bookingsData.filter(({ vendorPathId }) => {
             return vendorPathId;
         })
-        bookingsData = bookingsData.map(({ userId, status, vendorPathId, date, phone }, index) => {
-            phone = (phone) ? phone : 'N/A';
+        bookingsData = bookingsData.map(({ userId, status, vendorPathId, date }, index) => {
+            const phone = (userId.phone) ? userId.phone : 'N/A';
+            const email = (userId.email) ? userId.email : 'N/A';
             return {
                 id: index + 1,
                 name: `${userId.firstName} ${userId.lastName}`,
                 date: moment(date).locale('fr').format('LLLL'),
                 capacity: vendorPathId.capacity,
-                table: vendorPathId._id,
+                table: vendorPathId.altId,
                 status,
-                phone
+                phone,
+                email
             };
         });
         return (
@@ -126,7 +129,7 @@ class Bookings extends Component {
                             <Button onClick={() => this.setState({ insertOpen: true })}><Add></Add>Insert</Button>
                             <Table
                                 tableHeaderColor="primary"
-                                tableHead={["#", "Name", "Date", "Number of People", "Table", "Status", "Phone"]}
+                                tableHead={["#", "Name", "Date", "Number of People", "Table", "Status", "Phone", "Email"]}
                                 tableData={bookingsData}
                             />
                             <Modal
@@ -160,30 +163,28 @@ class Bookings extends Component {
                                             </GridContainer>
                                             <GridContainer>
                                                 <GridItem xs={12} xm={12} md={12}>
-                                                <DatePicker
-                                                        margin="normal"
-                                                        label="Date picker"
-                                                        value={selectedDate}
-                                                        onChange={this.handleDateChange}
-                                                    />
+                                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                                                        <DatePicker
+                                                            margin="normal"
+                                                            label="Date"
+                                                            value={selectedDate}
+                                                            onChange={this.handleDateChange}
+                                                            style={{ width: "100%" }}
+                                                        />
+                                                    </MuiPickersUtilsProvider>
                                                 </GridItem>
-                                                </GridContainer>
-                                            {/* <MuiPickersUtilsProvider>
-                                                <Grid container className={classes.grid} justify="space-around">
-                                                    <DatePicker
-                                                        margin="normal"
-                                                        label="Date picker"
-                                                        value={selectedDate}
-                                                        onChange={this.handleDateChange}
-                                                    />
+                                            </GridContainer>
+                                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                                                <Grid container className={classes.grid} justify="space-around" style={{ width: "100%" }}>
                                                     <TimePicker
                                                         margin="normal"
-                                                        label="Time picker"
+                                                        label="Time"
                                                         value={selectedDate}
                                                         onChange={this.handleDateChange}
+                                                        style={{ width: "100%" }}
                                                     />
                                                 </Grid>
-                                            </MuiPickersUtilsProvider> */}
+                                            </MuiPickersUtilsProvider>
                                             <GridContainer>
 
                                                 <GridItem xs={12} sm={12} md={12}>
@@ -191,14 +192,28 @@ class Bookings extends Component {
                                                         fullWidth={true}
                                                         className={classes.formControl}
                                                     >
-                                                        <InputLabel className={classes.labelRoot} htmlFor="select-multiple-checkbox">Available Hours</InputLabel>
-
+                                                        {/* <InputLabel className={classes.labelRoot} htmlFor="select-multiple-checkbox">Available Hours</InputLabel>
+                                                        <Select
+                                                            multiple
+                                                            value={element}
+                                                            name={prop}
+                                                            onChange={this.handleValueChange}
+                                                            input={<Input id="select-weekdays" />}
+                                                            renderValue={selected => selected.join(', ')}
+                                                        >
+                                                            {statics[prop].map((item, key) => (
+                                                                <MenuItem key={key} value={item.value ? item.value : item}>
+                                                                    <Checkbox />
+                                                                    <ListItemText primary={item.label ? item.label : item} />
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select> */}
                                                     </FormControl>
                                                 </GridItem>
                                             </GridContainer>
                                         </CardBody>
                                         <CardFooter>
-                                            <Button onClick={this.handleSubmit} id="profile" color="primary">Add Table</Button>
+                                            <Button onClick={this.handleSubmit} id="profile" color="primary" style={{ border: "1px solid #3f51b5 !important", borderRadius: "20px", width: "40%", marginLeft: "30%" }}>Add Booking</Button>
                                         </CardFooter>
                                     </Card>
                                 </div>
