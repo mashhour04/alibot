@@ -182,5 +182,12 @@
             "value": 30,
             "label": "30th"
         }
-    ]
+    ],
+    "categories": [{
+        "label": "French",
+        "value": "italian"
+    }, {
+        "label": "Italian",
+        "value": "french"
+    }]
 }

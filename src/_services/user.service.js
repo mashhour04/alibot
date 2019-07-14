@@ -63,7 +63,10 @@ function register({ profile, account, vendor }) {
 
 function logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('user');
+    if (localStorage.getItem('user')) {
+        localStorage.removeItem('user');
+        window.location.reload();
+    }
 }
 
 function getUser() {
@@ -107,7 +110,7 @@ function handleResponse(response) {
 function toJSON(string) {
     try {
         return JSON.parse(string);
-    } catch(err) {
+    } catch (err) {
         return string;
     }
 }

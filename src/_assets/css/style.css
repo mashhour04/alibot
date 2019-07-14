@@ -27463,6 +27463,9 @@
     height: 34px;
     margin: auto;
     vertical-align: middle;
+    object-fit: scale-down;
+    margin-top: 30px;
+    margin-bottom: 10px;
   }
   
   .navbar .navbar-brand-wrapper .brand-logo-mini {
@@ -27676,6 +27679,8 @@
   .rtl .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown {
     right: auto;
     left: 0;
+    margin: 55px 0px 0px 0px;
+    padding-top: 10px;
   }
   
   .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown .dropdown-item {

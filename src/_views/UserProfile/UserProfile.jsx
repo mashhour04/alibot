@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // @material-ui/core ../../_components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
+import { Select, MenuItem, Checkbox, ListItemText, FormControl } from '@material-ui/core';
 // core ../../_components
 import GridItem from "../../_components/Grid/GridItem.jsx";
 import GridContainer from "../../_components/Grid/GridContainer.jsx";
@@ -15,6 +16,7 @@ import CardAvatar from "../../_components/Card/CardAvatar.jsx";
 import CardBody from "../../_components/Card/CardBody.jsx";
 import CardFooter from "../../_components/Card/CardFooter.jsx";
 
+import statics from "../../_assets/statics/tables.json";
 //Upload
 import Avatar from 'react-avatar-edit'
 import avatar from "../../_assets/img/faces/marc.jpg";
@@ -75,7 +77,7 @@ class UserProfile extends Component {
     let { vendor } = this.props;
     vendor = vendor.vendor || {};
     const vendorId = vendor._id;
-    if(!vendorId) { return; }
+    if (!vendorId) { return; }
     const selectedFile = event.target.files[0];
     // this.setState({ selectedFile: event.target.files[0] });
     if (!selectedFile) { return; }
@@ -119,6 +121,7 @@ class UserProfile extends Component {
     const { classes, profile } = this.props;
     let { vendor } = this.props;
     vendor = vendor.vendor || {};
+
     console.log('vendor avatar, ', vendor.avatar)
     return (
       <div>
@@ -234,7 +237,7 @@ class UserProfile extends Component {
                     e.preventDefault();
                     this.fileInput.click()
                   }}>
-                    <img src={"/backend/avatar/"+vendor._id} alt="..." style={{
+                    <img src={"/backend/avatar/" + vendor._id} alt="..." style={{
                       width: "100%",
                       height: "auto",
                       maxheight: "130px",
@@ -286,6 +289,40 @@ class UserProfile extends Component {
                       }}
                     />
                   </GridItem>
+                </GridContainer>
+
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      labelText={vendor.address && vendor.address.street_address ? `Address (${vendor.address.street_address})` : 'Address'}
+                      id="city"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <FormControl className={{ minWidth: 120, margin: "auto" }}>
+                      <InputLabel htmlFor="age-simple">Categories</InputLabel>
+                      <Select
+                        multiple
+                        value={[]}
+                        name={'categories'}
+                        onChange={this.handleValueChange}
+                        // input={<Input id="select-weekdays" />}
+                        renderValue={selected => selected.join(', ')}
+                        style={{minWidth: "120px"}}
+                      >
+                        {statics['categories'].map((category, key) => (
+                          <MenuItem key={key} value={category.value ? category.value : category}>
+                            <Checkbox />
+                            <ListItemText primary={category.label ? category.label : category} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>

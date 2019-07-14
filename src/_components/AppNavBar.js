@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 
 import { navigationActions } from '../_actions/navigation.actions';
+import { userActions } from '../_actions/user.actions';
 class AppNavbar extends Component {
   state = {
     isOpen: false,
@@ -39,6 +40,13 @@ class AppNavbar extends Component {
       dropdownOpen: !this.state.isOpen
     });
   }
+  goToSettings = () => {
+    window.location.href = '/user'
+  }
+
+  logout = () => {
+    this.props.dispatch(userActions.logout());
+  }
 
   sideBarToggle = () => {
     const { iconOnly } = this.state;
@@ -61,8 +69,8 @@ class AppNavbar extends Component {
     return (
       <Nav className="navbar col-lg-12 col-12 p-0 fixed-top  d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a className="navbar-brand brand-logo" href="../../index.html"><img src="/images/logo.png" alt="logo" /></a>
-          <a className="navbar-brand brand-logo-mini" href="../../index.html"><img src="/images/logo-mini.png" alt="logo" /></a>
+          <a className="navbar-brand brand-logo" href="../../index.html"><img src="/images/nav-logo-bakc-2.png" alt="logo" /></a>
+          <a className="navbar-brand brand-logo-mini" href="../../index.html"><img src="/images/nav-logo-bakc-2.png" alt="logo" /></a>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end justify-content-lg-start">
           <button className="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" onClick={this.sideBarToggle}>
@@ -73,16 +81,16 @@ class AppNavbar extends Component {
               <DropdownToggle className="nav-link" nav>
                 <span className="nav-profile-name">Samy Boujbel</span>
                 <span>
-                  <ArrowCollapseDownIcon size={18}></ArrowCollapseDownIcon>
+                  <ArrowCollapseDownIcon style={{marginLeft: '5px'}} size={18}></ArrowCollapseDownIcon>
                 </span>
               </DropdownToggle>
               <DropdownMenu right className="navbar-dropdown" aria-labelledby="profileDropdown">
-                <DropdownItem>
+                <DropdownItem onClick={this.goToSettings}>
                   <SettingsIcon className="text-primary"></SettingsIcon>
                   Settings
               </DropdownItem>
                 <div className="dropdown-divider"></div>
-                <DropdownItem>
+                <DropdownItem  onClick={this.logout}>
                   <LogoutIcon className="text-primary"></LogoutIcon>
                   Logout
               </DropdownItem>
