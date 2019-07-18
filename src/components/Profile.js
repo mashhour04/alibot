@@ -15,7 +15,7 @@ class Profile extends Component {
     }
 
     handleBlur(e) {
-        console.log('this in handleblur', this);
+        console.log('handleblur of profile', this);
         const { name, value } = e.target;
         const { step } = this.props;
         const property = this.props[step];
@@ -65,6 +65,9 @@ class Profile extends Component {
             email: ["required", "email"],
         }
         console.log('errors', profileErrors);
+        if(step !== 'profile') {
+            return (<section></section>)
+        }
         return (
             <section id="steps-uid-1-p-0" role="tabpanel" aria-labelledby="steps-uid-1-h-0" className={className} aria-hidden="true" style={isActive}>
                 <h3>Profile</h3>

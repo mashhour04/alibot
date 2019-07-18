@@ -25,9 +25,13 @@ import { HomePage } from './HomePage/HomePage';
 
 
 class App extends Component {
+  getComponent = () => {
+      const isAuthenticated = localStorage.getItem('user');
+      return isAuthenticated ? HomePage : LoginPage;
+  }
 
   render() {
-    const isAuthenticated = localStorage.getItem('user');
+  const isAuthenticated = localStorage.getItem('user');
     if (alert.message) {
       toastr.error(alert.message);
     }
@@ -36,7 +40,7 @@ class App extends Component {
         <PerfectScrollbar>
           <Router history={history}>
             <div height="100%">
-            <PublicRoute exact path="/register" component={RegisterPage} />
+            <PublicRoute path="/register" component={RegisterPage} />
             <PublicRoute exact path="/login"  component={LoginPage} />
               {indexRoutes.map((prop, key) => <PrivateRoute path={prop.path} component={prop.component} key={key} isAuthenticated={isAuthenticated}/>)}
              <Route component={isAuthenticated ? HomePage : LoginPage} />

@@ -53,17 +53,13 @@ class UserProfile extends Component {
       avatar,
       preview: null,
       selectedFile: null,
+      update: {},
     }
   }
 
   onProfileChange(event) {
     const { name, value } = event.target;
     console.log('state', this.state);
-    // const { profile } = this.state;
-    // profile[name] = value;
-    // this.setState({
-    //   profile
-    // })
   }
   onClose = () => {
     this.setState({ preview: null })
@@ -71,6 +67,10 @@ class UserProfile extends Component {
 
   onCrop = (preview) => {
     this.setState({ preview })
+  }
+
+  updateVendor = () => {
+    
   }
 
   fileChangedHandler = (event) => {
@@ -342,7 +342,7 @@ class UserProfile extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="success">Update Vendor</Button>
+                <Button onClick={this.updateVendor} color="success">Update Vendor</Button>
               </CardFooter>
             </Card>
           </GridItem>

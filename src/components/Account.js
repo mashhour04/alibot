@@ -8,15 +8,17 @@ import { registerActions } from '../_actions/register.actions';
 class Account extends Component {
     constructor(props) {
         super(props);
-        this.handleBlur = this.handleBlur.bind(this);
+        this.handleAccountBlur = this.handleAccountBlur.bind(this);
         this.validateField = this.validateField.bind(this);
     }
 
-    handleBlur(e) {
-        console.log('this in handleblur', this);
+    handleAccountBlur(e) {
+       
         const { name, value } = e.target;
         const { step } = this.props;
         const property = this.props[step];
+         console.log('handleblur of account', e.target);
+
         property[name] = value;
         this.setState({ [step]: property }, () => this.validateField(name, value));
     }
@@ -49,22 +51,26 @@ class Account extends Component {
         const { accountErrors } = this.props;
         const className = `body ${step === 'account' && 'current'}`;
         const isActive = (step === 'account') ? { display: 'block' } : { display: 'none' };
+        console.log('is account active', isActive, 'step is', step);
+        if(step !== 'account') {
+            return (<section></section>)
+        }
         return (
             <section id="steps-uid-1-p-1" role="tabpanel" aria-labelledby="steps-uid-1-h-1" className={className} aria-hidden="false" style={isActive}>
                 <h3>Account</h3>
                 <FormGroup>
                     <Label for="userName">User name *</Label>
-                    <Input type="text" id="userName" name="username" className="required form-control" onBlur={this.handleBlur} required />
+                    <Input type="text" id="userName" name="username" className="required form-control" onBlur={this.handleAccountBlur} required />
                     {accountErrors.username && <label id="email-error" className="error mt-2 text-danger" htmlFor="email">{accountErrors.username}</label>}
                 </FormGroup>
                 <FormGroup>
                     <Label for="password">Password *</Label>
-                    <Input type="password" id="password" name="password" className="required form-control" onChange={this.handleBlur} required />
+                    <Input type="password" id="password" name="password" className="required form-control" onChange={this.handleAccountBlur} required />
                     {accountErrors.password && <label id="email-error" className="error mt-2 text-danger" htmlFor="email">{accountErrors.password}</label>}
                 </FormGroup>
                 <FormGroup>
                     <Label for="confirm">Confirm Password *</Label>
-                    <Input id="confirm" name="confirm" type="password" className="required form-control" onChange={this.handleBlur} required />
+                    <Input id="confirm" name="confirm" type="password" className="required form-control" onChange={this.handleAccountBlur} required />
                     {accountErrors.confirm && <label id="email-error" className="error mt-2 text-danger" htmlFor="email">{accountErrors.confirm}</label>}
                     <small>(*) Mandatory</small>
                 </FormGroup>
