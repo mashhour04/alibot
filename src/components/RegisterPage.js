@@ -173,7 +173,7 @@ class RegisterPage extends Component {
     }
 }
 
-class Finish extends RegisterPage {
+class Finish extends   {
     render() {
         const { step } = this.props;
         const className = `body ${step === 'finish' && 'current'}`;
