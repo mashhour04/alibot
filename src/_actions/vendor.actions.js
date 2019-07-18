@@ -8,7 +8,8 @@ export const vendorActions = {
     getBookings,
     updateTable,
     deleteTable,
-    insertTable
+    insertTable,
+    update,
 };
 
 function getVendor({ skip, limit }) {
@@ -108,4 +109,25 @@ function getBookings({ skip, limit }) {
     function request() { return { type: vendorConstants.GET_BOOKINGS_REQUEST } }
     function success(bookings) { return { type: vendorConstants.GET_BOOKINGS_SUCCESS, bookings } }
     function failure(error) { return { type: vendorConstants.GET_BOOKINGS_FAILURE, error } }
+}
+
+
+function update({ update, vendorId }) {
+    return dispatch => {
+        dispatch(request({ update, vendorId }));
+
+        vendorService.update({ update, vendorId })
+            .then(
+                user => {
+                    dispatch(success(user));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(body) { return { type: vendorConstants.UPDATE_REQUEST, body } }
+    function success(body) { return { type: vendorConstants.UPDATE_SUCCESS, body } }
+    function failure(error) { return { type: vendorConstants.UPDATE_FAILURE, error } }
 }

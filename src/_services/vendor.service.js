@@ -1,11 +1,12 @@
-import { authHeader } from '../_helpers';
-import { toastr } from 'react-redux-toastr';
+import { authHeader, Toast } from '../_helpers';
+
 export const vendorService = {
     getVendor,
     getBookings,
     insertTable,
     updateTable,
     deleteTable,
+    update,
 };
 
 function getVendor({skip, limit}) {
@@ -92,16 +93,40 @@ function getBookings({ skip, limit }) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
+function update({ update, vendorId }) {
+    const body = {
+        ...update,
+        vendorId
+    }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(body)
+    };
+
+    return fetch(`/backend/api/vendors/update/${vendorId}`, requestOptions)
+        .then(handleResponse)
+        .then(response => {
+            Toast.fire({
+                type: 'success',
+                title: 'vendor has been updated',
+            })
+            // login successful if there's a jwt token in the response
+            return response;
+        });
+}
+
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            toastr.error('Error!', `Something went wrong`);
+            Toast.fire({type: 'error', title: `Something went wrong` });
             const error = (data && data.message) || response.statusText;
             const errors = data.errors;
             if (errors) {
                 errors.forEach((error) => {
-                    toastr.error('Error!', `${error.param} is ${error.msg}`)
+                    Toast.fire({type: 'error', title: `${error.param} is ${error.msg}` });
                 });
             }
             return Promise.reject(error);

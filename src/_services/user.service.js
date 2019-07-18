@@ -1,11 +1,11 @@
-import { authHeader } from '../_helpers';
-import { toastr } from 'react-redux-toastr';
+import { authHeader, Toast } from '../_helpers';
 
 export const userService = {
     register,
     login,
     logout,
-    getUser
+    getUser,
+    update,
 };
 
 function login(username, password) {
@@ -77,12 +77,36 @@ function getUser() {
     return fetch(`/backend/api/managers/`, requestOptions).then(handleResponse);
 }
 
+function update({ update, userId }) {
+    const body = {
+        ...update,
+    }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(body)
+    };
+
+    return fetch(`/backend/api/managers/update`, requestOptions)
+        .then(handleResponse)
+        .then(response => {
+            Toast.fire({
+                type: 'success',
+                title: 'profile has been updated',
+            })
+            // login successful if there's a jwt token in the response
+            return response;
+        });
+}
+
 function handleResponse(response) {
     console.log('the response', response);
     // if (response.status !== 200) {
     //     toastr.error('Failed!', 'Internal Server Error');
     //     return new Promise(() => { });
-    // }
+    // // }
+    // alert(JSON.stringify(response.text()))
     return response.text().then(text => {
         const data = (text) ? toJSON(text) : text;
         if (!response.ok) {
@@ -96,10 +120,10 @@ function handleResponse(response) {
             const errors = data.errors;
             if (errors) {
                 errors.forEach((error) => {
-                    toastr.error('Error!', `${error.param} is ${error.msg}`)
+                    Toast.fire({type: 'error', title: `${error.param} is ${error.msg}` });
                 });
             } else {
-                toastr.error('failed!', message);
+                Toast.fire({type: 'error', title: message });
             }
             return Promise.reject(error);
         }

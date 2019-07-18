@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import 'react-phone-number-input/style.css';
-import { toastr } from 'react-redux-toastr';
+import { Toast } from '../_helpers';
 import { Container, FormFeedback, Input, Label, Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 
 
@@ -51,7 +51,7 @@ class RegisterPage extends Component {
             let valid = true;
 
             if (Object.keys(errors).length === 0) {
-                toastr.error('you must enter the required fields');
+                Toast.fire({ type: 'error', title: 'you must enter the required fields'})
                 return;
             }
 
@@ -61,7 +61,7 @@ class RegisterPage extends Component {
                 }
             })
             if (!valid) {
-                toastr.error('some fields are incorrect');
+                Toast.fire({ type: 'error', title: 'some fields are incorrect'})
                 return;
             }
 
@@ -173,7 +173,7 @@ class RegisterPage extends Component {
     }
 }
 
-class Finish extends   {
+class Finish extends RegisterPage  {
     render() {
         const { step } = this.props;
         const className = `body ${step === 'finish' && 'current'}`;
@@ -192,6 +192,7 @@ class Finish extends   {
         )
     }
 }
+
 function mapStateToProps(state) {
     const { loggingIn } = state.authentication;
     const { profile, account, vendor, vendorErrors, profileErrors, accountErrors } = state.register;

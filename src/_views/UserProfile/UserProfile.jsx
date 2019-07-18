@@ -1,6 +1,9 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { StyledDropZone } from 'react-drop-zone'
+import 'react-drop-zone/dist/styles.css';
 // @material-ui/core ../../_components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -22,6 +25,8 @@ import Avatar from 'react-avatar-edit'
 import avatar from "../../_assets/img/faces/marc.jpg";
 
 import { userActions } from '../../_actions/user.actions';
+import { vendorActions } from '../../_actions/vendor.actions';
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -47,19 +52,63 @@ class UserProfile extends Component {
     super(props);
     this.onProfileChange = this.onProfileChange.bind(this);
     this.onVendorChange = this.onVendorChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.handleProfileSubmit = this.handleProfileSubmit.bind(this);
+    this.handleVendorSubmit = this.handleVendorSubmit.bind(this);
     this.state = {
       avatar,
       preview: null,
+      version: 1,
       selectedFile: null,
-      update: {},
+      willUpload: false,
+      vendorUpdate: {},
+      profileUpdate: {},
+      vendorErrors: {},
+      profileErrors: {},
     }
   }
 
   onProfileChange(event) {
     const { name, value } = event.target;
+    const { profileUpdate } = this.state;
     console.log('state', this.state);
+    profileUpdate[name] = value;
+    this.setState({ profileUpdate });
+  }
+
+  onVendorChange(event) {
+    const { name, value } = event.target;
+    console.log('vendor changed', name, value)
+    const { vendorUpdate } = this.state;
+    if(!value || (value && value === '')) {
+      console.log('changing to an empty value', value);
+      return;
+    }
+
+    if(['street_address', 'city', 'state', 'zip_code']) { 
+      if(!vendorUpdate.address) {
+        vendorUpdate.address = {
+          [name]: value
+        };
+      } else {
+        vendorUpdate.address[name] = value;
+      }
+    }
+    //TODO: FIX THAT IT DOESN'T REMOVE A CATEGORY
+    if(name == 'categories') {
+      if(value.length > 0) {
+        const isExists = vendorUpdate['categories'] ? vendorUpdate['categories'].find(o => o == value) : false;
+        if(!isExists && vendorUpdate['categories']) { 
+          vendorUpdate['categories'].push(value[0]);
+        } else if (!vendorUpdate['categories']) {
+          vendorUpdate['categories'] = [value[0]];
+        }
+      }
+    } else {
+      vendorUpdate[name] = value;
+    }
+    
+    console.log('caegories value', vendorUpdate['categories']);
+    this.setState({ vendorUpdate });
   }
   onClose = () => {
     this.setState({ preview: null })
@@ -69,16 +118,14 @@ class UserProfile extends Component {
     this.setState({ preview })
   }
 
-  updateVendor = () => {
-    
-  }
 
-  fileChangedHandler = (event) => {
+  fileChangedHandler = async (selectedFile) => {
+    console.log('updating cover photo')
     let { vendor } = this.props;
     vendor = vendor.vendor || {};
     const vendorId = vendor._id;
     if (!vendorId) { return; }
-    const selectedFile = event.target.files[0];
+    // const selectedFile = event.target.files[0];
     // this.setState({ selectedFile: event.target.files[0] });
     if (!selectedFile) { return; }
     const formData = new FormData()
@@ -87,35 +134,57 @@ class UserProfile extends Component {
       selectedFile,
       selectedFile.name,
     )
-    axios.post(`backend/upload/profile/${vendorId}`, formData).then(response => {
-      console.log('successfull updated vendor profile pic', response.data);
-      // if (response.data && response.data.file) {
-      //   this.setState({
-      //     avatar: `/backend/avatar/${response.data.file.filename}`
-      //   })
-      //   console.log('changed avatar from uplading', this.state.avatar);
-      // }
-    }).catch(err => {
+    try {
+      const response = await axios.post(`backend/upload/profile/${vendorId}`, formData);
+      if(response.data) {
+        console.log('successfull updated vendor profile pic', response.data);
+        const { version } = this.state;
+    
+        const newVersion = version + 1;
+        console.log('new version', version);
+        this.setState({ willUpload: false, version: newVersion })
+        }
+        // if (response.data && response.data.file) {
+        //   this.setState({
+        //     avatar: `/backend/avatar/${response.data.file.filename}`
+        //   })
+        //   console.log('changed avatar from uplading', this.state.avatar);
+        // }
+    } catch(err) {
 
-    });
+    }
+   
   }
 
-  onVendorChange(event) {
-    const { name, value } = event.target;
-    // const { vendor } = this.state;
-    // vendor[name] = value;
-    // this.setState({
-    //   vendor: value
-    // })
+  handleChangeMultiple = (event) => {
+    const { options } = event.target;
+    console.log('target', event.target)
+    // const value = [];
+    // for (let i = 0, l = options.length; i < l; i += 1) {
+    //   if (options[i].selected) {
+    //     value.push(options[i].value);
+    //   }
+    // }
+    this.onVendorChange(event);
   }
 
-  handleSubmit(event) {
+  
+
+  handleProfileSubmit(event) {
     event.preventDefault();
-    const { id } = event.target;
-    const update = this.state[id];
-    console.log('log state', update);
-    this.setState({ submitted: true });
-    this.props.dispatch(userActions.update(update, id));
+    const { profileUpdate } = this.state;
+    const { profile } = this.props;
+    // this.setState({ submitted: true });
+    this.props.dispatch(userActions.update({ update: profileUpdate, userId: profile._id }));
+  }
+
+  handleVendorSubmit(event) {
+    event.preventDefault();
+    const { vendorUpdate } = this.state;
+    let { vendor } = this.props;
+    vendor = vendor.vendor || {};
+    // this.setState({ submitted: true });
+    this.props.dispatch(vendorActions.update({ update: vendorUpdate, vendorId: vendor._id }));
   }
   render() {
     const { classes, profile } = this.props;
@@ -196,7 +265,7 @@ class UserProfile extends Component {
 
               </CardBody>
               <CardFooter>
-                <Button onClick={this.handleSubmit} id="profile" color="primary">Update Profile</Button>
+                <Button onClick={this.handleProfileSubmit} id="profile" color="primary">Update Profile</Button>
               </CardFooter>
             </Card>
           </GridItem>
@@ -221,9 +290,8 @@ class UserProfile extends Component {
               <CardHeader color="success">
                 <h4 className={classes.cardTitleWhite}>Edit Vendor</h4>
                 <p className={classes.cardCategoryWhite}>Edit Info about your vendor</p>
-
-                <CardAvatar profile>
-                  <input
+                {(!this.state.willUpload && vendor.avatarData) ?  <CardAvatar profile>
+                   {/* <input
                     ref={fileInput => this.fileInput = fileInput}
                     accept="image/*"
                     className={classes.input}
@@ -232,21 +300,27 @@ class UserProfile extends Component {
                     multiple
                     type="file"
                     onChange={this.fileChangedHandler}
-                  />
+                  /> */}
                   <a href="#pablo" onClick={e => {
                     e.preventDefault();
-                    this.fileInput.click()
+                    this.setState({ willUpload: true })
                   }}>
-                    <img src={"/backend/avatar/" + vendor._id} alt="..." style={{
-                      width: "100%",
-                      height: "auto",
-                      maxheight: "130px",
-                      maxWidth: "130px",
-                      borderRadius: "50%"
+                    <img src={`/backend/avatar/${vendor._id}?v=${this.state.version}`} alt="Upload Cover Image" style={{
+                      // width: "100%",
+                      // height: "auto",
+                      // maxHeight: "130px",
+                      // maxWidth: "130px",
+                      // borderRadius: "50%",
+                      // color: "#fff",
+                      // padding: "18%",
+                      // fontWeight: "500",
+                      // margin: "auto",
+                      // lineHeight: "20px"
                     }} />
-                  </a>
+                  </a> 
 
-                </CardAvatar>
+                </CardAvatar>: <div className="DropZone-Container"><StyledDropZone label="Select Or Drop Your Cover Image Here" onDrop={(file, text) => this.fileChangedHandler(file)} /> </div>}
+               
               </CardHeader>
               <CardBody>
                 <GridContainer>
@@ -256,6 +330,10 @@ class UserProfile extends Component {
                       id="vendor-name"
                       formControlProps={{
                         fullWidth: true
+                      }}
+                      inputProps={{
+                        name: 'name',
+                        onChange: this.onVendorChange
                       }}
                     />
                   </GridItem>
@@ -269,23 +347,35 @@ class UserProfile extends Component {
                       formControlProps={{
                         fullWidth: true
                       }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <CustomInput
-                      labelText="Country"
-                      id="country"
-                      formControlProps={{
-                        fullWidth: true
+                      inputProps={{
+                        name: 'city',
+                        onChange: this.onVendorChange
                       }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText="Postal Code"
+                      labelText= {vendor.address && vendor.address.state ? `State (${vendor.address.state})` : 'State'}
+                      id="state"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        name: 'state',
+                        onChange: this.onVendorChange
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      labelText={vendor.address && vendor.address.zip_code ? `Postal Code (${vendor.address.zip_code})` : 'Postal Code'}
                       id="postal-code"
                       formControlProps={{
                         fullWidth: true
+                      }}
+                      inputProps={{
+                        name: 'zip_code',
+                        onChange: this.onVendorChange
                       }}
                     />
                   </GridItem>
@@ -299,6 +389,10 @@ class UserProfile extends Component {
                       formControlProps={{
                         fullWidth: true
                       }}
+                      inputProps={{
+                        name: 'street_address',
+                        onChange: this.onVendorChange
+                      }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
@@ -308,7 +402,7 @@ class UserProfile extends Component {
                         multiple
                         value={[]}
                         name={'categories'}
-                        onChange={this.handleValueChange}
+                        onChange = {this.handleChangeMultiple}
                         // input={<Input id="select-weekdays" />}
                         renderValue={selected => selected.join(', ')}
                         style={{minWidth: "120px"}}
@@ -322,6 +416,27 @@ class UserProfile extends Component {
                       </Select>
                     </FormControl>
                   </GridItem>
+
+                  <GridItem xs={12} sm={12} md={4}>
+                    <FormControl className={{ minWidth: 120, margin: "auto" }}>
+                      <InputLabel htmlFor="age-simple">Price</InputLabel>
+                      <Select
+                        name={'priceLevel'}
+                        onChange = {this.onVendorChange}
+                        // input={<Input id="select-weekdays" />}
+                        renderValue={selected => selected.label}
+                        style={{minWidth: "120px"}}
+                      >
+                        {statics['prices'].map((price, key) => (
+                          <MenuItem key={key} value={price.value ? price.value : price}>
+                             <Checkbox />
+                            <ListItemText primary={price.label ? price.label : price} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+
 
                 </GridContainer>
                 <GridContainer>
@@ -337,12 +452,13 @@ class UserProfile extends Component {
                         multiline: true,
                         rows: 5
                       }}
+                      onChange = {this.onVendorChange}
                     />
                   </GridItem>
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button onClick={this.updateVendor} color="success">Update Vendor</Button>
+                <Button onClick={this.handleVendorSubmit} color="success">Update Vendor</Button>
               </CardFooter>
             </Card>
           </GridItem>
