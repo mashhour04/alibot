@@ -105,7 +105,7 @@ class Bookings extends Component {
             return {
                 id: index + 1,
                 name: `${userId.firstName} ${userId.lastName}`,
-                date: moment(date.format('LLLL'),
+                date: moment(date).format('LLLL'),
                 capacity: vendorPathId.capacity,
                 table: vendorPathId.altId,
                 status,
