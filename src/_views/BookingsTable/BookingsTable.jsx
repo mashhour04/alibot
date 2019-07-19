@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import moment from 'moment/min/moment-with-locales';
-
+// import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
 
 
 // @material-ui/core components
@@ -105,7 +105,7 @@ class Bookings extends Component {
             return {
                 id: index + 1,
                 name: `${userId.firstName} ${userId.lastName}`,
-                date: moment(date).locale('fr').format('LLLL'),
+                date: moment(date.format('LLLL'),
                 capacity: vendorPathId.capacity,
                 table: vendorPathId.altId,
                 status,
