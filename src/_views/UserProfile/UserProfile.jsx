@@ -396,7 +396,7 @@ class UserProfile extends Component {
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
-                    <FormControl className={{ minWidth: 120, margin: "auto" }}>
+                    <FormControl style={{ minWidth: 120, margin: "auto" }}>
                       <InputLabel htmlFor="age-simple">Categories</InputLabel>
                       <Select
                         multiple
@@ -418,10 +418,11 @@ class UserProfile extends Component {
                   </GridItem>
 
                   <GridItem xs={12} sm={12} md={4}>
-                    <FormControl className={{ minWidth: 120, margin: "auto" }}>
+                    <FormControl style={{ minWidth: 120, margin: "auto" }}>
                       <InputLabel htmlFor="age-simple">Price</InputLabel>
                       <Select
                         name={'priceLevel'}
+                        value={''}
                         onChange = {this.onVendorChange}
                         // input={<Input id="select-weekdays" />}
                         renderValue={selected => selected.label}

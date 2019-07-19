@@ -9,7 +9,7 @@ export const vendorService = {
     update,
 };
 
-function getVendor({skip, limit}) {
+function getVendor({ skip, limit }) {
     let url = `/backend/api/vendors`;
     const requestOptions = {
         method: 'GET',
@@ -18,7 +18,7 @@ function getVendor({skip, limit}) {
     console.log('skip and limit', skip, limit);
     if (typeof skip !== undefined && typeof limit !== undefined) { requestOptions.qs = { skip, limit }; }
 
-    if(requestOptions.qs) {
+    if (requestOptions.qs) {
         url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
         delete requestOptions.qs;
     }
@@ -42,14 +42,14 @@ function updateTable(u) {
     const url = `/backend/api/tables/update`;
     const tableId = u.row._id || u.row.id;
     console.log('tableId', tableId);
-    let update = {} ;
+    let update = {};
     if (u.name === 'capacity' || u.name === 'name') {
         update[u.name] = u.value;
     } else {
         update.availability = { [u.name]: u.value };
     }
-    
-    const body = { tableId, update } ;
+
+    const body = { tableId, update };
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(body),
@@ -66,7 +66,7 @@ function deleteTable(u) {
         removed: true
     };
 
-    const body = { tableId, update } ;
+    const body = { tableId, update };
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(body),
@@ -76,7 +76,7 @@ function deleteTable(u) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function getBookings({ skip, limit }) {
+function getBookings({ skip, limit, type }) {
     let url = `/backend/api/bookings`;
     const requestOptions = {
         method: 'GET',
@@ -84,8 +84,8 @@ function getBookings({ skip, limit }) {
     };
     console.log('skip and limit', skip, limit);
     if (typeof skip !== undefined && typeof limit !== undefined) { requestOptions.qs = { skip, limit }; }
-
-    if(requestOptions.qs) {
+    if (type && typeof type !== undefined) { requestOptions.qs = { type }; }
+    if (requestOptions.qs) {
         url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
         delete requestOptions.qs;
     }
@@ -121,12 +121,12 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            Toast.fire({type: 'error', title: `Something went wrong` });
+            Toast.fire({ type: 'error', title: `Something went wrong` });
             const error = (data && data.message) || response.statusText;
             const errors = data.errors;
             if (errors) {
                 errors.forEach((error) => {
-                    Toast.fire({type: 'error', title: `${error.param} is ${error.msg}` });
+                    Toast.fire({ type: 'error', title: `${error.param} is ${error.msg}` });
                 });
             }
             return Promise.reject(error);

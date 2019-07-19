@@ -92,11 +92,11 @@ function insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth }) {
     function failure(error) { return { type: vendorConstants.INSERT_TABLES_FAILURE, error } }
 }
 
-function getBookings({ skip, limit }) {
+function getBookings({ skip, limit, type }) {
     return dispatch => {
         dispatch(request());
 
-        vendorService.getBookings({ skip, limit })
+        vendorService.getBookings({ skip, limit, type })
             .then(
                 bookings => dispatch(success(bookings)),
                 error => {
@@ -106,9 +106,9 @@ function getBookings({ skip, limit }) {
             );
     };
 
-    function request() { return { type: vendorConstants.GET_BOOKINGS_REQUEST } }
-    function success(bookings) { return { type: vendorConstants.GET_BOOKINGS_SUCCESS, bookings } }
-    function failure(error) { return { type: vendorConstants.GET_BOOKINGS_FAILURE, error } }
+    function request() { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_REQUEST : vendorConstants.GET_BOOKINGS_REQUEST } }
+    function success(bookings) { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_SUCCESS : vendorConstants.GET_BOOKINGS_SUCCESS, bookings } }
+    function failure(error) { return { type:(type) ? vendorConstants[type].GET_BOOKINGS_FAILURE : vendorConstants.GET_BOOKINGS_FAILURE, error } }
 }
 
 

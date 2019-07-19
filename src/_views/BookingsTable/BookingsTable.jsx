@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-
+import { vendorActions } from '../../_actions/vendor.actions';
 
 // core components
 import GridItem from "../../_components/Grid/GridItem.jsx";
@@ -82,6 +82,10 @@ class Bookings extends Component {
         selectedDate: new Date()
     }
 
+    componentDidMount() {
+        this.props.dispatch(vendorActions.getBookings({ skip: 0, limit: 20, type: 'past' }));
+    }
+
     insertCloseHandler = () => {
         this.setState({
             insertOpen: false
@@ -93,8 +97,19 @@ class Bookings extends Component {
     };
 
     render() {
-        const { classes, bookings } = this.props;
+        const { location } = this.props;
+        let type = (location && location.pathname.includes('past')) ? 'past' : 'coming';
+        let bookings;
+        if (type  && type === 'past') {
+            bookings = this.props.pastBookings;
+            console.log('chosing past bookings', bookings)
+        } else {
+            bookings = this.props.bookings;
+        }
+        const { classes } = this.props;
         const { selectedDate } = this.state;
+
+   
         let bookingsData = (bookings.loading || bookings.error) ? [] : bookings.filter(o => o.userId && o.vendorPathId);
         bookingsData = bookingsData.filter(({ vendorPathId }) => {
             return vendorPathId;
@@ -228,7 +243,7 @@ class Bookings extends Component {
 }
 
 function mapStateToProps(state) {
-    const { vendor, bookings } = state;
-    return { vendor, bookings };
+    const { vendor, bookings, pastBookings } = state;
+    return { vendor, bookings, pastBookings };
 }
 export default connect(mapStateToProps)(withStyles(styles)(Bookings));

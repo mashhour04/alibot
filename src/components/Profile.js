@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input/';
+import flags from 'react-phone-number-input/flags';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -39,6 +40,7 @@ class Profile extends Component {
                 break;
             case 'phone':
                 if (typeof value !== 'string') { return profileErrors.phone = ' is invalid phone number'; }
+                console.log('checking if', value, 'is valid phone number')
                 const isPhoneValid = isValidPhoneNumber(value);
                 profileErrors.phone = isPhoneValid ? '' : ' is invalid phone number';
                 break;
@@ -90,6 +92,10 @@ class Profile extends Component {
                     <FormGroup>
                         <Label for="email">Phone *</Label>
                         <PhoneInput
+                            // international={false}
+                            
+                            country={"TN"}
+                            countries={["TN"]}
                             name="phone"
                             placeholder="Enter phone number"
                             value={profile.phone}
