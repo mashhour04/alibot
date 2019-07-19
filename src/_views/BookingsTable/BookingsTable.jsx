@@ -110,8 +110,8 @@ class Bookings extends Component {
                 table: vendorPathId.altId,
                 status,
                 phone,
-                email
-            };
+                email,
+            }
         });
         return (
             <GridContainer>
