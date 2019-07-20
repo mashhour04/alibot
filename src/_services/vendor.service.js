@@ -7,6 +7,7 @@ export const vendorService = {
     updateTable,
     deleteTable,
     update,
+    getAvailableTables
 };
 
 function getVendor({ skip, limit }) {
@@ -85,6 +86,32 @@ function getBookings({ skip, limit, type }) {
     console.log('skip and limit', skip, limit);
     if (typeof skip !== undefined && typeof limit !== undefined) { requestOptions.qs = { skip, limit }; }
     if (type && typeof type !== undefined) { requestOptions.qs = { type }; }
+    if (requestOptions.qs) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
+        delete requestOptions.qs;
+    }
+
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+
+function getAvailableTables({ timestamp, capacity, vendorId }) {
+    let url = `/backend/api/tables/getAvailable`;
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    if(!timestamp || !vendorId) {
+        Toast.fire({
+            type: 'error',
+            title: 'Something Went Wrong Checking For Tables'
+        })
+        return Promise.reject( { error: 'Something Went Wrong Checking For Tables' });
+    }
+
+    requestOptions.qs = { timestamp, vendorId };
+    if (typeof capacity !== undefined && capacity) { requestOptions.qs.capacity = capacity; }
+
     if (requestOptions.qs) {
         url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
         delete requestOptions.qs;

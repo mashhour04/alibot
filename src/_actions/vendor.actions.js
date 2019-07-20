@@ -10,6 +10,7 @@ export const vendorActions = {
     deleteTable,
     insertTable,
     update,
+    getAvailableTables
 };
 
 function getVendor({ skip, limit }) {
@@ -111,7 +112,24 @@ function getBookings({ skip, limit, type }) {
     function failure(error) { return { type:(type) ? vendorConstants[type].GET_BOOKINGS_FAILURE : vendorConstants.GET_BOOKINGS_FAILURE, error } }
 }
 
+function getAvailableTables({ timestamp,  capacity, vendorId }) {
+    return dispatch => {
+        dispatch(request());
 
+        vendorService.getAvailableTables({ timestamp, capacity, vendorId })
+            .then(
+                tables => dispatch(success(tables)),
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error))
+                }
+            );
+    };
+
+    function request() { return { type: vendorConstants.GET_AVAILABLE_TABLES_REQUEST } }
+    function success(tables) { return { type: vendorConstants.GET_AVAILABLE_TABLES_SUCCESS, tables } }
+    function failure(error) { return { type: vendorConstants.GET_AVAILABLE_TABLES_FAILURE, error } }
+}
 function update({ update, vendorId }) {
     return dispatch => {
         dispatch(request({ update, vendorId }));

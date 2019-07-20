@@ -28,6 +28,9 @@ import CircularIndeterminate from '../../_components/CircularIndeterminate/Loadi
 import CustomInput from "../../_components/CustomInput/CustomInput";
 
 
+// View Components
+import ManualBooking from '../ManualBooking/ManualBooking';
+
 const styles = theme => ({
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
@@ -65,21 +68,10 @@ const styles = theme => ({
     }
 });
 
-function getModalStyle() {
-    const top = 50 + Math.random();
-    const left = 50 + Math.random();
-    console.log('style', top);
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
 class Bookings extends Component {
 
     state = {
-        insertOpen: false,
-        selectedDate: new Date()
+        insertOpen: false
     }
 
     componentDidMount() {
@@ -107,7 +99,6 @@ class Bookings extends Component {
             bookings = this.props.bookings;
         }
         const { classes } = this.props;
-        const { selectedDate } = this.state;
 
    
         let bookingsData = (bookings.loading || bookings.error) ? [] : bookings.filter(o => o.userId && o.vendorPathId);
@@ -153,85 +144,7 @@ class Bookings extends Component {
                                 open={this.state.insertOpen}
                                 onClose={this.insertCloseHandler}
                             >
-                                <div style={getModalStyle()} className={classes.paper}>
-                                    <Card>
-                                        <CardHeader color="primary">
-                                            <h4 className={classes.cardTitleWhite}>Enter Booking</h4>
-                                            <p className={classes.cardCategoryWhite}>Enter Booking Data</p>
-                                        </CardHeader>
-                                        <CardBody>
-                                            <GridContainer>
-                                                <GridItem xs={12} sm={12} md={12}>
-                                                    <CustomInput
-                                                        labelText={'Name'}
-                                                        id="Name"
-                                                        formControlProps={{
-                                                            fullWidth: true
-                                                        }}
-                                                        inputProps={{
-                                                            name: 'capacity',
-                                                            type: 'number',
-                                                            onChange: this.handleChange
-                                                        }}
-                                                    />
-                                                </GridItem>
-                                            </GridContainer>
-                                            <GridContainer>
-                                                <GridItem xs={12} xm={12} md={12}>
-                                                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                                                        <DatePicker
-                                                            margin="normal"
-                                                            label="Date"
-                                                            value={selectedDate}
-                                                            onChange={this.handleDateChange}
-                                                            style={{ width: "100%" }}
-                                                        />
-                                                    </MuiPickersUtilsProvider>
-                                                </GridItem>
-                                            </GridContainer>
-                                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                                <Grid container className={classes.grid} justify="space-around" style={{ width: "100%" }}>
-                                                    <TimePicker
-                                                        margin="normal"
-                                                        label="Time"
-                                                        value={selectedDate}
-                                                        onChange={this.handleDateChange}
-                                                        style={{ width: "100%" }}
-                                                    />
-                                                </Grid>
-                                            </MuiPickersUtilsProvider>
-                                            <GridContainer>
-
-                                                <GridItem xs={12} sm={12} md={12}>
-                                                    <FormControl
-                                                        fullWidth={true}
-                                                        className={classes.formControl}
-                                                    >
-                                                        {/* <InputLabel className={classes.labelRoot} htmlFor="select-multiple-checkbox">Available Hours</InputLabel>
-                                                        <Select
-                                                            multiple
-                                                            value={element}
-                                                            name={prop}
-                                                            onChange={this.handleValueChange}
-                                                            input={<Input id="select-weekdays" />}
-                                                            renderValue={selected => selected.join(', ')}
-                                                        >
-                                                            {statics[prop].map((item, key) => (
-                                                                <MenuItem key={key} value={item.value ? item.value : item}>
-                                                                    <Checkbox />
-                                                                    <ListItemText primary={item.label ? item.label : item} />
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select> */}
-                                                    </FormControl>
-                                                </GridItem>
-                                            </GridContainer>
-                                        </CardBody>
-                                        <CardFooter>
-                                            <Button onClick={this.handleSubmit} id="profile" color="primary" style={{ border: "1px solid #3f51b5 !important", borderRadius: "20px", width: "40%", marginLeft: "30%" }}>Add Booking</Button>
-                                        </CardFooter>
-                                    </Card>
-                                </div>
+                                <ManualBooking />
                             </Modal>
                         </CardBody>
                     </Card>}

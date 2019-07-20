@@ -1,4 +1,5 @@
 import { vendorConstants } from '../_constants/vendor.constants';
+import { func } from 'prop-types';
 
 export function vendor(state = { loading: true, tables: [] } , action) {
     switch (action.type) {
@@ -91,4 +92,21 @@ export function pastBookings(state = [], action) {
     default:
         return state
     }
+}
+
+export function availableTables(state = [], action) {
+    switch (action.type) {
+        case vendorConstants.GET_AVAILABLE_TABLES_REQUEST:
+            return {
+            loading: true
+            };
+        case vendorConstants.GET_AVAILABLE_TABLES_SUCCESS:
+            return action.tables;
+        case vendorConstants.GET_AVAILABLE_TABLES_FAILURE:
+            return {
+            error: action.error
+            };
+        default:
+            return state
+        }
 }
