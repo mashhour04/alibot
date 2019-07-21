@@ -30,6 +30,7 @@ import CustomInput from "../../_components/CustomInput/CustomInput";
 
 // View Components
 import ManualBooking from '../ManualBooking/ManualBooking';
+import { Toast } from "../../_helpers";
 
 const styles = theme => ({
     cardCategoryWhite: {
@@ -65,13 +66,24 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
+    },
+    pastBookingsButton: {
+        border: "1px solid",
+        borderRadius: "65px",
+        background: "#1775f1",
+        color: "#FFFFFF",
+        "&:hover": {
+            background: "#FFFFFF !important",
+            color: "#1775f1 !important",
+        }
     }
 });
 
 class Bookings extends Component {
 
     state = {
-        insertOpen: false
+        insertOpen: false,
+        currentbookingStatus: 'Successful Bookings'
     }
 
     componentDidMount() {
@@ -89,18 +101,20 @@ class Bookings extends Component {
     };
 
     render() {
-        const { location } = this.props;
+        const { location, classes } = this.props;
+        const { currentbookingStatus } = this.state;
+        const tableHead = ["#", "Name", "Date", "Number of People", "Table", "Status", "Phone", "Email"];
+        const bookingStatus = ['Successful Bookings', 'Unuccessful Bookings'];
         let type = (location && location.pathname.includes('past')) ? 'past' : 'coming';
         let bookings;
-        if (type  && type === 'past') {
+        let extraActions = [];
+        if (type && type === 'past') {
             bookings = this.props.pastBookings;
-            console.log('chosing past bookings', bookings)
+            tableHead.push('Actions');
+            extraActions = getExtraActions();
         } else {
             bookings = this.props.bookings;
         }
-        const { classes } = this.props;
-
-   
         let bookingsData = (bookings.loading || bookings.error) ? [] : bookings.filter(o => o.userId && o.vendorPathId);
         bookingsData = bookingsData.filter(({ vendorPathId }) => {
             return vendorPathId;
@@ -110,7 +124,7 @@ class Bookings extends Component {
             const email = (userId.email) ? userId.email : 'N/A';
             return {
                 id: index + 1,
-                name: `${userId.firstName} ${userId.lastName}`,
+                name: `${userId.firstName} ${userId.lastName || ''}`,
                 date: moment(date).locale('fr').format('LLLL'),
                 capacity: vendorPathId.capacity,
                 table: vendorPathId.altId,
@@ -132,11 +146,15 @@ class Bookings extends Component {
                             </p>
                         </CardHeader>
                         <CardBody>
-                            <Button onClick={() => this.setState({ insertOpen: true })}><Add></Add>Insert</Button>
+                            {type == 'past' ? <Button className={classes.pastBookingsButton} onClick={() => this.setState({ currentbookingStatus: (currentbookingStatus == bookingStatus[0] ? bookingStatus[1] : bookingStatus[0]) })}>{this.state.currentbookingStatus}</Button> :
+                                <Button onClick={() => this.setState({ insertOpen: true })}><Add></Add>Insert</Button>
+                            }
                             <Table
                                 tableHeaderColor="primary"
-                                tableHead={["#", "Name", "Date", "Number of People", "Table", "Status", "Phone", "Email"]}
+                                tableHead={tableHead}
                                 tableData={bookingsData}
+                                hasActions={(type == 'past') ? true : false}
+                                extraActions={(type == 'past') ? extraActions : []}
                             />
                             <Modal
                                 aria-labelledby="simple-modal-title"
@@ -154,9 +172,19 @@ class Bookings extends Component {
         )
     }
 }
-
+function getExtraActions(currentbookingStatus) {
+    const first = (currentbookingStatus === 'Successful Booking') ? {
+        value: 'remove',
+        label: 'Mark Unsuccessful'
+    } : {
+            value: 'add',
+            label: 'Mark Successful'
+        };
+    const actions = [first];
+    return actions;
+}
 function mapStateToProps(state) {
-    const { vendor, bookings, pastBookings } = state;
-    return { vendor, bookings, pastBookings };
+    const { vendor, bookings, pastBookings, addBooking } = state;
+    return { vendor, bookings, pastBookings, addBooking };
 }
 export default connect(mapStateToProps)(withStyles(styles)(Bookings));

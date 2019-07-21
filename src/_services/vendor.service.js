@@ -117,7 +117,7 @@ function getAvailableTables({ timestamp, capacity, vendorId }) {
         delete requestOptions.qs;
     }
 
-    return fetch(url, requestOptions).then(handleResponse);
+    return fetch(url, requestOptions).then(handleResponse)
 }
 
 function update({ update, vendorId }) {
