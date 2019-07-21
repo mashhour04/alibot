@@ -13,8 +13,9 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import Done from '@material-ui/icons/Done';
+import HighlightOff from '@material-ui/icons/HighlightOff';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -78,16 +79,20 @@ class CustomTable extends Component {
 
                         return (
                           <td>
-                            <IconButton onClick={() => { action.callback(row) }} aria-label={action.label || "Delete"} className={classes.actionButton.margin}>
-                              {(action.value === 'delete') ?
-                                <DeleteIcon fontSize="small"></DeleteIcon> :
-                                (action.value === 'remove') ? 
-                                <RemoveIcon fontSize="small"></RemoveIcon> :
-                                (action.value === 'add') ? 
-                                <AddIcon fontSize="small"></AddIcon> :
-                                <div></div>
-                              }
-                            </IconButton>
+                            <Tooltip title={action.label}>
+                              <IconButton onClick={() => { action.callback(row) }} aria-label={action.label || "Delete"} className={classes.actionButton.margin}>
+                                {
+                                  (action.value === 'delete') ?
+                                    <DeleteIcon fontSize="small"></DeleteIcon> :
+                                    (action.value === 'remove') ?
+                                      <HighlightOff fontSize="small"></HighlightOff> :
+                                      (action.value === 'add') ?
+                                        <Done fontSize="small"></Done> :
+                                        <div></div>
+                                }
+                              </IconButton>
+                            </Tooltip>
+
                           </td>
                         )
                       })

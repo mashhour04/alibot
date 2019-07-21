@@ -111,7 +111,7 @@ class Bookings extends Component {
         if (type && type === 'past') {
             bookings = this.props.pastBookings;
             tableHead.push('Actions');
-            extraActions = getExtraActions();
+            extraActions = getExtraActions(currentbookingStatus);
         } else {
             bookings = this.props.bookings;
         }
@@ -173,15 +173,25 @@ class Bookings extends Component {
     }
 }
 function getExtraActions(currentbookingStatus) {
-    const first = (currentbookingStatus === 'Successful Booking') ? {
+    const first = (currentbookingStatus === 'Successful Bookings') ? {
         value: 'remove',
-        label: 'Mark Unsuccessful'
+        label: 'Mark Unsuccessful',
+        callback: (row) => {
+            return changePastBookingStatus(row, 'remove')
+        }
     } : {
             value: 'add',
-            label: 'Mark Successful'
+            label: 'Mark Successful',
+            callback: (row) => {
+                return changePastBookingStatus(row, 'add')
+            }
         };
     const actions = [first];
     return actions;
+}
+
+function changePastBookingStatus(booking, status) {
+    console.log('we should change ', booking, 'to be', status);
 }
 function mapStateToProps(state) {
     const { vendor, bookings, pastBookings, addBooking } = state;
