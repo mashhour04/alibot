@@ -62,16 +62,23 @@ class LoginPage extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <span className="pull-right">
-                                    <Button className="btn-round" type="submit" color="secondary" size="lg" block>LOGIN</Button>
+                                    <Button className="btn-round" type="submit" color="primary" size="lg" block>LOGIN</Button>
                                 </span>
                             </FormGroup>
+
                             <FormGroup>
-                            
+
+
                                 {/* <FacebookButton></FacebookButton> */}
 
                             </FormGroup>
 
                         </Form>
+                        <FormGroup>
+                            <span className="pull-right">
+                                <Button className="btn-round" type="submit" color="secondary" size="lg" onClick={() => window.location.href = '/register'} block>Sign Up</Button>
+                            </span>
+                        </FormGroup>
                     </div>
                 </Container>
             </div>

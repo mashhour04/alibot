@@ -20,7 +20,7 @@ function register({ profile, account, vendor }) {
             .then(
                 user => {
                     dispatch(success(user));
-                    window.location.href = '/';
+                    setTimeout(() => window.location.href = '/', 2000);
                 },
                 error => {
                     dispatch(failure(error));

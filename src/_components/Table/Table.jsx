@@ -13,6 +13,9 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 // core components
@@ -61,7 +64,7 @@ class CustomTable extends Component {
                 return (
                   <TableRow key={key}>
                     {Object.keys(row).map((prop, key) => {
-                      if(prop === '_id') { return;  }
+                      if (prop === '_id') { return; }
                       return (
                         <CustomTableCell cellProps={{
                           key,
@@ -72,12 +75,21 @@ class CustomTable extends Component {
                     })}
                     {hasActions ?
                       extraActions.map(action => {
+
                         return (
                           <td>
-                            <IconButton onClick={() => { action.callback(row) }} aria-label="Delete" className={classes.actionButton.margin}>
-                              <DeleteIcon fontSize="small"></DeleteIcon>
+                            <IconButton onClick={() => { action.callback(row) }} aria-label={action.label || "Delete"} className={classes.actionButton.margin}>
+                              {(action.value === 'delete') ?
+                                <DeleteIcon fontSize="small"></DeleteIcon> :
+                                (action.value === 'remove') ? 
+                                <RemoveIcon fontSize="small"></RemoveIcon> :
+                                (action.value === 'add') ? 
+                                <AddIcon fontSize="small"></AddIcon> :
+                                <div></div>
+                              }
                             </IconButton>
-                          </td>)
+                          </td>
+                        )
                       })
                       : null}
                   </TableRow>

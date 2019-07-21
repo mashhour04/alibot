@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-
+import { vendorActions } from '../../_actions/vendor.actions';
 
 // core components
 import GridItem from "../../_components/Grid/GridItem.jsx";
@@ -27,6 +27,10 @@ import CardFooter from "../../_components/Card/CardFooter";
 import CircularIndeterminate from '../../_components/CircularIndeterminate/Loading.jsx';
 import CustomInput from "../../_components/CustomInput/CustomInput";
 
+
+// View Components
+import ManualBooking from '../ManualBooking/ManualBooking';
+import { Toast } from "../../_helpers";
 
 const styles = theme => ({
     cardCategoryWhite: {
@@ -62,24 +66,28 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
+    },
+    pastBookingsButton: {
+        border: "1px solid",
+        borderRadius: "65px",
+        background: "#1775f1",
+        color: "#FFFFFF",
+        "&:hover": {
+            background: "#FFFFFF !important",
+            color: "#1775f1 !important",
+        }
     }
 });
 
-function getModalStyle() {
-    const top = 50 + Math.random();
-    const left = 50 + Math.random();
-    console.log('style', top);
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
 class Bookings extends Component {
 
     state = {
         insertOpen: false,
-        selectedDate: new Date()
+        currentbookingStatus: 'Successful Bookings'
+    }
+
+    componentDidMount() {
+        this.props.dispatch(vendorActions.getBookings({ skip: 0, limit: 20, type: 'past' }));
     }
 
     insertCloseHandler = () => {
@@ -93,8 +101,20 @@ class Bookings extends Component {
     };
 
     render() {
-        const { classes, bookings } = this.props;
-        const { selectedDate } = this.state;
+        const { location, classes } = this.props;
+        const { currentbookingStatus } = this.state;
+        const tableHead = ["#", "Name", "Date", "Number of People", "Table", "Status", "Phone", "Email"];
+        const bookingStatus = ['Successful Bookings', 'Unuccessful Bookings'];
+        let type = (location && location.pathname.includes('past')) ? 'past' : 'coming';
+        let bookings;
+        let extraActions = [];
+        if (type && type === 'past') {
+            bookings = this.props.pastBookings;
+            tableHead.push('Actions');
+            extraActions = getExtraActions();
+        } else {
+            bookings = this.props.bookings;
+        }
         let bookingsData = (bookings.loading || bookings.error) ? [] : bookings.filter(o => o.userId && o.vendorPathId);
         bookingsData = bookingsData.filter(({ vendorPathId }) => {
             return vendorPathId;
@@ -104,7 +124,7 @@ class Bookings extends Component {
             const email = (userId.email) ? userId.email : 'N/A';
             return {
                 id: index + 1,
-                name: `${userId.firstName} ${userId.lastName}`,
+                name: `${userId.firstName} ${userId.lastName || ''}`,
                 date: moment(date).format('LLLL'),
                 capacity: vendorPathId.capacity,
                 table: vendorPathId.altId,
@@ -126,11 +146,15 @@ class Bookings extends Component {
                             </p>
                         </CardHeader>
                         <CardBody>
-                            <Button onClick={() => this.setState({ insertOpen: true })}><Add></Add>Insert</Button>
+                            {type == 'past' ? <Button className={classes.pastBookingsButton} onClick={() => this.setState({ currentbookingStatus: (currentbookingStatus == bookingStatus[0] ? bookingStatus[1] : bookingStatus[0]) })}>{this.state.currentbookingStatus}</Button> :
+                                <Button onClick={() => this.setState({ insertOpen: true })}><Add></Add>Insert</Button>
+                            }
                             <Table
                                 tableHeaderColor="primary"
-                                tableHead={["#", "Name", "Date", "Number of People", "Table", "Status", "Phone", "Email"]}
+                                tableHead={tableHead}
                                 tableData={bookingsData}
+                                hasActions={(type == 'past') ? true : false}
+                                extraActions={(type == 'past') ? extraActions : []}
                             />
                             <Modal
                                 aria-labelledby="simple-modal-title"
@@ -138,85 +162,7 @@ class Bookings extends Component {
                                 open={this.state.insertOpen}
                                 onClose={this.insertCloseHandler}
                             >
-                                <div style={getModalStyle()} className={classes.paper}>
-                                    <Card>
-                                        <CardHeader color="primary">
-                                            <h4 className={classes.cardTitleWhite}>Enter Booking</h4>
-                                            <p className={classes.cardCategoryWhite}>Enter Booking Data</p>
-                                        </CardHeader>
-                                        <CardBody>
-                                            <GridContainer>
-                                                <GridItem xs={12} sm={12} md={12}>
-                                                    <CustomInput
-                                                        labelText={'Name'}
-                                                        id="Name"
-                                                        formControlProps={{
-                                                            fullWidth: true
-                                                        }}
-                                                        inputProps={{
-                                                            name: 'capacity',
-                                                            type: 'number',
-                                                            onChange: this.handleChange
-                                                        }}
-                                                    />
-                                                </GridItem>
-                                            </GridContainer>
-                                            <GridContainer>
-                                                <GridItem xs={12} xm={12} md={12}>
-                                                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                                                        <DatePicker
-                                                            margin="normal"
-                                                            label="Date"
-                                                            value={selectedDate}
-                                                            onChange={this.handleDateChange}
-                                                            style={{ width: "100%" }}
-                                                        />
-                                                    </MuiPickersUtilsProvider>
-                                                </GridItem>
-                                            </GridContainer>
-                                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                                <Grid container className={classes.grid} justify="space-around" style={{ width: "100%" }}>
-                                                    <TimePicker
-                                                        margin="normal"
-                                                        label="Time"
-                                                        value={selectedDate}
-                                                        onChange={this.handleDateChange}
-                                                        style={{ width: "100%" }}
-                                                    />
-                                                </Grid>
-                                            </MuiPickersUtilsProvider>
-                                            <GridContainer>
-
-                                                <GridItem xs={12} sm={12} md={12}>
-                                                    <FormControl
-                                                        fullWidth={true}
-                                                        className={classes.formControl}
-                                                    >
-                                                        {/* <InputLabel className={classes.labelRoot} htmlFor="select-multiple-checkbox">Available Hours</InputLabel>
-                                                        <Select
-                                                            multiple
-                                                            value={element}
-                                                            name={prop}
-                                                            onChange={this.handleValueChange}
-                                                            input={<Input id="select-weekdays" />}
-                                                            renderValue={selected => selected.join(', ')}
-                                                        >
-                                                            {statics[prop].map((item, key) => (
-                                                                <MenuItem key={key} value={item.value ? item.value : item}>
-                                                                    <Checkbox />
-                                                                    <ListItemText primary={item.label ? item.label : item} />
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select> */}
-                                                    </FormControl>
-                                                </GridItem>
-                                            </GridContainer>
-                                        </CardBody>
-                                        <CardFooter>
-                                            <Button onClick={this.handleSubmit} id="profile" color="primary" style={{ border: "1px solid #3f51b5 !important", borderRadius: "20px", width: "40%", marginLeft: "30%" }}>Add Booking</Button>
-                                        </CardFooter>
-                                    </Card>
-                                </div>
+                                <ManualBooking />
                             </Modal>
                         </CardBody>
                     </Card>}
@@ -226,9 +172,19 @@ class Bookings extends Component {
         )
     }
 }
-
+function getExtraActions(currentbookingStatus) {
+    const first = (currentbookingStatus === 'Successful Booking') ? {
+        value: 'remove',
+        label: 'Mark Unsuccessful'
+    } : {
+            value: 'add',
+            label: 'Mark Successful'
+        };
+    const actions = [first];
+    return actions;
+}
 function mapStateToProps(state) {
-    const { vendor, bookings } = state;
-    return { vendor, bookings };
+    const { vendor, bookings, pastBookings, addBooking } = state;
+    return { vendor, bookings, pastBookings, addBooking };
 }
 export default connect(mapStateToProps)(withStyles(styles)(Bookings));

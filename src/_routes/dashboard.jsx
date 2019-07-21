@@ -1,6 +1,6 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
-import Person from "@material-ui/icons/Person";
+import Person from "@material-ui/icons/Person"; 
 
 
 // core components/views
@@ -13,30 +13,53 @@ const dashboardRoutes = [
   {
     path: "/dashboard",
     sidebarName: "Dashboard",
-    navbarName: "Material Dashboard",
+    navbarName: "Ali Dashboard",
     icon: Dashboard,
-    component: BookingsTable
+    component: BookingsTable,
+    extra: {
+      type: 'coming'
+    }
+  },
+  {
+    path: "/past-bookings",
+    sidebarName: "Past Bookings",
+    navbarName: "Past Bookings",
+    icon: "content_paste",
+    component: BookingsTable,
+    extra: { 
+      type: 'past'
+    }
+  
   },
   {
     path: "/user",
     sidebarName: "User Profile",
     navbarName: "Profile",
     icon: Person,
-    component: UserProfile
+    component: UserProfile,
+    extra: { 
+      
+    }
   },
   {
     path: "/my-tables",
     sidebarName: "Table List",
     navbarName: "Table List",
     icon: "content_paste",
-    component: MyTables
+    component: MyTables,
+    extra: { 
+      
+    }
   },
   {
     path: "/create-deal",
     sidebarName: "Create Deal",
     navbarName: "Create-Deal",
     icon: Person,
-    component: ComingSoon
+    component: ComingSoon,
+    extra: { 
+      
+    }
   }
 ];
 

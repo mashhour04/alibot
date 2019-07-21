@@ -32,7 +32,7 @@ const switchRoutes = (
         {dashboardRoutes.map((prop, key) => {
             if (prop.redirect)
                 return <Redirect from={prop.path} to={prop.to} key={key} />;
-            return <PrivateRoute path={prop.path} component={prop.component} key={key} />;
+            return <PrivateRoute path={prop.path} component={prop.component} key={key} extra={prop.extra} />;
         })}
         <PrivateRoute component={BookingsTable} key={0} />;
     </Switch>

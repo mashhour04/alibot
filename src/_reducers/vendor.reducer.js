@@ -73,3 +73,39 @@ export function bookings(state = [], action) {
         return state
     }
 }
+
+export function pastBookings(state = [], action) {
+    switch (action.type) {
+    case vendorConstants['past'].GET_BOOKINGS_REQUEST:
+        return {
+        loading: true
+        };
+    case vendorConstants['past'].GET_BOOKINGS_SUCCESS:
+        return action.bookings;
+    case vendorConstants['past'].GET_BOOKINGS_FAILURE:
+        return { 
+        error: action.error
+        };
+    case vendorConstants['past'].GET_BOOKINGS_SUCCESS:
+        return action.bookings
+    default:
+        return state
+    }
+}
+
+export function availableTables(state = [], action) {
+    switch (action.type) {
+        case vendorConstants.GET_AVAILABLE_TABLES_REQUEST:
+            return {
+            loading: true
+            };
+        case vendorConstants.GET_AVAILABLE_TABLES_SUCCESS:
+            return action.tables;
+        case vendorConstants.GET_AVAILABLE_TABLES_FAILURE:
+            return {
+            error: action.error
+            };
+        default:
+            return state
+        }
+}
