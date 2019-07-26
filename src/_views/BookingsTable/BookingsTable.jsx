@@ -232,12 +232,15 @@ class Bookings extends Component {
                 case bookingStatus[2]:
                   return booking.status === "unsuccessful";
                 default:
-                  return true;
+                  return (booking.status !== "unsuccessful" && booking.status !== "successful");
               }
             })
           : [];
-      tableHead.push("Actions");
-      extraActions = this.getExtraActions(currentbookingStatus);
+      if(currentbookingStatus === bookingStatus[0]) {
+        tableHead.push("Actions");
+        extraActions = this.getExtraActions(currentbookingStatus);
+      }
+      
     } else {
       bookings = this.props.bookings;
     }
@@ -340,7 +343,7 @@ class Bookings extends Component {
                   tableHeaderColor="primary"
                   tableHead={tableHead}
                   tableData={bookingsData}
-                  hasActions={type == "past" ? true : false}
+                  hasActions={(type == "past" && currentbookingStatus === bookingStatus[0]) ? true : false}
                   extraActions={type == "past" ? extraActions : []}
                 />
 
