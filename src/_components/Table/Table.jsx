@@ -75,20 +75,33 @@ class CustomTable extends Component {
                       );
                     })}
                     {hasActions ?
-                      extraActions.map(action => {
+                      extraActions.map((action, indexKey) => {
 
                         return (
-                          <td>
+                          <td key={indexKey}>
                             <Tooltip title={action.label}>
                               <IconButton onClick={() => { action.callback(row) }} aria-label={action.label || "Delete"} className={classes.actionButton.margin}>
-                                {
-                                  (action.value === 'delete') ?
-                                    <DeleteIcon fontSize="small"></DeleteIcon> :
-                                    (action.value === 'remove') ?
-                                      <HighlightOff fontSize="small"></HighlightOff> :
-                                      (action.value === 'add') ?
-                                        <Done fontSize="small"></Done> :
-                                        <div></div>
+                                {(() => {
+                                  switch (action.value ) {
+                                    case 'delete':
+                                      return <DeleteIcon fontSize="small"></DeleteIcon>;
+                                    case 'remove':
+                                      return <HighlightOff fontSize="small"></HighlightOff>;
+                                    case 'add':
+                                      return <Done fontSize="small"></Done>;
+                                    default:
+                                      return null;
+                                  }
+                                })()
+
+
+                                  // (action.value === 'delete') ?
+                                  //   <DeleteIcon fontSize="small"></DeleteIcon> :
+                                  //   (action.value === 'remove') ?
+                                  //     <HighlightOff fontSize="small"></HighlightOff> :
+                                  //     (action.value === 'add') ?
+                                  //       <Done fontSize="small"></Done> :
+                                  //       <div></div>
                                 }
                               </IconButton>
                             </Tooltip>

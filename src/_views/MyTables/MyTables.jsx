@@ -63,12 +63,12 @@ const styles = theme => ({
     }
   },
   paper: {
-        position: 'relative',
-        width: theme.spacing.unit * 60,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
-      }
+    position: 'relative',
+    width: theme.spacing.unit * 60,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  }
 });
 
 function Transition(props) {
@@ -122,7 +122,7 @@ class MyTables extends Component {
               </p>
               </CardHeader>
               <CardBody>
-              <Button onClick={() => this.setState({ modalOpen: true })}><Add></Add>Insert</Button>
+                <Button onClick={() => this.setState({ modalOpen: true })}><Add></Add>Insert</Button>
                 <Table
                   tableHeaderColor="primary"
                   tableHead={["Table", "Capacity", "Hours", "Week Days", "ID", "Action"]}
@@ -275,7 +275,8 @@ class MyTables extends Component {
     dialogOpen: false
   }
   actions = [{
-    type: 'Delete',
+    value: 'delete',
+    label: 'Delete Table',
     callback: (row) => {
       this.dialogRow = row;
       this.setState({ dialogOpen: true });
@@ -315,7 +316,7 @@ class MyTables extends Component {
     })
     console.log('name', name, 'value', value);
   }
-  
+
   handleClose = () => {
     this.setState({
       modalOpen: false

@@ -3,7 +3,8 @@ import { authHeader, Toast } from '../_helpers';
 
 export const bookingService = {
     getAll,
-    addBooking
+    addBooking,
+    updateBooking
 };
 
 function getAll() {
@@ -28,6 +29,18 @@ function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
         // login successful if there's a jwt token in the response
         return response;
     })
+}
+
+function updateBooking({ bookingId, update }) {
+    const url = `/backend/api/bookings/update`;
+    const body = { bookingId, update };
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: authHeader()
+    };
+
+    return fetch(url, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

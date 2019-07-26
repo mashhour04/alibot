@@ -1,9 +1,11 @@
 import { bookingConstants } from '../_constants/booking.constants';
 import { bookingService } from '../_services/booking.service';
+
 export const bookingActions = {
     getBookings,
     addBooking,
-    cancelBooking
+    cancelBooking,
+    updateBooking
 };
 function getBookings(token) {
     return dispatch => {
@@ -43,6 +45,26 @@ function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
     function request() { return { type: bookingConstants.ADD_BOOKING_REQUEST } }
     function success(response) { return { type: bookingConstants.ADD_BOOKING_SUCCESS, response } }
     function failure(error) { return { type: bookingConstants.ADD_BOOKING_FAILURE, error } }
+}
+
+function updateBooking({ bookingId, action }) {
+    return dispatch => {
+        dispatch(request());
+
+        bookingService.updateBooking({ bookingId, update: action })
+            .then(
+                response => {
+                    dispatch(success(response))
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request() { return { type: bookingConstants.Change_BOOKING_Status_REQUEST } }
+    function success(response) { return { type: bookingConstants.Change_BOOKING_Status_SUCCESS, response } }
+    function failure(error) { return { type: bookingConstants.Change_BOOKING_Status_FAILURE, error } }
 }
 
 function cancelBooking() {

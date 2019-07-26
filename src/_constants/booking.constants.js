@@ -8,4 +8,8 @@ export const bookingConstants = {
     ADD_BOOKING_REQUEST: 'ADD_BOOKING_REQUEST',
     ADD_BOOKING_SUCCESS: 'ADD_BOOKING_SUCCESS',
     ADD_BOOKING_FAILURE: 'ADD_BOOKING_FAILURE',
+
+    Change_BOOKING_Status_REQUEST: 'Change_BOOKING_Status_REQUEST',
+    Change_BOOKING_Status_SUCCESS: 'Change_BOOKING_Status_SUCCESS',
+    Change_BOOKING_Status_FAILURE: 'Change_BOOKING_Status_FAILURE',
 }
