@@ -232,7 +232,7 @@ class Bookings extends Component {
                 case bookingStatus[2]:
                   return booking.status === "unsuccessful";
                 default:
-                  return (booking.status !== "unsuccessful" && booking.status !== "successful");
+                  return (booking.status === "confirmed");
               }
             })
           : [];
