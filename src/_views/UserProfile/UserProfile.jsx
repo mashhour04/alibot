@@ -60,6 +60,7 @@ class UserProfile extends Component {
       version: 1,
       selectedFile: null,
       willUpload: false,
+      categories: [],
       vendorUpdate: {},
       profileUpdate: {},
       vendorErrors: {},
@@ -84,7 +85,7 @@ class UserProfile extends Component {
       return;
     }
 
-    if(['street_address', 'city', 'state', 'zip_code']) { 
+    if(['street_address', 'city', 'state', 'zip_code'].includes(name)) { 
       if(!vendorUpdate.address) {
         vendorUpdate.address = {
           [name]: value
@@ -95,6 +96,7 @@ class UserProfile extends Component {
     }
     //TODO: FIX THAT IT DOESN'T REMOVE A CATEGORY
     if(name == 'categories') {
+
       if(value.length > 0) {
         const isExists = vendorUpdate['categories'] ? vendorUpdate['categories'].find(o => o == value) : false;
         if(!isExists && vendorUpdate['categories']) { 
@@ -108,7 +110,7 @@ class UserProfile extends Component {
     }
     
     console.log('caegories value', vendorUpdate['categories']);
-    this.setState({ vendorUpdate });
+    this.setState({ vendorUpdate, categories: value });
   }
   onClose = () => {
     this.setState({ preview: null })
@@ -187,11 +189,10 @@ class UserProfile extends Component {
     this.props.dispatch(vendorActions.update({ update: vendorUpdate, vendorId: vendor._id }));
   }
   render() {
+    const { categories } = this.state;
     const { classes, profile } = this.props;
     let { vendor } = this.props;
     vendor = vendor.vendor || {};
-
-    console.log('vendor avatar, ', vendor.avatar)
     return (
       <div>
         <GridContainer>
@@ -400,11 +401,13 @@ class UserProfile extends Component {
                       <InputLabel htmlFor="age-simple">Categories</InputLabel>
                       <Select
                         multiple
-                        value={[]}
+                        value={categories.length > 0 ? categories : vendor.categories ? vendor.categories : []}
                         name={'categories'}
                         onChange = {this.handleChangeMultiple}
-                        // input={<Input id="select-weekdays" />}
-                        renderValue={selected => selected.join(', ')}
+                        renderValue={(selected) => {
+                          console.log('rendering selected', selected)
+                          return selected.map(item => item.label ? item.label : item).join(', ');
+                        }}
                         style={{minWidth: "120px"}}
                       >
                         {statics['categories'].map((category, key) => (
