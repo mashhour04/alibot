@@ -406,6 +406,7 @@ class UserProfile extends Component {
                         onChange = {this.handleChangeMultiple}
                         renderValue={(selected) => {
                           console.log('rendering selected', selected)
+                          if(selected && selected.length)
                           return selected.map(item => item.label ? item.label : item).join(', ');
                         }}
                         style={{minWidth: "120px"}}
