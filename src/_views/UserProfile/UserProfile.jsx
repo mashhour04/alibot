@@ -80,13 +80,13 @@ class UserProfile extends Component {
     const { name, value } = event.target;
     console.log('vendor changed', name, value)
     const { vendorUpdate } = this.state;
-    if(!value || (value && value === '')) {
+    if (!value || (value && value === '')) {
       console.log('changing to an empty value', value);
       return;
     }
 
-    if(['street_address', 'city', 'state', 'zip_code'].includes(name)) { 
-      if(!vendorUpdate.address) {
+    if (['street_address', 'city', 'state', 'zip_code'].includes(name)) {
+      if (!vendorUpdate.address) {
         vendorUpdate.address = {
           [name]: value
         };
@@ -95,22 +95,27 @@ class UserProfile extends Component {
       }
     }
     //TODO: FIX THAT IT DOESN'T REMOVE A CATEGORY
-    if(name == 'categories') {
-
-      if(value.length > 0) {
-        const isExists = vendorUpdate['categories'] ? vendorUpdate['categories'].find(o => o == value) : false;
-        if(!isExists && vendorUpdate['categories']) { 
-          vendorUpdate['categories'].push(value[0]);
-        } else if (!vendorUpdate['categories']) {
-          vendorUpdate['categories'] = [value[0]];
+    if (name == 'categories') {
+      const choosen = value;
+      if (value.length > 0) {
+        if (vendorUpdate['categories']) {
+          choosen.map(choice => {
+            const isExists = vendorUpdate['categories'] ? vendorUpdate['categories'].find(o => o == choice) : false;
+            if (!isExists && vendorUpdate['categories']) {
+              vendorUpdate['categories'].push(choice);
+            }
+          })
+        } else {
+          vendorUpdate['categories'] = value;
         }
+      } else {
+        vendorUpdate['categories'] = [];
       }
+      return this.setState({ vendorUpdate, categories: vendorUpdate['categories'] || [] });
     } else {
       vendorUpdate[name] = value;
     }
-    
-    console.log('caegories value', vendorUpdate['categories']);
-    this.setState({ vendorUpdate, categories: value });
+    this.setState({ vendorUpdate });
   }
   onClose = () => {
     this.setState({ preview: null })
@@ -138,24 +143,24 @@ class UserProfile extends Component {
     )
     try {
       const response = await axios.post(`backend/upload/profile/${vendorId}`, formData);
-      if(response.data) {
+      if (response.data) {
         console.log('successfull updated vendor profile pic', response.data);
         const { version } = this.state;
-    
+
         const newVersion = version + 1;
         console.log('new version', version);
         this.setState({ willUpload: false, version: newVersion })
-        }
-        // if (response.data && response.data.file) {
-        //   this.setState({
-        //     avatar: `/backend/avatar/${response.data.file.filename}`
-        //   })
-        //   console.log('changed avatar from uplading', this.state.avatar);
-        // }
-    } catch(err) {
+      }
+      // if (response.data && response.data.file) {
+      //   this.setState({
+      //     avatar: `/backend/avatar/${response.data.file.filename}`
+      //   })
+      //   console.log('changed avatar from uplading', this.state.avatar);
+      // }
+    } catch (err) {
 
     }
-   
+
   }
 
   handleChangeMultiple = (event) => {
@@ -170,7 +175,7 @@ class UserProfile extends Component {
     this.onVendorChange(event);
   }
 
-  
+
 
   handleProfileSubmit(event) {
     event.preventDefault();
@@ -291,8 +296,8 @@ class UserProfile extends Component {
               <CardHeader color="success">
                 <h4 className={classes.cardTitleWhite}>Edit Vendor</h4>
                 <p className={classes.cardCategoryWhite}>Edit Info about your vendor</p>
-                {(!this.state.willUpload && vendor.avatarData) ?  <CardAvatar profile>
-                   {/* <input
+                {(!this.state.willUpload && vendor.avatarData) ? <CardAvatar profile>
+                  {/* <input
                     ref={fileInput => this.fileInput = fileInput}
                     accept="image/*"
                     className={classes.input}
@@ -318,10 +323,10 @@ class UserProfile extends Component {
                       // margin: "auto",
                       // lineHeight: "20px"
                     }} />
-                  </a> 
+                  </a>
 
-                </CardAvatar>: <div className="DropZone-Container"><StyledDropZone label="Select Or Drop Your Cover Image Here" onDrop={(file, text) => this.fileChangedHandler(file)} /> </div>}
-               
+                </CardAvatar> : <div className="DropZone-Container"><StyledDropZone label="Select Or Drop Your Cover Image Here" onDrop={(file, text) => this.fileChangedHandler(file)} /> </div>}
+
               </CardHeader>
               <CardBody>
                 <GridContainer>
@@ -356,7 +361,7 @@ class UserProfile extends Component {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText= {vendor.address && vendor.address.state ? `State (${vendor.address.state})` : 'State'}
+                      labelText={vendor.address && vendor.address.state ? `State (${vendor.address.state})` : 'State'}
                       id="state"
                       formControlProps={{
                         fullWidth: true
@@ -403,13 +408,18 @@ class UserProfile extends Component {
                         multiple
                         value={categories.length > 0 ? categories : vendor.categories ? vendor.categories : []}
                         name={'categories'}
-                        onChange = {this.handleChangeMultiple}
+                        onChange={this.handleChangeMultiple}
                         renderValue={(selected) => {
-                          console.log('rendering selected', selected)
-                          if(selected && selected.length)
-                          return selected.map(item => item.label ? item.label : item).join(', ');
+                          if (selected && selected.length) {
+                            const labels = [];
+                            for (let i = 0; i < selected.length; i++) {
+                              const item = selected[i];
+                              labels.push(item && item.label ? item.label : item);
+                            }
+                            return labels.join(', ');
+                          }
                         }}
-                        style={{minWidth: "120px"}}
+                        style={{ minWidth: "120px" }}
                       >
                         {statics['categories'].map((category, key) => (
                           <MenuItem key={key} value={category.value ? category.value : category}>
@@ -427,14 +437,13 @@ class UserProfile extends Component {
                       <Select
                         name={'priceLevel'}
                         value={''}
-                        onChange = {this.onVendorChange}
-                        // input={<Input id="select-weekdays" />}
-                        renderValue={selected => selected.label}
-                        style={{minWidth: "120px"}}
+                        onChange={this.onVendorChange}
+                        renderValue={selected => selected.join(',')}
+                        style={{ minWidth: "120px" }}
                       >
                         {statics['prices'].map((price, key) => (
                           <MenuItem key={key} value={price.value ? price.value : price}>
-                             <Checkbox />
+                            <Checkbox />
                             <ListItemText primary={price.label ? price.label : price} />
                           </MenuItem>
                         ))}
@@ -457,7 +466,7 @@ class UserProfile extends Component {
                         multiline: true,
                         rows: 5
                       }}
-                      onChange = {this.onVendorChange}
+                      onChange={this.onVendorChange}
                     />
                   </GridItem>
                 </GridContainer>
