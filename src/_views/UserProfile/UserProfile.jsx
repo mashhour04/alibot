@@ -2,12 +2,14 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { StyledDropZone } from 'react-drop-zone'
+import { StyledDropZone } from 'react-drop-zone';
+import chroma from 'chroma-js';
 import 'react-drop-zone/dist/styles.css';
 // @material-ui/core ../../_components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
-import { Select, MenuItem, Checkbox, ListItemText, FormControl } from '@material-ui/core';
+import { MenuItem, Checkbox, ListItemText, FormControl } from '@material-ui/core';
+import Select from 'react-select';
 // core ../../_components
 import GridItem from "../../_components/Grid/GridItem.jsx";
 import GridContainer from "../../_components/Grid/GridContainer.jsx";
@@ -44,6 +46,52 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none"
   }
+};
+
+
+const colourStyles = {
+  control: styles => ({ ...styles, backgroundColor: 'white' }),
+  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+    const colorValue = ['red', 'green', 'blue'][Math.floor(Math.random() * 3)];
+    const color = chroma(colorValue);
+    return {
+      ...styles,
+      backgroundColor: isDisabled
+        ? null
+        : isSelected
+        ? data.color
+        : isFocused
+        ? color.alpha(0.1).css()
+        : null,
+      color: isDisabled
+        ? '#ccc'
+        : isSelected
+        ? chroma.contrast(color, 'white') > 2
+          ? 'white'
+          : 'black'
+        : data.color,
+      cursor: isDisabled ? 'not-allowed' : 'default',
+
+      ':active': {
+        ...styles[':active'],
+        backgroundColor: !isDisabled && (isSelected ? data.color : color.alpha(0.3).css()),
+      },
+    };
+  },
+  multiValue: (styles, { data }) => {
+    return {
+      ...styles,
+    };
+  },
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    ':hover': {
+      color: 'white',
+    },
+  }),
 };
 
 class UserProfile extends Component {
@@ -101,7 +149,7 @@ class UserProfile extends Component {
         if (vendorUpdate['categories']) {
           choosen.map(choice => {
             const isExists = vendorUpdate['categories'] ? vendorUpdate['categories'].find(o => o == choice) : false;
-            if (!isExists && vendorUpdate['categories']) {
+            if (!isExists) {
               vendorUpdate['categories'].push(choice);
             }
           })
@@ -111,6 +159,7 @@ class UserProfile extends Component {
       } else {
         vendorUpdate['categories'] = [];
       }
+      console.log('caegories update', vendorUpdate)
       return this.setState({ vendorUpdate, categories: vendorUpdate['categories'] || [] });
     } else {
       vendorUpdate[name] = value;
@@ -163,10 +212,8 @@ class UserProfile extends Component {
 
   }
 
-  handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    console.log('target', event.target)
-    // const value = [];
+  handleChangeMultiple = (value) => {
+    const event = { target: { name: 'categories', value }};
     // for (let i = 0, l = options.length; i < l; i += 1) {
     //   if (options[i].selected) {
     //     value.push(options[i].value);
@@ -405,8 +452,9 @@ class UserProfile extends Component {
                     <FormControl style={{ minWidth: 120, margin: "auto" }}>
                       <InputLabel htmlFor="age-simple">Categories</InputLabel>
                       <Select
-                        multiple
-                        value={categories.length > 0 ? categories : vendor.categories ? vendor.categories : []}
+                        isMulti
+                        closeMenuOnSelect={false}
+                        value={categories}
                         name={'categories'}
                         onChange={this.handleChangeMultiple}
                         renderValue={(selected) => {
@@ -420,13 +468,15 @@ class UserProfile extends Component {
                           }
                         }}
                         style={{ minWidth: "120px" }}
+                        options={statics['categories']}
+                        styles={colourStyles}
                       >
-                        {statics['categories'].map((category, key) => (
+                        {/* {statics['categories'].map((category, key) => (
                           <MenuItem key={key} value={category.value ? category.value : category}>
                             <Checkbox />
                             <ListItemText primary={category.label ? category.label : category} />
                           </MenuItem>
-                        ))}
+                        ))} */}
                       </Select>
                     </FormControl>
                   </GridItem>

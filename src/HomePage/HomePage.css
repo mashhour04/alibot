@@ -28988,7 +28988,20 @@
   
   /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */
   
-
+  /* Select Scroll Bar */
+  select__menu-list::-webkit-scrollbar {
+    width: 4px;
+    height: 0px;
+  }
+  select__menu-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  select__menu-list::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  select__menu-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 
   /* Broadster Color Code 633{}e77 */ 
  /* Form Builder Color Code 187{}5f0 */
