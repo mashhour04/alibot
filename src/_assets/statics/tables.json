@@ -185,10 +185,37 @@
     ],
     "categories": [{
         "label": "French",
-        "value": "french"
+        "value": "French"
     }, {
         "label": "Italian",
-        "value": "italian"
+        "value": "Italian"
+    },  {
+        "label": "Tunisian",
+        "value": "Tunisian"
+    },  {
+        "label": "Mediterranean",
+        "value": "Mediterranean"
+    }, {
+        "label": "Multinational",
+        "value": "Multinational"
+    }, {
+        "label": "Japanese",
+        "value": "Japanese"
+    }, {
+        "label": "Asian",
+        "value": "Asian"
+    }, {
+        "label": "Bar",
+        "value": "Bar"
+    }, {
+        "label": "Beach Bar",
+        "value": "Beach-Bar"
+    }, {
+        "label": "Rooftop",
+        "value": "Rooftop"
+    }, {
+        "label": "Nightclub",
+        "value": "Nightclub"
     }],
     "prices": [{
         "label": "$ 10",
