@@ -12,7 +12,7 @@ function getAll() {
         method: 'GET',
         headers: authHeader()
     };
-    return fetch(`http://localhost:8000/api/bookings`, requestOptions).then(handleResponse);
+    return fetch(`/backend/api/bookings`, requestOptions).then(handleResponse);
 }
 
 function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
@@ -21,7 +21,7 @@ function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
         headers: authHeader(),
         body: JSON.stringify({ vendorId, tableId, timestamp, name, email, capacity })
     };
-    return fetch(`http://localhost:8000/api/bookings/create`, requestOptions).then(handleResponse).then(response =>{
+    return fetch(`/backend/api/bookings/create`, requestOptions).then(handleResponse).then(response =>{
         Toast.fire({
             type: 'success',
             title: 'booking has been added',
