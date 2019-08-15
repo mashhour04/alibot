@@ -96,7 +96,7 @@ class ManualBooking extends Component {
     }
 
     handleDateChange = date => {
-        this.setState({ selectedDate: date });
+        this.setState({ selectedDate: date, table: undefined });
         let { vendor } = this.props;
         vendor = vendor.vendor || {};
         const timestamp = moment(date).format('x');
