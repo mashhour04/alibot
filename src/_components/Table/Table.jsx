@@ -37,7 +37,7 @@ class CustomTable extends Component {
 
   render() {
 
-    const { classes, tableHead, tableData, tableHeaderColor, hasActions, extraActions } = this.props;
+    const { classes, tableHead, tableData, tableHeaderColor, hasActions, extraActions, isReadOnly } = this.props;
 
     return (
       <PerfectScrollbar>
@@ -61,7 +61,6 @@ class CustomTable extends Component {
             ) : null}
             <TableBody>
               {tableData.map((row, key) => {
-
                 return (
                   <TableRow key={key}>
                     {Object.keys(row).map((prop, key) => {
@@ -69,8 +68,9 @@ class CustomTable extends Component {
                       return (
                         <CustomTableCell cellProps={{
                           key,
-                          className: classes.tableCell
-                        }} row={row} prop={prop} key={key} >
+                          className: classes.tableCell,
+                        
+                        }} row={row} prop={prop} key={key} isReadOnly={isReadOnly}>
                         </CustomTableCell>
                       );
                     })}
@@ -142,6 +142,7 @@ CustomTable.propTypes = {
   tableHead: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.array,
   hasActions: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   extraActions: PropTypes.array,
   onCellClick: PropTypes.func
 };

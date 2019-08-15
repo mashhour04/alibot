@@ -155,7 +155,7 @@ class MyTables extends Component {
             <Button onClick={this.handleDialogClose} color="secondary" value="no">
               No
             </Button>
-            <Button onClick={this.handleDialogClose} color="primary" clas value="yes">
+            <Button onClick={this.handleDialogClose} color="primary" value="yes">
               Yes
             </Button>
           </DialogActions>

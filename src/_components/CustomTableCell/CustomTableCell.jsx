@@ -18,7 +18,8 @@ import cellStyle from "../../_assets/jss/material-dashboard-react/components/cel
 
 class CustomTableCell extends Component {
 
-    onCellClick = (row, prop, key) => {
+    onCellClick = (row, prop, isReadOnly) => {
+        if(isReadOnly) { return; }
         if (prop === 'capacity' || prop === 'name') {
             let { row } = this.props;
             row.editing = prop;
@@ -30,7 +31,6 @@ class CustomTableCell extends Component {
     }
 
     handleValueChange = (event) => {
-        console.log('done with', event.target.name);
         const { name, value } = event.target;
         const { row } = this.props;
         row[name] = value;
@@ -49,11 +49,12 @@ class CustomTableCell extends Component {
             prop,
             key,
             cellProps,
+            isReadOnly,
         } = this.props;
         return (
 
             <TableCell
-                onClick={() => this.onCellClick(row, prop, key)}
+                onClick={() => this.onCellClick(row, prop, isReadOnly)}
                 {...cellProps}
             >
                 {row.editing === prop ? <CustomInput
@@ -107,6 +108,7 @@ CustomTableCell.propTypes = {
     row: PropTypes.any,
     prop: PropTypes.node,
     key: PropTypes.node,
+    isReadOnly: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {

@@ -345,6 +345,7 @@ class Bookings extends Component {
                   tableData={bookingsData}
                   hasActions={(type == "past" && currentbookingStatus === bookingStatus[0]) ? true : false}
                   extraActions={type == "past" ? extraActions : []}
+                  isReadOnly={true}
                 />
 
                 {bookings.length === 0 ? (
