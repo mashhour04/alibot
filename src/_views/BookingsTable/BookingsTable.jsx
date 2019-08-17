@@ -261,7 +261,7 @@ class Bookings extends Component {
           name: `${userId.firstName} ${userId.lastName || ""}`,
           date: moment(date).format("LLLL"),
           capacity: vendorPathId.capacity,
-          table: vendorPathId.altId,
+          table: vendorPathId.name || vendorPathId.altId,
           status,
           phone,
           email

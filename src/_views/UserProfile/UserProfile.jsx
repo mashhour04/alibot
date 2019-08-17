@@ -463,10 +463,12 @@ class UserProfile extends Component {
                         fullWidth: true
                       }}
                       inputProps={{
+                        name:"description",
+                        onChange: this.onVendorChange,
                         multiline: true,
                         rows: 5
                       }}
-                      onChange={this.onVendorChange}
+                    
                     />
                   </GridItem>
                 </GridContainer>
