@@ -54,6 +54,8 @@ class UserProfile extends Component {
     this.onVendorChange = this.onVendorChange.bind(this);
     this.handleProfileSubmit = this.handleProfileSubmit.bind(this);
     this.handleVendorSubmit = this.handleVendorSubmit.bind(this);
+    let { vendor } = this.props;
+    vendor = vendor.vendor || {};
     this.state = {
       avatar,
       preview: null,
@@ -61,6 +63,8 @@ class UserProfile extends Component {
       selectedFile: null,
       willUpload: false,
       categories: [],
+      priceLevel: '',
+      categoriesModified: false,
       vendorUpdate: {},
       profileUpdate: {},
       vendorErrors: {},
@@ -94,26 +98,17 @@ class UserProfile extends Component {
         vendorUpdate.address[name] = value;
       }
     }
-    //TODO: FIX THAT IT DOESN'T REMOVE A CATEGORY
+
     if (name == 'categories') {
-      const choosen = value;
-      if (value.length > 0) {
-        if (vendorUpdate['categories']) {
-          choosen.map(choice => {
-            const isExists = vendorUpdate['categories'] ? vendorUpdate['categories'].find(o => o == choice) : false;
-            if (!isExists && vendorUpdate['categories']) {
-              vendorUpdate['categories'].push(choice);
-            }
-          })
-        } else {
-          vendorUpdate['categories'] = value;
-        }
-      } else {
-        vendorUpdate['categories'] = [];
-      }
-      return this.setState({ vendorUpdate, categories: vendorUpdate['categories'] || [] });
+      vendorUpdate['categories'] = value;
+      return this.setState({ categoriesModified: true, vendorUpdate, categories: value || [] });
     } else {
       vendorUpdate[name] = value;
+    }
+
+
+    if (name === 'priceLevel') {
+      return this.setState({ vendorUpdate, priceLevel: value });
     }
     this.setState({ vendorUpdate });
   }
@@ -194,7 +189,7 @@ class UserProfile extends Component {
     this.props.dispatch(vendorActions.update({ update: vendorUpdate, vendorId: vendor._id }));
   }
   render() {
-    const { categories } = this.state;
+    const { categories, priceLevel, categoriesModified } = this.state;
     const { classes, profile } = this.props;
     let { vendor } = this.props;
     vendor = vendor.vendor || {};
@@ -402,11 +397,11 @@ class UserProfile extends Component {
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
-                    <FormControl style={{ minWidth: 120, margin: "auto" }}>
+                    <FormControl style={{ minWidth: 120, maxWidth: 220, margin: "auto" }}>
                       <InputLabel htmlFor="age-simple">Categories</InputLabel>
                       <Select
                         multiple
-                        value={categories.length > 0 ? categories : vendor.categories ? vendor.categories : []}
+                        value={categoriesModified ? categories : vendor.categories ? vendor.categories : []}
                         name={'categories'}
                         onChange={this.handleChangeMultiple}
                         renderValue={(selected) => {
@@ -423,7 +418,6 @@ class UserProfile extends Component {
                       >
                         {statics['categories'].map((category, key) => (
                           <MenuItem key={key} value={category.value ? category.value : category}>
-                            <Checkbox />
                             <ListItemText primary={category.label ? category.label : category} />
                           </MenuItem>
                         ))}
@@ -436,14 +430,13 @@ class UserProfile extends Component {
                       <InputLabel htmlFor="age-simple">Price</InputLabel>
                       <Select
                         name={'priceLevel'}
-                        value={''}
+                        value={priceLevel ? priceLevel: vendor.priceLevel ? vendor.priceLevel : '$'}
                         onChange={this.onVendorChange}
-                        renderValue={selected => selected.join(',')}
+                        renderValue={selected => selected}
                         style={{ minWidth: "120px" }}
                       >
                         {statics['prices'].map((price, key) => (
                           <MenuItem key={key} value={price.value ? price.value : price}>
-                            <Checkbox />
                             <ListItemText primary={price.label ? price.label : price} />
                           </MenuItem>
                         ))}
@@ -463,12 +456,12 @@ class UserProfile extends Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        name:"description",
+                        name: "description",
                         onChange: this.onVendorChange,
                         multiline: true,
                         rows: 5
                       }}
-                    
+
                     />
                   </GridItem>
                 </GridContainer>

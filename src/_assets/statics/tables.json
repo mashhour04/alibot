@@ -183,48 +183,72 @@
             "label": "30th"
         }
     ],
-    "categories": [{
-        "label": "French",
-        "value": "French"
-    }, {
-        "label": "Italian",
-        "value": "Italian"
-    },  {
-        "label": "Tunisian",
-        "value": "Tunisian"
-    },  {
-        "label": "Mediterranean",
-        "value": "Mediterranean"
-    }, {
-        "label": "Multinational",
-        "value": "Multinational"
-    }, {
-        "label": "Japanese",
-        "value": "Japanese"
-    }, {
-        "label": "Asian",
-        "value": "Asian"
-    }, {
-        "label": "Bar",
-        "value": "Bar"
-    }, {
-        "label": "Beach Bar",
-        "value": "Beach-Bar"
-    }, {
-        "label": "Rooftop",
-        "value": "Rooftop"
-    }, {
-        "label": "Nightclub",
-        "value": "Nightclub"
-    }],
-    "prices": [{
-        "label": "$ 10",
-        "value": 10
-    }, {
-        "label": "$ 20",
-        "value": 20
-    }, {
-        "label": "$ 30",
-        "value": 30
-    }]
+    "categories": [
+        {
+            "label": "French",
+            "value": "French"
+        },
+        {
+            "label": "Italian",
+            "value": "Italian"
+        },
+        {
+            "label": "Tunisian",
+            "value": "Tunisian"
+        },
+        {
+            "label": "Mediterranean",
+            "value": "Mediterranean"
+        },
+        {
+            "label": "Multinational",
+            "value": "Multinational"
+        },
+        {
+            "label": "Japanese",
+            "value": "Japanese"
+        },
+        {
+            "label": "Asian",
+            "value": "Asian"
+        },
+        {
+            "label": "Bar",
+            "value": "Bar"
+        },
+        {
+            "label": "Beach Bar",
+            "value": "Beach-Bar"
+        },
+        {
+            "label": "Rooftop",
+            "value": "Rooftop"
+        },
+        {
+            "label": "Nightclub",
+            "value": "Nightclub"
+        },
+        {
+            "label": "Steakhouse",
+            "value": "Steakhouse"
+        },
+        {
+            "label": "Burgers",
+            "value": "Burgers"
+        }
+    ],
+    "prices": [
+        {
+            "label": "$",
+            "value": "$"
+        },
+        {
+            "label": "$$",
+            "value": "$$"
+        },
+        {
+            "label": "$$$",
+            "value": "$$$"
+        }
+    ]
 }

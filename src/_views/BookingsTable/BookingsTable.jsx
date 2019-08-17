@@ -103,6 +103,25 @@ const styles = theme => ({
     marginLeft: "28%",
     marginTop: "75px",
     color: "#81818181"
+  },
+  loadMoreButton: {
+    width: "200px",
+    color: "#fff",
+    fontSize: "16px",
+    display: "block",
+    textAlign: "center",
+    margin: "20px auto",
+    padding: "10px",
+    borderRadius: "10px",
+    border: "1px solid transparent",
+    backgroundColor: "#1975f0",
+    transition: ".3s",
+    "&:hover": {
+      color: "blue",
+      backgroundColor: "#fff",
+      border: "1px solid blue",
+      textDecoration: "none",
+    }
   }
 });
 
@@ -155,6 +174,22 @@ class Bookings extends Component {
     }
     this.setState({ dialogOpen: false });
   };
+
+  loadMore = () => {
+    const { location } = this.props;
+    let type = location && location.pathname.includes("past") ? "past" : "coming";
+    let skip = 0;
+
+    if (type === 'past') {
+      const { pastBookings } = this.props;
+      skip = pastBookings.length;
+    } else {
+      const { bookings } = this.props;
+      skip = bookings.length;
+    }
+    console.log('should skip', skip)
+    this.props.dispatch(vendorActions.getBookings({ skip, limit: 20, pagination: true }))
+  }
 
   getExtraActions = currentbookingStatus => {
     let actions = [];
@@ -220,27 +255,27 @@ class Bookings extends Component {
       bookings =
         pastBookings && pastBookings.length
           ? pastBookings.filter(booking => {
-              console.log(
-                "booking",
-                booking.status,
-                "adn current",
-                currentbookingStatus
-              );
-              switch (currentbookingStatus) {
-                case bookingStatus[1]:
-                  return booking.status === "successful";
-                case bookingStatus[2]:
-                  return booking.status === "unsuccessful";
-                default:
-                  return (booking.status === "confirmed");
-              }
-            })
+            console.log(
+              "booking",
+              booking.status,
+              "adn current",
+              currentbookingStatus
+            );
+            switch (currentbookingStatus) {
+              case bookingStatus[1]:
+                return booking.status === "successful";
+              case bookingStatus[2]:
+                return booking.status === "unsuccessful";
+              default:
+                return (booking.status === "confirmed");
+            }
+          })
           : [];
-      if(currentbookingStatus === bookingStatus[0]) {
+      if (currentbookingStatus === bookingStatus[0]) {
         tableHead.push("Actions");
         extraActions = this.getExtraActions(currentbookingStatus);
       }
-      
+
     } else {
       bookings = this.props.bookings;
     }
@@ -268,56 +303,57 @@ class Bookings extends Component {
         };
       }
     );
+
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           {bookings.loading || bookings.error ? (
             <CircularIndeterminate />
           ) : (
-            <Card plain>
-              <CardHeader plain color="primary">
-                <h4 className={classes.cardTitleWhite}>
-                  {type == "past" ? currentbookingStatus : ''} Bookings Management
+              <Card plain>
+                <CardHeader plain color="primary">
+                  <h4 className={classes.cardTitleWhite}>
+                    {type == "past" ? currentbookingStatus : ''} Bookings Management
                 </h4>
-                <p
-                  className={classes.cardCategoryWhite}
-                  style={
-                    {
-                      // color: `rgb(245, 231, 251)`,
+                  <p
+                    className={classes.cardCategoryWhite}
+                    style={
+                      {
+                        // color: `rgb(245, 231, 251)`,
+                      }
                     }
-                  }
-                >
-                  {(() => {
-                    switch (currentbookingStatus) {
-                      case bookingStatus[1]:
-                        return "Here are the the latest successful reservations to your vendor";
-                      case bookingStatus[2]:
-                        return "Here are the the latest unsuccessful reservations to your vendor";
-                      default:
-                        return "Here are the the latest reservations to your vendor";
-                    }
-                  })()}
-                </p>
-              </CardHeader>
-              <CardBody>
-                {type == "past" ? (
-                  <div>
-                    {bookingStatus.map((value, key) => {
-                      return <Button
-                        key={key}
+                  >
+                    {(() => {
+                      switch (currentbookingStatus) {
+                        case bookingStatus[1]:
+                          return "Here are the the latest successful reservations to your vendor";
+                        case bookingStatus[2]:
+                          return "Here are the the latest unsuccessful reservations to your vendor";
+                        default:
+                          return "Here are the the latest reservations to your vendor";
+                      }
+                    })()}
+                  </p>
+                </CardHeader>
+                <CardBody>
+                  {type == "past" ? (
+                    <div>
+                      {bookingStatus.map((value, key) => {
+                        return <Button
+                          key={key}
 
-                        className={classes.pastBookingsButton + `${currentbookingStatus === value ? ' active' : ''}`}
-                        onClick={() =>
-                          this.setState({
-                            currentbookingStatus: value
-                          })
-                        }
-                      >
-                        {value}
-                      </Button>;
-                    })}
+                          className={classes.pastBookingsButton + `${currentbookingStatus === value ? ' active' : ''}`}
+                          onClick={() =>
+                            this.setState({
+                              currentbookingStatus: value
+                            })
+                          }
+                        >
+                          {value}
+                        </Button>;
+                      })}
 
-                    {/* <Button
+                      {/* <Button
                       className={classes.pastBookingsButton}
                       onClick={() =>
                         this.setState({
@@ -332,80 +368,82 @@ class Bookings extends Component {
                         ? bookingStatus[1]
                         : bookingStatus[1]}
                     </Button> */}
-                  </div>
-                ) : (
-                  <Button onClick={() => this.setState({ insertOpen: true })}>
-                    <Add />
-                    Insert
+                    </div>
+                  ) : (
+                      <Button onClick={() => this.setState({ insertOpen: true })}>
+                        <Add />
+                        Insert
                   </Button>
-                )}
-                <Table
-                  tableHeaderColor="primary"
-                  tableHead={tableHead}
-                  tableData={bookingsData}
-                  hasActions={(type == "past" && currentbookingStatus === bookingStatus[0]) ? true : false}
-                  extraActions={type == "past" ? extraActions : []}
-                  isReadOnly={true}
-                />
+                    )}
+                  <Table
+                    tableHeaderColor="primary"
+                    tableHead={tableHead}
+                    tableData={bookingsData}
+                    hasActions={(type == "past" && currentbookingStatus === bookingStatus[0]) ? true : false}
+                    extraActions={type == "past" ? extraActions : []}
+                    isReadOnly={true}
+                  />
+                  {bookingsData.length > 20 ? (<div><button onClick={this.loadMore} className={classes.loadMoreButton}>load more</button></div>) : null}
+                  {bookings.length === 0 ? (
+                    <div className={classes.noData}>
+                      <h1 style={{ fontSize: "4rem" }}>Nothing here yet</h1>
+                    </div>
+                  ) : null}
 
-                {bookings.length === 0 ? (
-                  <div className={classes.noData}>
-                    <h1 style={{ fontSize: "4rem" }}>Nothing here yet</h1>
-                  </div>
-                ) : null}
-                <Dialog
-                  open={this.state.dialogOpen}
-                  TransitionComponent={Transition}
-                  keepMounted
-                  onClose={this.handleDialogClose}
-                  aria-labelledby="alert-dialog-slide-title"
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <DialogTitle id="alert-dialog-slide-title">
-                    {"Are you sure?"}
-                  </DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                      {(() => {
-                        switch (this.state.actionValue) {
-                          case "remove":
-                            return "You'd like to mark this booking unsuccessful ?";
-                          case "add":
-                            return "You'd like to mark this booking successful ?";
-                          default:
-                            return "";
-                        }
-                      })()}
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={this.handleDialogClose}
-                      color="secondary"
-                      value="no"
-                    >
-                      No
+
+                  <Dialog
+                    open={this.state.dialogOpen}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.handleDialogClose}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                  >
+                    <DialogTitle id="alert-dialog-slide-title">
+                      {"Are you sure?"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-slide-description">
+                        {(() => {
+                          switch (this.state.actionValue) {
+                            case "remove":
+                              return "You'd like to mark this booking unsuccessful ?";
+                            case "add":
+                              return "You'd like to mark this booking successful ?";
+                            default:
+                              return "";
+                          }
+                        })()}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleDialogClose}
+                        color="secondary"
+                        value="no"
+                      >
+                        No
                     </Button>
-                    <Button
-                      onClick={this.handleDialogClose}
-                      color="primary"
-                      value="yes"
-                    >
-                      Yes
+                      <Button
+                        onClick={this.handleDialogClose}
+                        color="primary"
+                        value="yes"
+                      >
+                        Yes
                     </Button>
-                  </DialogActions>
-                </Dialog>
-                <Modal
-                  aria-labelledby="simple-modal-title"
-                  aria-describedby="simple-modal-description"
-                  open={this.state.insertOpen}
-                  onClose={this.insertCloseHandler}
-                >
-                  <ManualBooking />
-                </Modal>
-              </CardBody>
-            </Card>
-          )}
+                    </DialogActions>
+                  </Dialog>
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.insertOpen}
+                    onClose={this.insertCloseHandler}
+                  >
+                    <ManualBooking />
+                  </Modal>
+                </CardBody>
+              </Card>
+            )}
         </GridItem>
       </GridContainer>
     );

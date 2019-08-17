@@ -92,7 +92,7 @@ class CustomTableCell extends Component {
                 >
                     {statics[prop].map((item, key) => (
                         <MenuItem key={key} value={item.value ? item.value : item }>
-                            <Checkbox />
+                         
                             <ListItemText primary={item.label ? item.label : item} />
                         </MenuItem>
                     ))}

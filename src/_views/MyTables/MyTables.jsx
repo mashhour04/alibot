@@ -204,7 +204,7 @@ class MyTables extends Component {
                       >
                         {statics.daysOfWeek.map((day, key) => (
                           <MenuItem key={day.value} value={day.value}>
-                            <Checkbox />
+
                             <ListItemText primary={day.label} />
                           </MenuItem>
                         ))}
@@ -225,7 +225,7 @@ class MyTables extends Component {
                       >
                         {statics.daysOfMonth.map((day, key) => (
                           <MenuItem key={key} value={day.value}>
-                            <Checkbox />
+                      
                             <ListItemText primary={day.label} />
                           </MenuItem>
                         ))}
@@ -252,7 +252,7 @@ class MyTables extends Component {
                       >
                         {statics.hoursOfDay.map((value, key) => (
                           <MenuItem key={key} value={value}>
-                            <Checkbox />
+               
                             <ListItemText primary={value} />
                           </MenuItem>
                         ))}

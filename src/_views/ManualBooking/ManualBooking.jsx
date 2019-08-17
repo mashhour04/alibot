@@ -86,7 +86,7 @@ class ManualBooking extends Component {
     }
     handleChange = event => {
 
-        console.log('the event', event);
+        console.log('the event', event.target.name, event.target.value);
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
@@ -102,7 +102,9 @@ class ManualBooking extends Component {
         const timestamp = moment(date).format('x');
         const vendorId = vendor._id;
         const { capacity } = this.state;
-        this.props.dispatch(vendorActions.getAvailableTables({ timestamp, capacity, vendorId }));
+        if (capacity) {
+            this.props.dispatch(vendorActions.getAvailableTables({ timestamp, capacity, vendorId }));
+        }
     };
 
     handleSubmit = () => {
@@ -190,7 +192,7 @@ class ManualBooking extends Component {
                     <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                             <CustomInput
-                                labelText={'Number Of People'}
+                                labelText={'Number Of People (required)'}
                                 id="Name"
                                 formControlProps={{
                                     fullWidth: true
@@ -242,7 +244,7 @@ class ManualBooking extends Component {
                                         name={'table'}
                                         onChange={this.handleTableChange}
                                         input={<Input id="select-tables" />}
-                                        placeholder={availableOptions.length ? 'Available Table' : (this.state.table) ? (this.state.table.name || this.state.table.altId) :  'No available tables at this time'}
+                                        placeholder={availableOptions.length ? 'Available Table' : (this.state.table) ? (this.state.table.name || this.state.table.altId) : 'No available tables at this time'}
                                         // renderValue={selected => selected.join(', ')}
                                         options={availableOptions}
                                     >

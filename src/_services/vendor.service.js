@@ -110,8 +110,8 @@ function getAvailableTables({ timestamp, capacity, vendorId }) {
     }
 
     requestOptions.qs = { timestamp, vendorId };
-    if (typeof capacity !== undefined && capacity) { requestOptions.qs.capacity = capacity; }
-
+    if (typeof capacity !== "undefined" && capacity) { requestOptions.qs.capacity = capacity; }
+    
     if (requestOptions.qs) {
         url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
         delete requestOptions.qs;

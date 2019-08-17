@@ -93,7 +93,7 @@ function insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth }) {
     function failure(error) { return { type: vendorConstants.INSERT_TABLES_FAILURE, error } }
 }
 
-function getBookings({ skip, limit, type }) {
+function getBookings({ skip, limit, type, pagination }) {
     return dispatch => {
         dispatch(request());
 
@@ -108,7 +108,7 @@ function getBookings({ skip, limit, type }) {
     };
 
     function request() { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_REQUEST : vendorConstants.GET_BOOKINGS_REQUEST } }
-    function success(bookings) { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_SUCCESS : vendorConstants.GET_BOOKINGS_SUCCESS, bookings } }
+    function success(bookings) { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_SUCCESS : vendorConstants.GET_BOOKINGS_SUCCESS, bookings, pagination } }
     function failure(error) { return { type:(type) ? vendorConstants[type].GET_BOOKINGS_FAILURE : vendorConstants.GET_BOOKINGS_FAILURE, error } }
 }
 
