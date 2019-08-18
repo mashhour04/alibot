@@ -60,10 +60,18 @@ export function movies(state = [], action) {
 export function bookings(state = [], action) {
     switch (action.type) {
         case vendorConstants.GET_BOOKINGS_REQUEST:
-            return {
-                loading: true,
-                oldValue: state
-            };
+            if (action.pagination) {
+                return {
+                    paginating: true,
+                    loading: true,
+                    oldValue: state
+                }
+            } else {
+                return {
+                    loading: true,
+                    oldValue: state,
+                };
+            }
         case vendorConstants.GET_BOOKINGS_SUCCESS:
             if (action.pagination) {
                 if (state.oldValue) {
@@ -114,6 +122,25 @@ export function availableTables(state = [], action) {
             return {
                 error: action.error
             };
+        default:
+            return state
+    }
+}
+
+export function hasMoreStatus(state = { hasMore: false, loading: false }, action) {
+    switch (action.type) {
+        case vendorConstants.GET_BOOKINGS_SUCCESS:
+        case vendorConstants['past'].GET_BOOKINGS_SUCCESS:
+            if (action.bookings && action.bookings.length >= 20) {
+                return { loading: false, hasMore: true };
+            }
+            return state;
+        case vendorConstants.GET_BOOKINGS_REQUEST:
+        case vendorConstants['past'].GET_BOOKINGS_REQUEST:
+            if (action.pagination) {
+                return { loading: true, hasMore: false };
+            }
+            return state;
         default:
             return state
     }

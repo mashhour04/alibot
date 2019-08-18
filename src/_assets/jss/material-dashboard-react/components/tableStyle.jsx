@@ -37,10 +37,17 @@ const tableStyle = theme => ({
   table: {
     marginBottom: "0",
     width: "100%",
+    minHeight: "600px",
     maxWidth: "100%",
     backgroundColor: "transparent",
     borderSpacing: "0",
     borderCollapse: "collapse"
+  },
+  loading: {
+    width: "100%",
+    bottom: "0",
+    height: "100%",
+    position: "relative",
   },
   tableHeadCell: {
     color: "inherit",

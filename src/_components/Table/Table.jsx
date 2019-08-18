@@ -16,15 +16,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Done from '@material-ui/icons/Done';
 import HighlightOff from '@material-ui/icons/HighlightOff';
 import Tooltip from '@material-ui/core/Tooltip';
-
-
 import PerfectScrollbar from 'react-perfect-scrollbar';
 // core components
 import tableStyle from "../../_assets/jss/material-dashboard-react/components/tableStyle.jsx";
 
 import CustomTableCell from "../CustomTableCell/CustomTableCell";
-
-
+import CircularIndeterminate from "../CircularIndeterminate/Loading";
+import LoadingOverlay from 'react-loading-overlay';
 import { vendorActions } from '../../_actions/vendor.actions';
 
 
@@ -37,11 +35,12 @@ class CustomTable extends Component {
 
   render() {
 
-    const { classes, tableHead, tableData, tableHeaderColor, hasActions, extraActions, isReadOnly } = this.props;
+    const { classes, tableHead, tableData, tableHeaderColor, hasActions, extraActions, isReadOnly, isLoading } = this.props;
 
     return (
       <PerfectScrollbar>
         <div className={classes.tableResponsive}>
+        {isLoading ? <LoadingOverlay className={classes.loading} active={isLoading} spinner={<CircularIndeterminate />} /> : null}
           <Table className={classes.table}>
             {tableHead !== undefined ? (
               <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
@@ -59,8 +58,10 @@ class CustomTable extends Component {
                 </TableRow>
               </TableHead>
             ) : null}
-            <TableBody>
-              {tableData.map((row, key) => {
+            
+            <TableBody >
+
+              {!isLoading ? tableData.map((row, key) => {
                 return (
                   <TableRow key={key}>
                     {Object.keys(row).map((prop, key) => {
@@ -69,7 +70,7 @@ class CustomTable extends Component {
                         <CustomTableCell cellProps={{
                           key,
                           className: classes.tableCell,
-                        
+
                         }} row={row} prop={prop} key={key} isReadOnly={isReadOnly}>
                         </CustomTableCell>
                       );
@@ -82,7 +83,7 @@ class CustomTable extends Component {
                             <Tooltip title={action.label}>
                               <IconButton onClick={() => { action.callback(row) }} aria-label={action.label || "Delete"} className={classes.actionButton.margin}>
                                 {(() => {
-                                  switch (action.value ) {
+                                  switch (action.value) {
                                     case 'delete':
                                       return <DeleteIcon fontSize="small"></DeleteIcon>;
                                     case 'remove':
@@ -112,8 +113,7 @@ class CustomTable extends Component {
                       : null}
                   </TableRow>
                 );
-              })
-              }
+              }) : null}
             </TableBody>
           </Table>
         </div>
@@ -143,6 +143,7 @@ CustomTable.propTypes = {
   tableData: PropTypes.array,
   hasActions: PropTypes.bool,
   isReadOnly: PropTypes.bool,
+  isLoading: PropTypes.bool,
   extraActions: PropTypes.array,
   onCellClick: PropTypes.func
 };

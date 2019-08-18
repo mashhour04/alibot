@@ -107,7 +107,7 @@ function getBookings({ skip, limit, type, pagination }) {
             );
     };
 
-    function request() { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_REQUEST : vendorConstants.GET_BOOKINGS_REQUEST } }
+    function request() { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_REQUEST : vendorConstants.GET_BOOKINGS_REQUEST, pagination } }
     function success(bookings) { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_SUCCESS : vendorConstants.GET_BOOKINGS_SUCCESS, bookings, pagination } }
     function failure(error) { return { type:(type) ? vendorConstants[type].GET_BOOKINGS_FAILURE : vendorConstants.GET_BOOKINGS_FAILURE, error } }
 }
