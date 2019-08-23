@@ -85,35 +85,56 @@ class ManualBooking extends Component {
         }
     }
     handleChange = event => {
-
         console.log('the event', event.target.name, event.target.value);
         const { name, value } = event.target;
         this.setState({ [name]: value });
+        if(name === 'capacity') {
+            this.handleGettingAvailable({ numberOfPeople: value });
+        }
     }
 
     handleTableChange = table => {
         this.setState({ tableId: table._id, table });
     }
 
-    handleDateChange = date => {
-        this.setState({ selectedDate: date, table: undefined });
+    handleGettingAvailable = ({ dateOfBooking, numberOfPeople }) => {
         let { vendor } = this.props;
         vendor = vendor.vendor || {};
-        const timestamp = moment(date).format('x');
         const vendorId = vendor._id;
-        const { capacity } = this.state;
-        if (capacity) {
-            this.props.dispatch(vendorActions.getAvailableTables({ timestamp, capacity, vendorId }));
+        let timestamp, capacityValue;
+
+        if (numberOfPeople) {
+            const { selectedDate } = this.state;
+            if(!selectedDate) { return; }
+            timestamp = moment(selectedDate).format('x');
+            capacityValue = numberOfPeople;
         }
+        if (dateOfBooking) {
+            const { capacity } = this.state;
+            if(!capacity) { return; }
+            capacityValue = capacity;
+            timestamp = moment(dateOfBooking).format('x');
+        }
+        if (capacityValue && timestamp) {
+            this.props.dispatch(vendorActions.getAvailableTables({ timestamp, capacity: capacityValue, vendorId }));
+        }
+    }
+
+    handleDateChange = date => {
+        this.setState({ selectedDate: date, table: undefined });
+        this.handleGettingAvailable({ dateOfBooking: date });
     };
 
     handleSubmit = () => {
-        let { vendor } = this.props;
-        const { name, capacity, selectedDate, tableId, email } = this.state;
+        let { vendor, availableTables } = this.props;
+        const { name, capacity, selectedDate, email } = this.state;
 
-
+        
         vendor = vendor.vendor || {};
         const vendorId = vendor._id;
+
+        const table = this.getChoosenTable(availableTables, capacity);
+        const tableId = table._id;
         if (!selectedDate) {
             return Toast.fire({
                 type: 'error',
@@ -121,7 +142,7 @@ class ManualBooking extends Component {
             });
         }
 
-        if (!tableId) {
+        if (!table) {
             return Toast.fire({
                 type: 'error',
                 title: 'you have to choose a table'
@@ -143,15 +164,30 @@ class ManualBooking extends Component {
         }
         this.props.dispatch(bookingActions.addBooking({ vendorId, name, email, capacity, tableId, timestamp: moment(selectedDate).format('x') }));
     }
+
+    getChoosenTable(tables, capacity) {
+        capacity = parseInt(capacity, 10);
+        if(tables && tables.length) {
+            let closest = tables.reduce(function(prev, curr) {
+                const currValue = parseInt(curr.capacity, 10), prevValue = parseInt(prev.capacity, 10);
+                return (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity) ? currValue : prevValue);
+              });
+              return closest    
+        } else {
+            return null;
+        }
+        
+    }
     render() {
         const { classes, availableTables } = this.props;
-        const { selectedDate } = this.state;
+        const { selectedDate, capacity } = this.state;
         const availableOptions = (availableTables.length) ? availableTables.map((table) => {
             table.label = (table.name && table.name !== '') ? table.name : table.altId;
             table.value = table._id;
             return table;
         }) : [];
-        console.log('options', availableOptions, availableTables);
+        const table = this.getChoosenTable(availableTables, capacity);
+        console.log('options', availableOptions, availableTables, table);
         return (<div style={getModalStyle()} className={classes.paper}>
             <Card>
                 <CardHeader color="primary">
@@ -240,13 +276,14 @@ class ManualBooking extends Component {
                                 >
                                     <Select
                                         multiple
-                                        value={this.state.table}
+                                        value={availableOptions.length ? (table) : ''}
                                         name={'table'}
                                         onChange={this.handleTableChange}
                                         input={<Input id="select-tables" />}
-                                        placeholder={availableOptions.length ? 'Available Table' : (this.state.table) ? (this.state.table.name || this.state.table.altId) : 'No available tables at this time'}
+                                        placeholder={availableOptions.length ? 'Available Table' : (table) ? (table.name || table.altId) : 'No available tables at this time'}
                                         // renderValue={selected => selected.join(', ')}
                                         options={availableOptions}
+                                        isDisabled={true}
                                     >
                                         {/* {availableTables.map((table, key) => (
                                             <MenuItem key={key} value={(table.name && table.name !== '') ? table.name : table.altId}>
