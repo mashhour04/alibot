@@ -294,7 +294,7 @@ class Bookings extends Component {
           _id,
           id: index + 1,
           name: `${userId.firstName} ${userId.lastName || ""}`,
-          date: moment(date).format("LLLL"),
+          date: moment(date).format("dddd, MMM D HH:mm"),
           capacity: vendorPathId.capacity,
           table: vendorPathId.name || vendorPathId.altId,
           status,

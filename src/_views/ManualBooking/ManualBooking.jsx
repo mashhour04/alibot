@@ -8,7 +8,8 @@ import Button from "@material-ui/core/Button";
 import { InputLabel, Input, MenuItem, Checkbox, ListItemText, FormControl } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker, Day } from 'material-ui-pickers';
+import { Timepicker } from 'react-timepicker';
 import MomentUtils from '@date-io/moment';
 import { vendorActions } from '../../_actions/vendor.actions';
 import { bookingActions } from '../../_actions/booking.actions';
@@ -24,6 +25,12 @@ import CircularIndeterminate from '../../_components/CircularIndeterminate/Loadi
 import CustomInput from "../../_components/CustomInput/CustomInput";
 import { Toast } from "../../_helpers";
 
+
+
+// Remember to include timepicker.css
+// If you can import CSS in JS:
+import 'react-timepicker/timepicker.css';
+import { updateLocale } from "moment";
 
 const styles = theme => ({
     cardCategoryWhite: {
@@ -80,7 +87,8 @@ class ManualBooking extends Component {
         super()
 
         this.state = {
-            selectedDate: undefined,
+            selectedDate: new Date(),
+            selectedDay: moment().startOf('day').toDate(),
             table: undefined,
         }
     }
@@ -88,7 +96,7 @@ class ManualBooking extends Component {
         console.log('the event', event.target.name, event.target.value);
         const { name, value } = event.target;
         this.setState({ [name]: value });
-        if(name === 'capacity') {
+        if (name === 'capacity') {
             this.handleGettingAvailable({ numberOfPeople: value });
         }
     }
@@ -105,13 +113,13 @@ class ManualBooking extends Component {
 
         if (numberOfPeople) {
             const { selectedDate } = this.state;
-            if(!selectedDate) { return; }
+            if (!selectedDate) { return; }
             timestamp = moment(selectedDate).format('x');
             capacityValue = numberOfPeople;
         }
         if (dateOfBooking) {
             const { capacity } = this.state;
-            if(!capacity) { return; }
+            if (!capacity) { return; }
             capacityValue = capacity;
             timestamp = moment(dateOfBooking).format('x');
         }
@@ -120,21 +128,41 @@ class ManualBooking extends Component {
         }
     }
 
-    handleDateChange = date => {
-        this.setState({ selectedDate: date, table: undefined });
-        this.handleGettingAvailable({ dateOfBooking: date });
+    handleDateChange = ({ hours, minutes, date }) => {
+        console.log('the date', date);
+        // const { selectedDate } = this.state;
+        let { selectedDay } = this.state;
+        let time = moment(selectedDay);
+        const update = {};
+        if (date) {
+            selectedDay = moment(date).startOf('day').toDate();
+            time = moment(date);
+        }
+        if (minutes >= 0) {
+            update.minutes = minutes;
+            time = time.add(minutes, 'minutes');
+        }
+        if (hours >= 0) {
+            update.hours = hours;
+            time = time.add(hours, 'hours');
+            
+        }
+        console.log('the date after update', time.toDate());
+        this.setState({ selectedDate: time.toDate(), table: undefined, selectedDay });
+
+        this.handleGettingAvailable({ dateOfBooking: time.toDate() });
     };
 
     handleSubmit = () => {
         let { vendor, availableTables } = this.props;
         const { name, capacity, selectedDate, email } = this.state;
 
-        
+
         vendor = vendor.vendor || {};
         const vendorId = vendor._id;
 
         const table = this.getChoosenTable(availableTables, capacity);
-        const tableId = table._id;
+        const tableId = (table) ? table._id : null;
         if (!selectedDate) {
             return Toast.fire({
                 type: 'error',
@@ -167,16 +195,16 @@ class ManualBooking extends Component {
 
     getChoosenTable(tables, capacity) {
         capacity = parseInt(capacity, 10);
-        if(tables && tables.length) {
-            let closest = tables.reduce(function(prev, curr) {
+        if (tables && tables.length) {
+            let closest = tables.reduce(function (prev, curr) {
                 const currValue = parseInt(curr.capacity, 10), prevValue = parseInt(prev.capacity, 10);
                 return (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity) ? currValue : prevValue);
-              });
-              return closest    
+            });
+            return closest
         } else {
             return null;
         }
-        
+
     }
     render() {
         const { classes, availableTables } = this.props;
@@ -248,7 +276,7 @@ class ManualBooking extends Component {
                                     margin="normal"
                                     label="Date"
                                     value={selectedDate}
-                                    onChange={this.handleDateChange}
+                                    onChange={(date) => {this.handleDateChange({ date })}}
                                     minDate={new Date()}
                                     style={{ width: "100%" }}
                                 />
@@ -257,12 +285,13 @@ class ManualBooking extends Component {
                     </GridContainer>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <Grid container className={classes.grid} justify="space-around" style={{ width: "100%" }}>
-                            <TimePicker
+                            <Timepicker
                                 margin="normal"
                                 label="Time"
                                 value={selectedDate}
-                                onChange={this.handleDateChange}
-                                minDate={new Date()}
+                                onChange={(hours, minutes) => { this.handleDateChange({ hours, minutes }) }}
+                                hours={new Date().getHours()}
+                                minutes={new Date().getMinutes()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>
