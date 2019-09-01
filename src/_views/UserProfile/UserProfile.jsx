@@ -27,6 +27,8 @@ import avatar from "../../_assets/img/faces/marc.jpg";
 import { userActions } from '../../_actions/user.actions';
 import { vendorActions } from '../../_actions/vendor.actions';
 
+
+const apiUrl = 'https://bot.prod.alibot.xyz';
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -137,8 +139,7 @@ class UserProfile extends Component {
       selectedFile.name,
     )
     try {
-      const apiUrl = 'https://bot.prod.alibot.xyz';
-      const url = apiUrl + `backend/upload/profile/${vendorId}`;
+      const url = apiUrl + `/backend/upload/profile/${vendorId}`;
       const response = await axios.post(url, formData);
       if (response.data) {
         console.log('successfull updated vendor profile pic', response.data);
@@ -308,7 +309,7 @@ class UserProfile extends Component {
                     e.preventDefault();
                     this.setState({ willUpload: true })
                   }}>
-                    <img src={`/backend/avatar/${vendor._id}?v=${this.state.version}`} alt="Upload Cover Image" style={{
+                    <img src={apiUrl + `/backend/avatar/${vendor._id}?v=${this.state.version}`} alt="Upload Cover Image" style={{
                       // width: "100%",
                       // height: "auto",
                       // maxHeight: "130px",
