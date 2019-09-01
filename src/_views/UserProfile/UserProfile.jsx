@@ -137,7 +137,9 @@ class UserProfile extends Component {
       selectedFile.name,
     )
     try {
-      const response = await axios.post(`backend/upload/profile/${vendorId}`, formData);
+      const apiUrl = 'https://bot.prod.alibot.xyz';
+      const url = apiUrl + `backend/upload/profile/${vendorId}`;
+      const response = await axios.post(url, formData);
       if (response.data) {
         console.log('successfull updated vendor profile pic', response.data);
         const { version } = this.state;
@@ -430,7 +432,7 @@ class UserProfile extends Component {
                       <InputLabel htmlFor="age-simple">Price</InputLabel>
                       <Select
                         name={'priceLevel'}
-                        value={priceLevel ? priceLevel: vendor.priceLevel ? vendor.priceLevel : '$'}
+                        value={priceLevel ? priceLevel : vendor.priceLevel ? vendor.priceLevel : '$'}
                         onChange={this.onVendorChange}
                         renderValue={selected => selected}
                         style={{ minWidth: "120px" }}
