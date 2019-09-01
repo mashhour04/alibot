@@ -95,7 +95,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "deploy-captain": "export API_URL=https://bot.prod.alibot.xyz/ && npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./build/* && caprover deploy -t ./deploy.tar"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -11,7 +11,8 @@ export const vendorService = {
 };
 
 function getVendor({ skip, limit }) {
-    let url = `/backend/api/vendors`;
+    let apiUrl = 'https://bot.prod.alibot.xyz';
+    let url =  apiUrl + `/backend/api/vendors`;
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
@@ -28,7 +29,8 @@ function getVendor({ skip, limit }) {
 }
 
 function insertTable(table) {
-    const url = `/backend/api/tables/create`;
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/tables/create`;
 
     const requestOptions = {
         method: 'POST',
@@ -40,8 +42,9 @@ function insertTable(table) {
 }
 
 function updateTable(u) {
-    const url = `/backend/api/tables/update`;
     const tableId = u.row._id || u.row.id;
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/tables/update`;
     console.log('tableId', tableId);
     let update = {};
     if (u.name === 'capacity' || u.name === 'name') {
@@ -61,7 +64,8 @@ function updateTable(u) {
 }
 
 function deleteTable(u) {
-    const url = `/backend/api/tables/update`;
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/tables/update`;
     const tableId = u.row._id || u.row.id;
     let update = {
         removed: true
@@ -78,7 +82,8 @@ function deleteTable(u) {
 }
 
 function getBookings({ skip, limit, type }) {
-    let url = `/backend/api/bookings`;
+    let apiUrl = 'https://bot.prod.alibot.xyz';
+    let url =  apiUrl + `/backend/api/bookings`;
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
@@ -96,7 +101,8 @@ function getBookings({ skip, limit, type }) {
 
 
 function getAvailableTables({ timestamp, capacity, vendorId }) {
-    let url = `/backend/api/tables/getAvailable`;
+    let apiUrl = 'https://bot.prod.alibot.xyz';
+    let url =  apiUrl + `/backend/api/tables/getAvailable`;
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
@@ -121,6 +127,8 @@ function getAvailableTables({ timestamp, capacity, vendorId }) {
 }
 
 function update({ update, vendorId }) {
+    let apiUrl = 'https://bot.prod.alibot.xyz';
+    let url =  apiUrl + `/backend/api/vendors/update/${vendorId}`;
     const body = {
         ...update,
         vendorId
@@ -132,7 +140,7 @@ function update({ update, vendorId }) {
         body: JSON.stringify(body)
     };
 
-    return fetch(`/backend/api/vendors/update/${vendorId}`, requestOptions)
+    return fetch(url, requestOptions)
         .then(handleResponse)
         .then(response => {
             Toast.fire({

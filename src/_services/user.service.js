@@ -9,13 +9,15 @@ export const userService = {
 };
 
 function login(username, password) {
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/login`;
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`/backend/login`, requestOptions)
+    return fetch(url, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -42,13 +44,15 @@ function register({ profile, account, vendor }) {
         }
     }
 
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl +`/backend/managers/register`;
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     };
 
-    return fetch(`/backend/managers/register`, requestOptions)
+    return fetch(url, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -70,11 +74,13 @@ function logout() {
 }
 
 function getUser() {
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/managers/`;
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
-    return fetch(`/backend/api/managers/`, requestOptions).then(handleResponse);
+    return fetch(url, requestOptions).then(handleResponse);
 }
 
 function update({ update, userId }) {
@@ -82,13 +88,15 @@ function update({ update, userId }) {
         ...update,
     }
 
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/managers/update`;
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
         body: JSON.stringify(body)
     };
 
-    return fetch(`/backend/api/managers/update`, requestOptions)
+    return fetch(url, requestOptions)
         .then(handleResponse)
         .then(response => {
             Toast.fire({

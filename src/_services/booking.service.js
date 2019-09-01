@@ -8,20 +8,24 @@ export const bookingService = {
 };
 
 function getAll() {
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url = apiUrl + `/backend/api/bookings`;
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
-    return fetch(`/backend/api/bookings`, requestOptions).then(handleResponse);
+    return fetch(url, requestOptions).then(handleResponse);
 }
 
 function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/bookings/create`;
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
         body: JSON.stringify({ vendorId, tableId, timestamp, name, email, capacity })
     };
-    return fetch(`/backend/api/bookings/create`, requestOptions).then(handleResponse).then(response =>{
+    return fetch(url, requestOptions).then(handleResponse).then(response =>{
         Toast.fire({
             type: 'success',
             title: 'booking has been added',
@@ -32,7 +36,8 @@ function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
 }
 
 function updateBooking({ bookingId, update }) {
-    const url = `/backend/api/bookings/update`;
+    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const url =  apiUrl + `/backend/api/bookings/update`;
     const body = { bookingId, update };
     const requestOptions = {
         method: 'POST',
