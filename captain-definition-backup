@@ -1,0 +1,19 @@
+{
+ "schemaVersion" :2 ,
+ "dockerfileLines": [
+                        "FROM node:8.16.1-alpine",
+                        "RUN mkdir -p /usr/src/code",
+                        "RUN mkdir -p /usr/src/app",
+                        "WORKDIR /usr/src/code",
+                        "COPY ./package.json /usr/src/code/",
+                        "COPY ./static.json /usr/src/code/",
+                        "RUN apk --no-cache add --virtual builds-deps build-base python",
+                        "RUN npm install && npm cache clean --force",
+                        "RUN npm build",
+                        "FROM socialengine/nginx-spa:latest",
+                        "COPY ./build /usr/src/app",
+                        "RUN rm -rf /usr/src/code",
+                        "RUN chmod -R 777 /app"
+                    ]
+}
+
