@@ -9,7 +9,7 @@ export const userService = {
 };
 
 function login(username, password) {
-    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     const url =  apiUrl + `/backend/login`;
     const requestOptions = {
         method: 'POST',
@@ -44,7 +44,7 @@ function register({ profile, account, vendor }) {
         }
     }
 
-    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     const url =  apiUrl +`/backend/managers/register`;
     const requestOptions = {
         method: 'POST',
@@ -74,7 +74,7 @@ function logout() {
 }
 
 function getUser() {
-    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     const url =  apiUrl + `/backend/api/managers/`;
     const requestOptions = {
         method: 'GET',
@@ -88,7 +88,7 @@ function update({ update, userId }) {
         ...update,
     }
 
-    const apiUrl = 'https://bot.prod.alibot.xyz';
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     const url =  apiUrl + `/backend/api/managers/update`;
     const requestOptions = {
         method: 'POST',
