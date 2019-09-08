@@ -288,7 +288,7 @@ class MyTables extends Component {
     const value = e.target.innerText;
     if (value === 'YES' && this.dialogRow) {
       this.props.dispatch(vendorActions.deleteTable({ row: this.dialogRow }))
-      this.props.dispatch(vendorActions.getVendor({ skip: 0, limit: 20 }));
+      this.props.dispatch(vendorActions.getVendor({ skip: 0, limit: 200 }));
     }
     this.setState({ dialogOpen: false });
   };
@@ -302,7 +302,7 @@ class MyTables extends Component {
     if (daysOfWeek.length === 0) { return toastr.error('at least pick one week day'); }
     console.log('dispactching insertion', { capacity, hoursOfDay, daysOfWeek, daysOfMonth });
     this.props.dispatch(vendorActions.insertTable({ capacity, hoursOfDay, daysOfWeek, daysOfMonth }));
-    this.props.dispatch(vendorActions.getVendor({ skip: 0, limit: 20 }));
+    this.props.dispatch(vendorActions.getVendor({ skip: 0, limit: 200 }));
     this.setState({
       modalOpen: false
     })

@@ -8,6 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Add from "@material-ui/icons/Add";
 import Modal from "@material-ui/core/Modal";
+
 import {
   InputLabel,
   Input,
@@ -48,7 +49,7 @@ import Slide from "@material-ui/core/Slide";
 
 // View Components
 import ManualBooking from "../ManualBooking/ManualBooking";
-import { Toast } from "../../_helpers";
+
 import { bookingActions } from "../../_actions/booking.actions";
 
 const styles = theme => ({
@@ -140,7 +141,7 @@ class Bookings extends Component {
 
   componentDidMount() {
     this.props.dispatch(
-      vendorActions.getBookings({ skip: 0, limit: 20, type: "past" })
+      vendorActions.getBookings({ skip: 0, limit: 200, type: "past" })
     );
   }
 
@@ -169,7 +170,7 @@ class Bookings extends Component {
       };
       this.props.dispatch(bookingActions.updateBooking({ bookingId, action }));
       this.props.dispatch(
-        vendorActions.getBookings({ skip: 0, limit: 20, type: "past" })
+        vendorActions.getBookings({ skip: 0, limit: 200, type: "past" })
       );
     }
     this.setState({ dialogOpen: false });
@@ -188,7 +189,7 @@ class Bookings extends Component {
       skip = bookings.length;
     }
     console.log('should skip', skip)
-    this.props.dispatch(vendorActions.getBookings({ skip, limit: 20, pagination: true }))
+    this.props.dispatch(vendorActions.getBookings({ skip, limit: 200, pagination: true }))
   }
 
   getExtraActions = currentbookingStatus => {
@@ -383,7 +384,7 @@ class Bookings extends Component {
                     extraActions={type == "past" ? extraActions : []}
                     isReadOnly={true}
                   />
-                  {bookingsData.length > 20 ? (<div><button onClick={this.loadMore} className={classes.loadMoreButton}>load more</button></div>) : null}
+                  {bookingsData.length > 200 ? (<div><button onClick={this.loadMore} className={classes.loadMoreButton}>load more</button></div>) : null}
                   {bookings.length === 0 ? (
                     <div className={classes.noData}>
                       <h1 style={{ fontSize: "4rem" }}>Nothing here yet</h1>
