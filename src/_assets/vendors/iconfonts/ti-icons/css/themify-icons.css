@@ -1,9 +1,9 @@
 @font-face {
 	font-family: 'themify';
-	src:url('http://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.eot');
-	src:url('http://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.eot?#iefix') format('embedded-opentype'),
-		url('http://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.woff') format('woff'),
-		url('http://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.ttf') format('truetype'),
+	src:url('https://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.eot');
+	src:url('https://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.eot?#iefix') format('embedded-opentype'),
+		url('https://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.woff') format('woff'),
+		url('https://www.urbanui.com/boardsterui/template/vendors/iconfonts/ti-icons/fonts/themify.ttf') format('truetype'),
 		url('../fonts/themify.svg') format('svg');
 	font-weight: normal;
 	font-style: normal;

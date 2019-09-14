@@ -253,6 +253,7 @@ class Bookings extends Component {
     let extraActions = [];
     if (type && type === "past") {
       const { pastBookings } = this.props;
+      console.log('all past', pastBookings)
       bookings =
         pastBookings && pastBookings.length
           ? pastBookings.filter(booking => {
@@ -272,6 +273,7 @@ class Bookings extends Component {
             }
           })
           : [];
+      
       if (currentbookingStatus === bookingStatus[0]) {
         tableHead.push("Actions");
         extraActions = this.getExtraActions(currentbookingStatus);
@@ -280,10 +282,9 @@ class Bookings extends Component {
     } else {
       bookings = this.props.bookings;
     }
-    let bookingsData =
-      bookings.loading || bookings.error
-        ? []
-        : bookings.filter(o => o.userId && o.vendorPathId);
+
+    let bookingsData = (bookings.loading || bookings.error) ? [] : bookings.filter(o => o.userId && o.vendorPathId);
+    console.log('finale bookings', bookingsData, bookings)
     bookingsData = bookingsData.filter(({ vendorPathId }) => {
       return vendorPathId;
     });

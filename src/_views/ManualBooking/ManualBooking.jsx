@@ -197,14 +197,18 @@ class ManualBooking extends Component {
         capacity = parseInt(capacity, 10);
         if (tables && tables.length) {
             let closest = tables.reduce(function (prev, curr) {
+          
                 const currValue = parseInt(curr.capacity, 10), prevValue = parseInt(prev.capacity, 10);
-                return (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity) ? currValue : prevValue);
+                console.log('prev', prevValue, prev)
+                console.log('current', currValue, 'abs',  (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity)), curr, prev)
+                return (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity) ? curr : prev);
             });
             return closest
         } else {
+            console.log('choosen table', null)
             return null;
         }
-
+      
     }
     render() {
         const { classes, availableTables } = this.props;
