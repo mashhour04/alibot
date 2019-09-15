@@ -140,6 +140,7 @@ class Bookings extends Component {
   };
 
   componentDidMount() {
+    
     this.props.dispatch(
       vendorActions.getBookings({ skip: 0, limit: 200, type: "past" })
     );
@@ -441,7 +442,11 @@ class Bookings extends Component {
                     open={this.state.insertOpen}
                     onClose={this.insertCloseHandler}
                   >
-                    <ManualBooking />
+                    <ManualBooking onClose={() => { 
+                      this.setState({
+                        insertOpen: false,
+                      })
+                    }} />
                   </Modal>
                 </CardBody>
               </Card>
