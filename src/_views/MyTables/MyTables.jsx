@@ -71,6 +71,8 @@ const styles = theme => ({
   }
 });
 
+const closeImg = { cursor: 'pointer', float: 'right', marginTop: '5px', width: '30px' };
+
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -91,6 +93,7 @@ class MyTables extends Component {
     super(props);
     this.state = {
       modalOpen: false,
+      selectAll: false,
       daysOfWeek: [],
       daysOfMonth: [],
       hoursOfDay: [],
@@ -171,6 +174,11 @@ class MyTables extends Component {
               <CardHeader color="primary">
                 <h4 className={classes.cardTitleWhite}>Enter Table</h4>
                 <p className={classes.cardCategoryWhite}>Enter Table Data</p>
+                <img onClick={() => {
+                  this.setState({
+                    modalOpen: false
+                  })
+                }} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png' style={closeImg} />
               </CardHeader>
               <CardBody>
                 <GridContainer>
@@ -202,6 +210,11 @@ class MyTables extends Component {
                         input={<Input id="select-weekdays" />}
                         renderValue={selected => selected.join(', ')}
                       >
+                        <MenuItem key="-1" value={this.state.selectAll ? "Unselect" : "Select All"}>
+
+                          <ListItemText primary={this.state.selectAll ? "Unselect" : "Select All"} />
+                        </MenuItem>
+
                         {statics.daysOfWeek.map((day, key) => (
                           <MenuItem key={day.value} value={day.value}>
 
@@ -225,7 +238,7 @@ class MyTables extends Component {
                       >
                         {statics.daysOfMonth.map((day, key) => (
                           <MenuItem key={key} value={day.value}>
-                      
+
                             <ListItemText primary={day.label} />
                           </MenuItem>
                         ))}
@@ -250,9 +263,13 @@ class MyTables extends Component {
                         input={<Input id="select-hours" />}
                         renderValue={selected => selected.join(', ')}
                       >
+                        <MenuItem key="-1" value={this.state.selectAll ? "Unselect" : "Select All"}>
+
+                          <ListItemText primary={this.state.selectAll ? "Unselect" : "Select All"} />
+                        </MenuItem>
                         {statics.hoursOfDay.map((value, key) => (
                           <MenuItem key={key} value={value}>
-               
+
                             <ListItemText primary={value} />
                           </MenuItem>
                         ))}
@@ -311,9 +328,27 @@ class MyTables extends Component {
   handleChange = (event) => {
     const { name, value } = event.target;
     console.log('value given', value);
-    this.setState({
-      [name]: value
-    })
+    if (value && value.includes('Select All')) {
+      let save = statics[name];
+      if(name === 'daysOfWeek' || name === 'daysOfMonth') {
+        save = statics[name].map(o => o.value)
+      }
+      this.setState({
+        [name]: save,
+        selectAll: true
+      })
+    } else if (value && value.includes('Unselect')) {
+      console.log('setting name to', name)
+      this.setState({
+        [name]: [],
+        selectAll: false
+      })
+    } else {
+      this.setState({
+        [name]: value,
+      })
+    }
+
     console.log('name', name, 'value', value);
   }
 

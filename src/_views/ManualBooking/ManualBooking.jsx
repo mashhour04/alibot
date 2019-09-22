@@ -145,7 +145,7 @@ class ManualBooking extends Component {
         if (hours >= 0) {
             update.hours = hours;
             time = time.add(hours, 'hours');
-            
+
         }
         console.log('the date after update', time.toDate());
         this.setState({ selectedDate: time.toDate(), table: undefined, selectedDay });
@@ -197,10 +197,10 @@ class ManualBooking extends Component {
         capacity = parseInt(capacity, 10);
         if (tables && tables.length) {
             let closest = tables.reduce(function (prev, curr) {
-          
+
                 const currValue = parseInt(curr.capacity, 10), prevValue = parseInt(prev.capacity, 10);
                 console.log('prev', prevValue, prev)
-                console.log('current', currValue, 'abs',  (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity)), curr, prev)
+                console.log('current', currValue, 'abs', (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity)), curr, prev)
                 return (Math.abs(currValue - capacity) < Math.abs(prevValue - capacity) ? curr : prev);
             });
             return closest
@@ -208,7 +208,7 @@ class ManualBooking extends Component {
             console.log('choosen table', null)
             return null;
         }
-      
+
     }
     render() {
         const { classes, availableTables } = this.props;
@@ -219,12 +219,17 @@ class ManualBooking extends Component {
             return table;
         }) : [];
         const table = this.getChoosenTable(availableTables, capacity);
+        const closeImg = { cursor: 'pointer', float: 'right', marginTop: '5px', width: '30px' };
         console.log('options', availableOptions, availableTables, table);
         return (<div style={getModalStyle()} className={classes.paper}>
             <Card>
+
                 <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Enter Booking</h4>
                     <p className={classes.cardCategoryWhite}>Enter Booking Data</p>
+                    <img onClick={() => {
+                        this.props.onClose();
+                    }} src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png' style={closeImg} />
                 </CardHeader>
                 <CardBody>
                     <GridContainer>
@@ -280,7 +285,7 @@ class ManualBooking extends Component {
                                     margin="normal"
                                     label="Date"
                                     value={selectedDate}
-                                    onChange={(date) => {this.handleDateChange({ date })}}
+                                    onChange={(date) => { this.handleDateChange({ date }) }}
                                     minDate={new Date()}
                                     style={{ width: "100%" }}
                                 />
