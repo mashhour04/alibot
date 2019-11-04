@@ -9,7 +9,8 @@ import NotificationComponent from '../_components/Notification/Notification.jsx'
 import io from 'socket.io-client'
 
 // creates a beautiful scrollbar
-import PerfectScrollbar from 'perfect-scrollbar'
+import PerfectScrollbar from 'perfect-scrollbar';
+import CustomerChat from '../_components/CustomerChat/CustomerChat.jsx';
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
 
 import { PrivateRoute } from '../components/PrivateRoute'
@@ -128,11 +129,7 @@ class HomePage extends React.Component {
                   <Footer />
                 </div>
               ) : null}
-              {/* <Row className="grid-margin">
-                                <Col size={12}>
-                                    <Tables></Tables>
-                                </Col>
-                            </Row> */}
+              <CustomerChat />
             </div>
           </div>
         </Container>

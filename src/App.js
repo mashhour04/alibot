@@ -4,7 +4,8 @@ import { Provider } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import ReduxToastr from "react-redux-toastr";
 
-import { history, store } from "./_helpers";
+import { history, store, chatPlugin } from "./_helpers";
+
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import PerfectScrollbar from "react-perfect-scrollbar";
