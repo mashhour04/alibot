@@ -21,12 +21,13 @@ const styles = {
     }
 }
 
+
 function ComingSoon({ ...props }) {
     const { classes } = props;
     return (
         <div>
             <div className={classes.title}>
-                <img className={classes.image} src='/images/construction.svg'>
+                <img className={classes.image} src='../../_assets/images/coming_soon.png'>
                 </img>
                <span className={classes.text}> Under Construction</span>
             </div>
