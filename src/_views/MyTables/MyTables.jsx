@@ -236,6 +236,10 @@ class MyTables extends Component {
                         input={<Input id="select-month" />}
                         renderValue={selected => selected.join(', ')}
                       >
+                        <MenuItem key="-1" value={this.state.selectAll ? "Unselect" : "Select All"}>
+
+                          <ListItemText primary={this.state.selectAll ? "Unselect" : "Select All"} />
+                        </MenuItem>
                         {statics.daysOfMonth.map((day, key) => (
                           <MenuItem key={key} value={day.value}>
 
@@ -330,7 +334,7 @@ class MyTables extends Component {
     console.log('value given', value);
     if (value && value.includes('Select All')) {
       let save = statics[name];
-      if(name === 'daysOfWeek' || name === 'daysOfMonth') {
+      if (name === 'daysOfWeek' || name === 'daysOfMonth') {
         save = statics[name].map(o => o.value)
       }
       this.setState({
