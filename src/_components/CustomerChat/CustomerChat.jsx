@@ -28,7 +28,6 @@ class CustomerChat extends React.PureComponent {
         pageId={process.env.REACT_APP_FACEBOOK_PAGE_ID}
         appId={process.env.REACT_APP_FACEBOOK_APP_ID}
         htmlRef={user._id}
-        themeColor='#6fa871'
         greetingDialogDisplay='show'
         greetingDialogDelay={30}
         version='4.0'
