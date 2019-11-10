@@ -72,10 +72,10 @@ class AppNavbar extends Component {
       <Nav className="navbar col-lg-12 col-12 p-0 fixed-top  d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <a className="navbar-brand brand-logo" href="../../index.html">
-            <img src="/images/nav-logo-bakc-2.png" alt="logo" />
+            <img src="/images/nav-logo-back-2.png" alt="logo" />
           </a>
           <a className="navbar-brand brand-logo-mini" href="../../index.html">
-            <img src="/images/nav-logo-bakc-2.png" alt="logo" />
+            <img src="/images/nav-logo-back-2.png" alt="logo" />
           </a>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end justify-content-lg-start">

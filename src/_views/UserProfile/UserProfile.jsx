@@ -291,7 +291,7 @@ class UserProfile extends Component {
         <GridContainer>
           <GridItem xs={12} sm={12} md={8}>
             <Card>
-              <CardHeader color="success">
+              <CardHeader color="primary">
                 <h4 className={classes.cardTitleWhite}>Edit Vendor</h4>
                 <p className={classes.cardCategoryWhite}>Edit Info about your vendor</p>
                 {(!this.state.willUpload && vendor.avatarData) ? <CardAvatar profile>
@@ -470,7 +470,7 @@ class UserProfile extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button onClick={this.handleVendorSubmit} color="success">Update Vendor</Button>
+                <Button onClick={this.handleVendorSubmit} color="primary">Update Vendor</Button>
               </CardFooter>
             </Card>
           </GridItem>

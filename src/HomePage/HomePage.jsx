@@ -126,7 +126,8 @@ class HomePage extends React.Component {
               )}
               {this.getRoute() ? (
                 <div>
-                  <Footer />
+                  {/* TODO: Add Footer */}
+                  {/* <Footer /> */}
                 </div>
               ) : null}
               <CustomerChat />

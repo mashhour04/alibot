@@ -1,6 +1,6 @@
 import React from 'react';
-import { chatPlugin } from '../../_helpers';
-
+import { chatPlugin, createDiv } from '../../_helpers';
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -11,9 +11,6 @@ import customerChatStyle from "../../_assets/jss/material-dashboard-react/compon
 
 class CustomerChat extends React.PureComponent {
   componentDidMount() {
-    this.timeout = setTimeout(() => {
-       chatPlugin(FB => this.timeout && FB.XFBML.parse());
-    }, 2000);
   }
 
   componentWillUnmount() {
@@ -22,24 +19,22 @@ class CustomerChat extends React.PureComponent {
   }
 
   render() {
+    const signed = JSON.parse(localStorage.getItem('user'));
+    const user = { vendorId: signed.vendorId, _id: signed.id, username: signed.username }
+    console.log('user id', user._id)
     return (
-          <div
-            className="fb-customerchat"
-            attribution="setup_tool"
-            color="#FF7B00"
-            page_id={process.env.REACT_APP_FACEBOOK_PAGE_ID}
-            // ref={JSON.stringify({  user: JSON.parse(localStorage.user) })}
-            ref="Sdsadsa"
-            x="yy"
-            // theme_color="..."
-            // logged_in_greeting="..."
-            // logged_out_greeting="..."
-            // greeting_dialog_display="..."
-            // greeting_dialog_delay="..."
-            // minimized="false"
-            // ref="..."
-          />
-       
+      <MessengerCustomerChat
+        shouldShowDialog={true}
+        pageId={process.env.REACT_APP_FACEBOOK_PAGE_ID}
+        appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+        htmlRef={user._id}
+        themeColor='#6fa871'
+        greetingDialogDisplay='show'
+        greetingDialogDelay={30}
+        version='4.0'
+        loggedInGreeting='We made it even easier for you to recieve your bookings'
+        loggedOutGreeting='Let ali reports you your daily bookings, log in messenger. Enjoy the experience'
+      />
     );
   }
 }

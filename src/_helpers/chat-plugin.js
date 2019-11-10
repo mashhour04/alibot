@@ -29,3 +29,14 @@ export function chatPlugin(callback) {
       }
     }
 }
+
+export function createDiv() {
+  const div = document.createElement("div");
+  div.setAttribute("class","fb-customerchat");
+  div.setAttribute("attribution","setup_tool");
+  div.setAttribute("color","#FF7B00");
+  div.setAttribute("page_id", process.env.REACT_APP_FACEBOOK_PAGE_ID);
+  div.setAttribute("ref",JSON.stringify({  user: JSON.parse(localStorage.user) }));
+  window.document.body.append(div);
+  console.log('appended div')
+}
