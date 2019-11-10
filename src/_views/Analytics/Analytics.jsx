@@ -11,6 +11,12 @@ import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 
 import Accessibility from "@material-ui/icons/Accessibility";
+import LiveHelpRounded from "@material-ui/icons/LiveHelpRounded";
+import Star from "@material-ui/icons/Star";
+import PaymentRounded from "@material-ui/icons/PaymentRounded";
+import AccessibilityNew from "@material-ui/icons/AccessibilityNew";
+import ShoppingCartSharp from "@material-ui/icons/ShoppingCartSharp";
+import Textsms from "@material-ui/icons/Textsms";
 
 // core components
 import GridItem from "../../_components/Grid/GridItem.jsx";
@@ -35,22 +41,15 @@ class Analytics extends React.Component {
                 <Card>
                     <CardHeader color="warning" stats icon>
                         <CardIcon color="warning">
-                            <Icon>content_copy</Icon>
+                            <PaymentRounded  />
                         </CardIcon>
-                        <p className={classes.cardCategory}>Used Space</p>
+                        <p className={classes.cardCategory}>NEXT PAYOUT</p>
                         <h3 className={classes.cardTitle}>
-                            49/50 <small>GB</small>
+                            4,250 <small>$</small>
                         </h3>
                     </CardHeader>
                     <CardFooter stats>
-                        <div className={classes.stats}>
-                            <Danger>
-                                <Warning />
-                            </Danger>
-                            <a href="#pablo" onClick={e => e.preventDefault()}>
-                                Get more space
-                  </a>
-                        </div>
+                        
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -58,16 +57,13 @@ class Analytics extends React.Component {
                 <Card>
                     <CardHeader color="success" stats icon>
                         <CardIcon color="success">
-                            <Store />
+                            <ShoppingCartSharp />
                         </CardIcon>
-                        <p className={classes.cardCategory}>Revenue</p>
-                        <h3 className={classes.cardTitle}>$34,245</h3>
+                        <p className={classes.cardCategory}>TOTAL PRODUCTS</p>
+                        <h3 className={classes.cardTitle}>$12,500</h3>
                     </CardHeader>
                     <CardFooter stats>
-                        <div className={classes.stats}>
-                            <DateRange />
-                            Last 24 Hours
-                </div>
+                      
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -75,16 +71,13 @@ class Analytics extends React.Component {
                 <Card>
                     <CardHeader color="danger" stats icon>
                         <CardIcon color="danger">
-                            <Icon>star</Icon>
+                            <AccessibilityNew />
                         </CardIcon>
-                        <p className={classes.cardCategory}>Fixed Issues</p>
-                        <h3 className={classes.cardTitle}>75</h3>
+                        <p className={classes.cardCategory}>TODAYS VISITORS</p>
+                        <h3 className={classes.cardTitle}>230</h3>
                     </CardHeader>
                     <CardFooter stats>
-                        <div className={classes.stats}>
-                            <LocalOffer />
-                            Tracked from Github
-                </div>
+                        
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -92,16 +85,13 @@ class Analytics extends React.Component {
                 <Card>
                     <CardHeader color="info" stats icon>
                         <CardIcon color="info">
-                            <Accessibility />
+                            <Textsms />
                         </CardIcon>
-                        <p className={classes.cardCategory}>Followers</p>
+                        <p className={classes.cardCategory}>WATCHING NOW</p>
                         <h3 className={classes.cardTitle}>+245</h3>
                     </CardHeader>
                     <CardFooter stats>
-                        <div className={classes.stats}>
-                            <Update />
-                            Just Updated
-                </div>
+                        
                     </CardFooter>
                 </Card>
             </GridItem>
