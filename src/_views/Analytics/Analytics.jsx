@@ -1,5 +1,34 @@
-class Dashboard extends React.Component {
+import React from 'react';
+import PropTypes from "prop-types";
+// @material-ui/core
+import withStyles from "@material-ui/core/styles/withStyles";
+import Icon from "@material-ui/core/Icon";
+// @material-ui/icons
+import Store from "@material-ui/icons/Store";
+import Warning from "@material-ui/icons/Warning";
+import DateRange from "@material-ui/icons/DateRange";
+import LocalOffer from "@material-ui/icons/LocalOffer";
+import Update from "@material-ui/icons/Update";
+
+import Accessibility from "@material-ui/icons/Accessibility";
+
+// core components
+import GridItem from "../../_components/Grid/GridItem.jsx";
+import GridContainer from "../../_components/Grid/GridContainer.jsx";
+
+import Danger from "../../_components/Typography/Danger.jsx";
+import Card from "../../_components/Card/Card.jsx";
+import CardHeader from "../../_components/Card/CardHeader.jsx";
+import CardIcon from "../../_components/Card/CardIcon.jsx";
+
+import CardFooter from "../../_components/Card/CardFooter.jsx";
+
+import dashboardStyle from "../../_assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
+
+class Analytics extends React.Component {
     render() {
+        const { classes } = this.props;
         return (<GridContainer>
 
             <GridItem xs={12} sm={6} md={3}>
@@ -79,3 +108,10 @@ class Dashboard extends React.Component {
         </GridContainer>)
     }
 }
+
+
+Analytics.propTypes = {
+    classes: PropTypes.object.isRequired
+};
+
+export default withStyles(dashboardStyle)(Analytics);
