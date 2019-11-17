@@ -11,14 +11,18 @@ import statics from "../../_assets/statics/tables.json";
 import { dealsActions } from "../../_actions/deals.actions";
 
 
+
 const styles = {
     createDeal: {
-        backgroundColor: "#f3d81d",
+        backgroundColor: "#1875f0",
         width: "138px",
         height: "47px",
         borderRadius: "25px",
         color: "white",
         border: "none",
+        "&:hover,&:focus": {
+            backgroundColor: "#0b438e",
+        }
     },
     table: {
         fontFamily: "arial, sans-serif",
@@ -71,13 +75,30 @@ class ComingSoon extends Component {
     render() {
         const { classes, deals } = this.props;
         
-        if(deals && deals.length !== 0) {
-            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-            console.log(deals.allDeals);
-            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+        if(deals.allDeals && deals.allDeals.length !== 0) {
+            deals.allDeals.map((deal) => {
+                deal.daysOfWeek = [];
+                if(deal.availability.type == 'anytime') {
+                    deal.duration = '-';
+                    deal.status = 'active';
+                } else {
+                    const from = new Date(deal.availability.period.from);
+                    const to = new Date(deal.availability.period.to);
+                    const diffTime = Math.abs(to - from);
+                    const duration = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                    deal.duration = duration + ' day(s)';
+                    if(to.getTime() >= new Date().getTime()) deal.status = 'active';
+                    else deal.status = 'stopped';
+                }
+                deal.availability.daysOfWeek.map((day, key) => {
+                    deal.daysOfWeek.push(statics.daysOfTheWeek[day].label);
+                })
+            })
             return (
                 <div>
-                    <button className={classes.createDeal}>Create deal</button>
+                    <a className="nav-link" href="/create-deal">
+                        <button className={classes.createDeal}>Create deal</button>
+                    </a>
                     <table className={classes.table}>
                         <tr>
                             <th className={classes.th}>Deal name</th>
@@ -87,14 +108,14 @@ class ComingSoon extends Component {
                             <th className={classes.th}>Status</th>
                         </tr>
                         {
-                            this.state.allDeals.map((deal, key) => {
+                            deals.allDeals.map((deal, key) => {
                                 return (
-                                    <tr>           
-                                        <td className={classes.td} key={key}>{deal.name}</td>
-                                        <td className={classes.td} key={key}>{deal.name}</td>
-                                        <td className={classes.td} key={key}>{deal.name}</td>
-                                        <td className={classes.td} key={key}>{deal.name}</td>
-                                        <td className={classes.td} key={key}>{deal.name}</td>                            
+                                    <tr key={key}>           
+                                        <td className={classes.td}>{deal.name}</td>
+                                        <td className={classes.td}>{deal.type}</td>
+                                        <td className={classes.td}>{deal.duration}</td>
+                                        <td className={classes.td}>{deal.daysOfWeek.join(', ')}</td>
+                                        <td className={classes.td}>{deal.status}</td>                            
                                     </tr>
                                 );
                             })
@@ -114,15 +135,13 @@ class ComingSoon extends Component {
                             <th className={classes.th}>Days of the week</th>
                             <th className={classes.th}>Status</th>
                         </tr>
-                        {
-                            <tr>           
-                                <td className={classes.td}>-</td>
-                                <td className={classes.td}>-</td>
-                                <td className={classes.td}>-</td>
-                                <td className={classes.td}>-</td>
-                                <td className={classes.td}>-</td>                            
-                            </tr>
-                        }
+                        <tr>           
+                            <td className={classes.td}>-</td>
+                            <td className={classes.td}>-</td>
+                            <td className={classes.td}>-</td>
+                            <td className={classes.td}>-</td>
+                            <td className={classes.td}>-</td>                            
+                        </tr>
                     </table>
                 </div>
             );

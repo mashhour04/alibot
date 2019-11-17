@@ -1,13 +1,15 @@
-import React from 'react';
-import { Component } from 'react';
+import React from "react";
+import { Component } from "react";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-import 'react-under-construction/build/css/index.css';
+import "react-under-construction/build/css/index.css";
+import Check from "@material-ui/icons/Check";
 
+import Calendar from "rc-calendar";
 
 import InputLabel from "@material-ui/core/InputLabel";
 
-import { Label } from 'reactstrap';
+import { Label } from "reactstrap";
 // core ../../_components
 import GridItem from "../../_components/Grid/GridItem.jsx";
 import GridContainer from "../../_components/Grid/GridContainer.jsx";
@@ -19,167 +21,374 @@ import CardBody from "../../_components/Card/CardBody.jsx";
 import CardFooter from "../../_components/Card/CardFooter.jsx";
 
 //material ui component
-import { Select, MenuItem, Checkbox, Input, ListItemText, FormControl, Radio, RadioGroup, FormHelperText, FormControlLabel, FormLabel } from '@material-ui/core';
-
+import {
+  Select,
+  MenuItem,
+  Checkbox,
+  Input,
+  ListItemText,
+  FormControl,
+  Radio,
+  RadioGroup,
+  FormHelperText,
+  FormControlLabel,
+  FormLabel
+} from "@material-ui/core";
 
 import statics from "../../_assets/statics/tables.json";
 
 const styles = {
-    title: {
-        margin: '9% 0 20% 27%',
-    },
-    image: {
-        height: '200px',
-        position: 'relative',
-    },
-    text: {
-        fontSize: '35px',
-        fontFamily: "'Press Start 2P', cursive"
-    },
-    inputLabel: {
-        fontSize: '18px',
-        color: '#020202',
-    },
-    selectLabel: {
-        fontSize: '18px',
-        color: '#020202',
-        marginTop: '5%'
-    },
-    radioSet: {
-        marginLeft: '5%'
-    },
-    cardCategoryWhite: {
-        color: "rgba(255,255,255,.62)",
-        margin: "0",
-        fontSize: "14px",
-        marginTop: "0",
-        marginBottom: "0"
-    },
-    cardTitleWhite: {
-        color: "#FFFFFF",
-        marginTop: "0px",
-        minHeight: "auto",
-        fontWeight: "300",
-        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-        marginBottom: "3px",
-        textDecoration: "none"
+  label: {
+    color: "black",
+    fontSize: "18px"
+  },
+  dealName: {
+    width: "300px",
+    border: "2px solid #4692f7",
+    height: "37px",
+    borderRadius: "6px"
+  },
+  createDeal: {
+    backgroundColor: "#1875f0",
+    width: "185px",
+    height: "47px",
+    borderRadius: "25px",
+    color: "white",
+    border: "none",
+    marginTop: "74px",
+    marginLeft: "620px",
+    "&:hover,&:focus": {
+      backgroundColor: "#0b438e"
     }
-}
+  },
+  checkedIcon: {
+    width: "24px",
+    height: "24px",
+    border: "2px solid #4692f7",
+    borderRadius: "3px"
+  },
+  checkedRadioIcon: {
+    // border: "2=px solid #4692f7",
+  },
+  uncheckedRadioIcon: {
+    // border: "2px solid #4692f7",
+  },
+  uncheckedIcon: {
+    width: "7px",
+    height: "7px",
+    padding: "10px",
+    border: "2px solid #4692f7",
+    borderRadius: "3px"
+  },
+  firstAvailabilityType: {
+    background: "white",
+    outline: "none",
+    border: "none",
+    width: "220px",
+    height: "50px",
+    fontWeight: "bold"
+  },
+  secondAvailabilityType: {
+    background: "white",
+    outline: "none",
+    border: "none",
+    width: "220px",
+    height: "50px",
+    fontWeight: "bold"
+  },
+  availabilityTypes: {
+    marginLeft: "300px"
+  }
+};
 
+const onChange = (jsDate, dateString) => {
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  console.log(jsDate, dateString);
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+};
 
+const date = "2015-06-26";
 class ComingSoon extends Component {
-
-    state = {
-        dealType: 'deal-of-the-week',
-        daysOfWeek: []
+  state = {
+    dealType: "deal-of-the-week",
+    daysOfWeek: [
+      { key: 0, value: "Sunday" },
+      { key: 1, value: "Monday" },
+      { key: 2, value: "Tuesday" },
+      { key: 3, value: "Wednesday" },
+      { key: 4, value: "Thursday" },
+      { key: 5, value: "Friday" },
+      { key: 6, value: "Saturday" }
+    ],
+    dealOfTheWeekChecked: false,
+    inBotDealChecked: false,
+    showCalendar: false,
+    dealData: {
+      name: "",
+      type: "",
+      availability: {
+        daysOfWeek: [],
+        type: ""
+      },
+      description: "",
+      limit: {
+        type: ''
+      },
     }
+  };
+  changeDealType = event => {
+    let { dealOfTheWeekChecked, inBotDealChecked } = this.state;
 
-    handleDealTypeChange = (event, value) => {
-        this.setState({ dealType: value });
+    if (event.target.value == "in-bot_deal") {
+      inBotDealChecked = !this.state.inBotDealChecked;
+      dealOfTheWeekChecked = false;
+      this.setState({
+        inBotDealChecked
+      });
+    } else {
+      dealOfTheWeekChecked = !this.state.dealOfTheWeekChecked;
+      inBotDealChecked = false;
     }
+    this.setState({
+      inBotDealChecked,
+      dealOfTheWeekChecked
+    });
+  };
 
-    handleChange = (event) => {
-        const { name, value } = event.target;
-        console.log('value given', value);
-        if (value && value.includes('Select All')) {
-            let save = statics[name];
-            if (name === 'daysOfWeek' || name === 'daysOfMonth') {
-                save = statics[name].map(o => o.value)
+  changeDealLimit = event => {
+    let { dealData } = this.state;
+
+    if (event.target.value == "limited") {
+        dealData.limit.type = 'limited';
+    } else {
+      dealData.limit.type = 'noLimit';
+    }
+    this.setState({
+        dealData
+    });
+  };
+  changeAvailabilityType = typeClass => {
+    if (document.getElementById(typeClass)) {
+      document.getElementById(typeClass).style.background = "#1875f0";
+      document.getElementById(typeClass).style.color = "white";
+      const { dealData } = this.state;
+      if (typeClass == "firstAvailabilityType") {
+        dealData.availability.type = 'anytime';
+        document.getElementById("secondAvailabilityType").style.background =
+          "white";
+        document.getElementById("secondAvailabilityType").style.color = "black";
+        this.setState({
+            showCalendar: false, dealData
+        });
+      } else {
+        dealData.availability.type = 'specificPeriod';
+        this.setState({
+          showCalendar: true, dealData
+        });
+        document.getElementById("firstAvailabilityType").style.background =
+          "white";
+        document.getElementById("firstAvailabilityType").style.color = "black";
+      }
+    }
+  };
+  selectFromDate(jsDate, dateString) {}
+  selectToDate(jsDate, dateString) {}
+  assignDealName = event => {
+    const { dealData } = this.state;
+    dealData.name = event.target.value;
+    this.setState({
+      dealData
+    });
+  };
+  changeDealDescription = event => {
+    const { dealData } = this.state;
+    dealData.description = event.target.value;
+    this.setState({
+      dealData
+    });
+  };
+  changeDaysOfWeek = event => {
+    const { dealData } = this.state;
+    if (!dealData.availability.daysOfWeek.includes(event.target.value)) {
+      dealData.availability.daysOfWeek.push(event.target.value);
+    } else {
+      dealData.availability.daysOfWeek.splice(
+        Number(dealData.availability.daysOfWeek.indexOf(event.target.value)),
+        1
+      );
+    }
+    this.setState({
+      dealData
+    });
+  };
+  render() {
+    const { classes } = this.props;
+    const cc = this.state.showCalendar ? (
+      <div>
+        <div className={classes.availabilityTypes}>
+          <label className={classes.label}>From </label>
+          <label style={{ marginLeft: "204px" }} className={classes.label}>
+            Up to
+          </label>
+        </div>
+        <div className={classes.availabilityTypes}>
+          {/* <Calendar /> */}
+          {/* <Calendar /> */}
+          <input
+            className={classes.dealName}
+            style={{ width: "250px" }}
+            type="text"
+          ></input>
+          <input
+            className={classes.dealName}
+            style={{ width: "250px" }}
+            type="text"
+          ></input>
+        </div>
+      </div>
+    ) : null;
+    return (
+      <div>
+        <div>
+          <label className={classes.label}>
+            What is the name of you Deal?{" "}
+          </label>{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <input
+            className={classes.dealName}
+            onChange={this.assignDealName}
+            type="text"
+            placeholder="Insert Deal Name"
+          ></input>
+        </div>
+        <br />
+        <br />
+        <div>
+          <label className={classes.label}>
+            What is the type of you Deal?{" "}
+          </label>{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input
+            type="radio"
+            name="deal_of_the_week"
+            value="deal_of_the_week"
+            onChange={this.changeDealType}
+            checked={this.state.dealOfTheWeekChecked}
+          />{" "}
+          Deal of the week &nbsp;&nbsp;&nbsp;&nbsp;
+          <input
+            type="radio"
+            name="in-bot_deal"
+            value="in-bot_deal"
+            onChange={this.changeDealType}
+            checked={this.state.inBotDealChecked}
+          />{" "}
+          In-Bot deal
+        </div>
+        <br />
+        <br />
+        <div>
+          <label className={classes.label}>What does the Deal apply? </label>{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {this.state.daysOfWeek.map((day, key) => {
+            return (
+              <span key={key}>
+                {/* <input type="checkBox" name={day} value={day} onChange={this.changeDealType}/>{day.value} &nbsp;&nbsp; */}
+                <Checkbox
+                  tabIndex={-1}
+                  name={day.value}
+                  value={day.key}
+                  onClick={this.changeDaysOfWeek}
+                  checkedIcon={<Check className={classes.checkedIcon} />}
+                  icon={<Check className={classes.uncheckedIcon} />}
+                  classes={{
+                    checked: classes.checked,
+                    root: classes.root
+                  }}
+                />
+                {day.value} &nbsp;&nbsp;
+              </span>
+            );
+          })}
+        </div>
+        <br />
+        <br />
+        <div className={classes.availabilityTypes}>
+          <button
+            id="firstAvailabilityType"
+            className={classes.firstAvailabilityType}
+            onClick={() => this.changeAvailabilityType("firstAvailabilityType")}
+          >
+            Anytime
+          </button>
+          <button
+            id="secondAvailabilityType"
+            className={classes.secondAvailabilityType}
+            onClick={() =>
+              this.changeAvailabilityType("secondAvailabilityType")
             }
-            this.setState({
-                [name]: save,
-                selectAll: true
-            })
-        } else if (value && value.includes('Unselect')) {
-            this.setState({
-                [name]: [],
-                selectAll: false
-            })
-        } else {
-            this.setState({
-                [name]: value,
-            })
-        }
-    }
-    render() {
-        const { classes } = this.props;
-        return (
-            <div>
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={8}>
-                        <Card>
-                            <CardHeader color="primary">
-                                <h4 className={classes.cardTitleWhite}>Create A Deal</h4>
-                                <p className={classes.cardCategoryWhite}>Insert info about the deal</p>
-                            </CardHeader>
-                            <CardBody>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}>
-                                        <CustomInput
-                                            labelText="Deal Name"
-                                            labelProps={{
-                                                className: classes.inputLabel
-                                            }}
-                                            id="dealName"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                name: 'dealName',
-                                                onChange: this.onProfileChange,
-                                                default: 'dealName'
-                                            }}
-                                        />
-                                    </GridItem>
+          >
+            During a specific period
+          </button>
+        </div>
 
-                                    <GridItem xs={12} sm={12} md={12}>
-                                        {/* style={{ paddingRight: '2%', marginBottom: '5%' }} */}
-                                        <InputLabel className={classes.selectLabel} htmlFor="dealType"> Deal Type</InputLabel>
-                                        <FormControl component="fieldset" className={classes.radioSet}>
-                                            <RadioGroup aria-label="Deal-Type" name="dealType" value={this.state.dealType} onChange={this.handleDealTypeChange}>
-                                                <FormControlLabel value='deal-of-the-week' control={<Radio value='deal-of-the-week' />} label="Deal of The Week" />
-                                                <FormControlLabel value='in-bot-deal' control={<Radio value='in-bot-deal' />} label="In-Bot Deal" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </GridItem>
-
-                                    <GridItem xs={12} sm={12} md={12}>
-                                        <FormControl style={{ minWidth: '45%', marginTop: '1%', maxWidth: 220 }}>
-                                            <InputLabel htmlFor="days-of-week">When Does This Deal Apply ?</InputLabel>
-                                            <Select
-                                                multiple
-                                                value={this.state.daysOfWeek}
-                                                name={'daysOfWeek'}
-                                                onChange={this.handleChange}
-                                                input={<Input id="select-weekdays" />}
-                                                renderValue={selected => selected.join(', ')}
-                                            >
-                                                <MenuItem key="-1" value={this.state.selectAll ? "Unselect" : "Select All"}>
-
-                                                    <ListItemText primary={this.state.selectAll ? "Unselect" : "Select All"} />
-                                                </MenuItem>
-
-                                                {statics.daysOfWeek.map((day, key) => (
-                                                    <MenuItem key={day.value} value={day.value}>
-
-                                                        <ListItemText primary={day.label} />
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </GridItem>
-                                </GridContainer>
-
-                            </CardBody>
-                            <CardFooter>
-                                <Button onClick={this.handleProfileSubmit} id="profile" color="primary">Create Deal</Button>
-                            </CardFooter>
-                        </Card>
-                    </GridItem>
-                </GridContainer>
-            </div>
-        );
-    }
+        <br />
+        <br />
+        {cc}
+        <br />
+        <br />
+        <div>
+          <label className={classes.label}>What is inside your Deal? </label>
+          <input
+            style={{ marginLeft: "72px", width: "300px", height: "100px" }}
+            onChange={this.changeDealDescription}
+            className={classes.dealName}
+            type="text"
+            placeholder="Example: get a free Desert and benefit from a 20% bill discount"
+          ></input>
+          <label
+            style={{ marginLeft: "300px", marginTop: "10px" }}
+            className={classes.label}
+          >
+            Not feeling inspired? <a href="/testing">Click here</a> to select
+            one of our pre-set Deal templates
+          </label>
+        </div>
+        <br />
+        <br />
+        <div>
+          <label className={classes.label}>Deal limit </label>{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input
+            style={{ marginLeft: "175px" }}
+            type="radio"
+            name="limited"
+            value="limited"
+            onChange={this.changeDealType}
+          />{" "}
+          Stop my Deal after{" "}
+          <input
+            style={{ width: "125px" }}
+            className={classes.dealName}
+            type="text"
+            placeholder="Insert number"
+          />{" "}
+          usage
+          <br />
+          <input
+            style={{ marginLeft: "300px" }}
+            type="radio"
+            name="noLimit"
+            value="noLimit"
+            onChange={this.changeDealType}
+            checked={this.state.inBotDealChecked}
+          />{" "}
+          No limit
+        </div>
+        <button className={classes.createDeal}>Submit for review</button>
+      </div>
+    );
+  }
 }
 
 export default withStyles(styles)(ComingSoon);

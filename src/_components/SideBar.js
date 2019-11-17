@@ -48,7 +48,7 @@ class SideBar extends Component {
                         </a>
                     </NavItem>
                     <NavItem>
-                        <a className="nav-link" href="/create-deal">
+                        <a className="nav-link" href="/get-deals">
                             <MessagePlusIcon className="menu-icon"></MessagePlusIcon>
                             <span className="menu-title"> Create a Deal</span>
                         </a>
