@@ -9,14 +9,14 @@ export const userService = {
 };
 
 function login(username, password) {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
-    const url =  apiUrl + `/backend/login`;
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
+    const url = `${apiUrl}/backend/login`;
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
-
     return fetch(url, requestOptions)
         .then(handleResponse)
         .then(user => {
@@ -44,7 +44,8 @@ function register({ profile, account, vendor }) {
         }
     }
 
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl +`/backend/managers/register`;
     const requestOptions = {
         method: 'POST',
@@ -74,7 +75,8 @@ function logout() {
 }
 
 function getUser() {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/managers/`;
     const requestOptions = {
         method: 'GET',
@@ -88,7 +90,8 @@ function update({ update, userId }) {
         ...update,
     }
 
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/managers/update`;
     const requestOptions = {
         method: 'POST',

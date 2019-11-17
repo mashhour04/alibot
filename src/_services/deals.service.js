@@ -1,76 +1,68 @@
 import { authHeader, Toast } from '../_helpers';
 
-
-export const bookingService = {
-    getAll,
-    addBooking,
-    updateBooking
+export const dealsService = {
+    getDeals,
+    createDeal
 };
 
-function getAll() {
+
+function getDeals({ skip, limit }) {
     let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
-    const url = apiUrl + `/backend/api/bookings`;
+    let url =  apiUrl + `/backend/api/deals`;
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
+    console.log('skip and limit', skip, limit);
+    if (typeof skip !== undefined && typeof limit !== undefined) { requestOptions.qs = { skip, limit }; }
+    if (requestOptions.qs) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
+        delete requestOptions.qs;
+    }
+
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
+function createDeal(dealData) {
     let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
-    const url =  apiUrl + `/backend/api/bookings/create`;
+    const url =  apiUrl + `/backend/api/deals/`;
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
-        body: JSON.stringify({ vendorId, tableId, timestamp, name, email, capacity })
+        body: JSON.stringify(dealData)
     };
     return fetch(url, requestOptions).then(handleResponse).then(response =>{
         Toast.fire({
             type: 'success',
-            title: 'booking has been added',
+            title: 'deal has been added',
         })
-        // login successful if there's a jwt token in the response
         return response;
     })
-}
-
-function updateBooking({ bookingId, update }) {
-    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
-    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
-    const url =  apiUrl + `/backend/api/bookings/update`;
-    const body = { bookingId, update };
-    const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: authHeader()
-    };
-
-    return fetch(url, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
-        console.log('data', data);
         if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                console.log('401 on getting bookings');
-            }
+            Toast.fire({ type: 'error', title: `Something went wrong` });
             const error = (data && data.message) || response.statusText;
             const errors = data.errors;
             if (errors) {
                 errors.forEach((error) => {
                     Toast.fire({ type: 'error', title: `${error.param} is ${error.msg}` });
                 });
-            } else {
-                Toast.fire({ type: 'error', title: `Something went wrong` });
             }
             return Promise.reject(error);
         }
+
         return data;
     });
+}
+
+function queryParams(params) {
+    return Object.keys(params)
+        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+        .join('&');
 }

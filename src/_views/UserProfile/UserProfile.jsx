@@ -28,7 +28,8 @@ import { userActions } from '../../_actions/user.actions';
 import { vendorActions } from '../../_actions/vendor.actions';
 
 
-const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
