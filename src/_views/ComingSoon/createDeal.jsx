@@ -1,5 +1,8 @@
 import React from "react";
 import { Component } from "react";
+import { dealsActions } from "../../_actions/deals.actions";
+import { connect } from 'react-redux';
+
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 import "react-under-construction/build/css/index.css";
@@ -101,14 +104,8 @@ const styles = {
   }
 };
 
-const onChange = (jsDate, dateString) => {
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log(jsDate, dateString);
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-};
-
 const date = "2015-06-26";
-class ComingSoon extends Component {
+class createDeal extends Component {
   state = {
     dealType: "deal-of-the-week",
     daysOfWeek: [
@@ -123,6 +120,8 @@ class ComingSoon extends Component {
     dealOfTheWeekChecked: false,
     inBotDealChecked: false,
     showCalendar: false,
+    limitedChecked: false,
+    noLimitChecked: false,
     dealData: {
       name: "",
       type: "",
@@ -137,34 +136,42 @@ class ComingSoon extends Component {
     }
   };
   changeDealType = event => {
-    let { dealOfTheWeekChecked, inBotDealChecked } = this.state;
+    let { dealData, dealOfTheWeekChecked, inBotDealChecked } = this.state;
+    dealData.type = event.target.value;
 
     if (event.target.value == "in-bot_deal") {
       inBotDealChecked = !this.state.inBotDealChecked;
       dealOfTheWeekChecked = false;
       this.setState({
-        inBotDealChecked
+        dealData,
+        inBotDealChecked,
+        dealOfTheWeekChecked
       });
     } else {
       dealOfTheWeekChecked = !this.state.dealOfTheWeekChecked;
       inBotDealChecked = false;
     }
     this.setState({
+    dealData,
       inBotDealChecked,
       dealOfTheWeekChecked
     });
   };
 
   changeDealLimit = event => {
-    let { dealData } = this.state;
+    let { dealData, limitedChecked, noLimitChecked } = this.state;
 
     if (event.target.value == "limited") {
         dealData.limit.type = 'limited';
+        limitedChecked = true;
+        noLimitChecked = false;
     } else {
       dealData.limit.type = 'noLimit';
+      limitedChecked = false;
+      noLimitChecked = true;
     }
     this.setState({
-        dealData
+        dealData, limitedChecked, noLimitChecked
     });
   };
   changeAvailabilityType = typeClass => {
@@ -191,6 +198,10 @@ class ComingSoon extends Component {
       }
     }
   };
+  createDeal = () => {
+    this.props.dispatch(dealsActions.createDeal(this.state.dealData));
+    window.location.href = '/get-deals';
+  }
   selectFromDate(jsDate, dateString) {}
   selectToDate(jsDate, dateString) {}
   assignDealName = event => {
@@ -364,7 +375,8 @@ class ComingSoon extends Component {
             type="radio"
             name="limited"
             value="limited"
-            onChange={this.changeDealType}
+            onChange={this.changeDealLimit}
+            checked={this.state.limitedChecked}
           />{" "}
           Stop my Deal after{" "}
           <input
@@ -380,15 +392,15 @@ class ComingSoon extends Component {
             type="radio"
             name="noLimit"
             value="noLimit"
-            onChange={this.changeDealType}
-            checked={this.state.inBotDealChecked}
+            onChange={this.changeDealLimit}
+            checked={this.state.noLimitChecked}
           />{" "}
           No limit
         </div>
-        <button className={classes.createDeal}>Submit for review</button>
+        <button className={classes.createDeal} onClick={this.createDeal}>Submit for review</button>
       </div>
     );
   }
 }
+export default connect(null)(withStyles(styles)(createDeal));
 
-export default withStyles(styles)(ComingSoon);
