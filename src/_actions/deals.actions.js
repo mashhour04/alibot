@@ -34,7 +34,7 @@ function createDeal(dealData) {
 
         dealsService.createDeal(dealData)
             .then(
-                deals => dispatch(success(deals)),
+                () => dispatch(success()),
                 error => {
                     dispatch(failure(error));
                     dispatch(alertActions.error(error))
@@ -43,6 +43,6 @@ function createDeal(dealData) {
     };
 
     function request() { return { type: dealsConstants.CREATE_DEALS_REQUREST } }
-    function success(deals) { return { type: dealsConstants.CREATE_DEALS_SUCCESS, deals } }
+    function success() { return { type: dealsConstants.CREATE_DEALS_SUCCESS } }
     function failure(error) { return { type: dealsConstants.CREATE_DEALS_FAILURE, error } }
 }

@@ -174,6 +174,14 @@ class createDeal extends Component {
         dealData, limitedChecked, noLimitChecked
     });
   };
+  
+  stopDealAfter = event => {
+    let { dealData } = this.state;
+      dealData.limit.value = event.target.value;
+    this.setState({
+      dealData,
+    });
+  };
   changeAvailabilityType = typeClass => {
     if (document.getElementById(typeClass)) {
       document.getElementById(typeClass).style.background = "#1875f0";
@@ -200,7 +208,6 @@ class createDeal extends Component {
   };
   createDeal = () => {
     this.props.dispatch(dealsActions.createDeal(this.state.dealData));
-    window.location.href = '/get-deals';
   }
   selectFromDate(jsDate, dateString) {}
   selectToDate(jsDate, dateString) {}
@@ -383,6 +390,7 @@ class createDeal extends Component {
             style={{ width: "125px" }}
             className={classes.dealName}
             type="text"
+            onChange={this.stopDealAfter}
             placeholder="Insert number"
           />{" "}
           usage

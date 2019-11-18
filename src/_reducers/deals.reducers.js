@@ -16,3 +16,4 @@ export function deals(state = [], action) {
             return state
     }
 }
+

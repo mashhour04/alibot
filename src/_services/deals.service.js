@@ -33,12 +33,9 @@ function createDeal(dealData) {
         headers: authHeader(),
         body: JSON.stringify(dealData)
     };
-    return fetch(url, requestOptions).then(handleResponse).then(response =>{
-        Toast.fire({
-            type: 'success',
-            title: 'deal has been added',
-        })
-        return response;
+    return fetch(url, requestOptions).then(handleResponse).then(response => {
+        window.location.href = '/get-deals';
+    }).catch((error) => {
     })
 }
 
@@ -56,7 +53,10 @@ function handleResponse(response) {
             }
             return Promise.reject(error);
         }
-
+        Toast.fire({
+            type: 'success',
+            title: 'deal has been added',
+        })
         return data;
     });
 }

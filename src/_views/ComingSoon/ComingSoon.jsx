@@ -13,6 +13,11 @@ import { dealsActions } from "../../_actions/deals.actions";
 
 
 const styles = {
+    noDeals:{
+        marginTop: '13%',
+        marginLeft: '38%',
+        fontSize: '50px',
+    },
     createDeal: {
         backgroundColor: "#1875f0",
         width: "138px",
@@ -126,7 +131,9 @@ class ComingSoon extends Component {
         } else {
             return (
                 <div>
-                    <button className={classes.createDeal}>Create deal</button>
+                    <a className="nav-link" href="/create-deal">
+                        <button className={classes.createDeal}>Create deal</button>
+                    </a>
                     <table className={classes.table}>
                         <tr>
                             <th className={classes.th}>Deal name</th>
@@ -135,14 +142,8 @@ class ComingSoon extends Component {
                             <th className={classes.th}>Days of the week</th>
                             <th className={classes.th}>Status</th>
                         </tr>
-                        <tr>           
-                            <td className={classes.td}>-</td>
-                            <td className={classes.td}>-</td>
-                            <td className={classes.td}>-</td>
-                            <td className={classes.td}>-</td>
-                            <td className={classes.td}>-</td>                            
-                        </tr>
                     </table>
+                    <div className={classes.noDeals}>No Deals yet!</div>  
                 </div>
             );
         }
