@@ -8,7 +8,8 @@ export const bookingService = {
 };
 
 function getAll() {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url = apiUrl + `/backend/api/bookings`;
     const requestOptions = {
         method: 'GET',
@@ -18,7 +19,8 @@ function getAll() {
 }
 
 function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/bookings/create`;
     const requestOptions = {
         method: 'POST',
@@ -36,7 +38,8 @@ function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
 }
 
 function updateBooking({ bookingId, update }) {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/bookings/update`;
     const body = { bookingId, update };
     const requestOptions = {

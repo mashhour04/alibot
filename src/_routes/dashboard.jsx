@@ -9,6 +9,7 @@ import UserProfile from "../_views/UserProfile/UserProfile.jsx";
 import MyTables from "../_views/MyTables/MyTables.jsx";
 import BookingsTable from "../_views/BookingsTable/BookingsTable.jsx";
 import ComingSoon from "../_views/ComingSoon/ComingSoon.jsx"
+import createDeal from "../_views/ComingSoon/createDeal"
 const dashboardRoutes = [
   {
     path: "/dashboard",
@@ -52,11 +53,21 @@ const dashboardRoutes = [
     }
   },
   {
-    path: "/create-deal",
+    path: "/get-deals",
     sidebarName: "Create Deal",
     navbarName: "Create-Deal",
     icon: Person,
     component: ComingSoon,
+    extra: { 
+      
+    }
+  },
+  {
+    path: "/create-deal",
+    sidebarName: "Create Deal",
+    navbarName: "Create-Deal",
+    icon: Person,
+    component: createDeal,
     extra: { 
       
     }

@@ -29,7 +29,8 @@ function getVendor({ skip, limit }) {
 }
 
 function insertTable(table) {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/tables/create`;
 
     const requestOptions = {
@@ -43,7 +44,8 @@ function insertTable(table) {
 
 function updateTable(u) {
     const tableId = u.row._id || u.row.id;
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/tables/update`;
     console.log('tableId', tableId);
     let update = {};
@@ -64,7 +66,8 @@ function updateTable(u) {
 }
 
 function deleteTable(u) {
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    if(String(apiUrl).includes('localhost')) apiUrl = 'http://localhost:8000';
     const url =  apiUrl + `/backend/api/tables/update`;
     const tableId = u.row._id || u.row.id;
     let update = {
