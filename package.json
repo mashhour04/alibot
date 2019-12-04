@@ -97,14 +97,14 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
-    "start": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957 && export REACT_APP_API_URL=\"https://bot.prod.alibot.xyz\" && node scripts/start.js",
+    "start": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957 && export REACT_APP_API_URL=\"https://aliserverbot.herokuapp.com\" && node scripts/start.js",
     "dev": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957 && export REACT_APP_API_URL=\"http://localhost:8000\" && node scripts/start.js",
-    "production": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957  && export REACT_APP_API_URL = \"https://bot.prod.alibot.xyz\" && node scripts/start.js",
+    "production": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957  && export REACT_APP_API_URL = \"https://aliserverbot.herokuapp.com\" && node scripts/start.js",
     "tunnel": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957 && node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "deploy-captain-no-build": "tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./build/* && caprover deploy -t ./deploy.tar",
-    "deploy-captain": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957  && export REACT_APP_API_URL=https://bot.prod.alibot.xyz && npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./build/* && caprover deploy -t ./deploy.tar"
+    "deploy-captain": "export REACT_APP_FACEBOOK_PAGE_ID=281649178965170 && export REACT_APP_FACEBOOK_APP_ID=155900741616957  && export REACT_APP_API_URL=https://aliserverbot.herokuapp.com && npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./build/* && caprover deploy -t ./deploy.tar"
   },
   "eslintConfig": {
     "extends": "react-app"
