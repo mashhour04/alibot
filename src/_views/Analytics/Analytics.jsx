@@ -43,7 +43,7 @@ class Analytics extends React.Component {
                         <CardIcon color="warning">
                             <PaymentRounded  />
                         </CardIcon>
-                        <p className={classes.cardCategory}>NEXT PAYOUT</p>
+                        <p className={classes.cardCategory}>Todays' Expected Bookings</p>
                         <h3 className={classes.cardTitle}>
                             4,250 <small>$</small>
                         </h3>
@@ -59,7 +59,7 @@ class Analytics extends React.Component {
                         <CardIcon color="success">
                             <ShoppingCartSharp />
                         </CardIcon>
-                        <p className={classes.cardCategory}>TOTAL PRODUCTS</p>
+                        <p className={classes.cardCategory}>Todays' Expected Visitors</p>
                         <h3 className={classes.cardTitle}>$12,500</h3>
                     </CardHeader>
                     <CardFooter stats>
@@ -73,7 +73,7 @@ class Analytics extends React.Component {
                         <CardIcon color="danger">
                             <AccessibilityNew />
                         </CardIcon>
-                        <p className={classes.cardCategory}>TODAYS VISITORS</p>
+                        <p className={classes.cardCategory}>Fans liked your FB page</p>
                         <h3 className={classes.cardTitle}>230</h3>
                     </CardHeader>
                     <CardFooter stats>
@@ -87,7 +87,21 @@ class Analytics extends React.Component {
                         <CardIcon color="info">
                             <Textsms />
                         </CardIcon>
-                        <p className={classes.cardCategory}>WATCHING NOW</p>
+                        <p className={classes.cardCategory}>New Users</p>
+                        <h3 className={classes.cardTitle}>+245</h3>
+                    </CardHeader>
+                    <CardFooter stats>
+                        
+                    </CardFooter>
+                </Card>
+            </GridItem>
+            <GridItem xs={12} sm={6} md={3}>
+                <Card>
+                    <CardHeader color="info" stats icon>
+                        <CardIcon color="info">
+                            <Textsms />
+                        </CardIcon>
+                        <p className={classes.cardCategory}>Loyal Users</p>
                         <h3 className={classes.cardTitle}>+245</h3>
                     </CardHeader>
                     <CardFooter stats>

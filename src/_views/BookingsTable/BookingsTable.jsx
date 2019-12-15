@@ -313,7 +313,7 @@ class Bookings extends Component {
 
     return (
       <div>
-        <Analytics />
+        {(type !== 'past') ? <Analytics /> : undefined}
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             {bookings.loading || bookings.error ? (
