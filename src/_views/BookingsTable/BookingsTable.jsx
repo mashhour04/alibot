@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // import moment from 'moment/min/moment-with-locales';
@@ -8,6 +9,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Add from "@material-ui/icons/Add";
 import Modal from "@material-ui/core/Modal";
+
+
 
 import {
   InputLabel,
@@ -51,6 +54,7 @@ import Slide from "@material-ui/core/Slide";
 import ManualBooking from "../ManualBooking/ManualBooking";
 
 import { bookingActions } from "../../_actions/booking.actions";
+import Analytics from "../Analytics/Analytics";
 
 const styles = theme => ({
   cardCategoryWhite: {
@@ -140,7 +144,7 @@ class Bookings extends Component {
   };
 
   componentDidMount() {
-    
+
     this.props.dispatch(
       vendorActions.getBookings({ skip: 0, limit: 200, type: "past" })
     );
@@ -274,7 +278,7 @@ class Bookings extends Component {
             }
           })
           : [];
-      
+
       if (currentbookingStatus === bookingStatus[0]) {
         tableHead.push("Actions");
         extraActions = this.getExtraActions(currentbookingStatus);
@@ -308,55 +312,57 @@ class Bookings extends Component {
     );
 
     return (
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          {bookings.loading || bookings.error ? (
-            <CircularIndeterminate />
-          ) : (
-              <Card plain>
-                <CardHeader plain color="primary">
-                  <h4 className={classes.cardTitleWhite}>
-                    {type == "past" ? currentbookingStatus : ''} Bookings Management
+      <div>
+        {(type !== 'past') ? <Analytics /> : undefined}
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            {bookings.loading || bookings.error ? (
+              <CircularIndeterminate />
+            ) : (
+                <Card plain>
+                  <CardHeader plain color="primary">
+                    <h4 className={classes.cardTitleWhite}>
+                      {type == "past" ? currentbookingStatus : ''} Bookings Management
                 </h4>
-                  <p
-                    className={classes.cardCategoryWhite}
-                    style={
-                      {
-                        // color: `rgb(245, 231, 251)`,
+                    <p
+                      className={classes.cardCategoryWhite}
+                      style={
+                        {
+                          // color: `rgb(245, 231, 251)`,
+                        }
                       }
-                    }
-                  >
-                    {(() => {
-                      switch (currentbookingStatus) {
-                        case bookingStatus[1]:
-                          return "Here are the the latest successful reservations to your vendor";
-                        case bookingStatus[2]:
-                          return "Here are the the latest unsuccessful reservations to your vendor";
-                        default:
-                          return "Here are the the latest reservations to your vendor";
-                      }
-                    })()}
-                  </p>
-                </CardHeader>
-                <CardBody>
-                  {type == "past" ? (
-                    <div>
-                      {bookingStatus.map((value, key) => {
-                        return <Button
-                          key={key}
+                    >
+                      {(() => {
+                        switch (currentbookingStatus) {
+                          case bookingStatus[1]:
+                            return "Here are the the latest successful reservations to your vendor";
+                          case bookingStatus[2]:
+                            return "Here are the the latest unsuccessful reservations to your vendor";
+                          default:
+                            return "Here are the the latest reservations to your vendor";
+                        }
+                      })()}
+                    </p>
+                  </CardHeader>
+                  <CardBody>
+                    {type == "past" ? (
+                      <div>
+                        {bookingStatus.map((value, key) => {
+                          return <Button
+                            key={key}
 
-                          className={classes.pastBookingsButton + `${currentbookingStatus === value ? ' active' : ''}`}
-                          onClick={() =>
-                            this.setState({
-                              currentbookingStatus: value
-                            })
-                          }
-                        >
-                          {value}
-                        </Button>;
-                      })}
+                            className={classes.pastBookingsButton + `${currentbookingStatus === value ? ' active' : ''}`}
+                            onClick={() =>
+                              this.setState({
+                                currentbookingStatus: value
+                              })
+                            }
+                          >
+                            {value}
+                          </Button>;
+                        })}
 
-                      {/* <Button
+                        {/* <Button
                       className={classes.pastBookingsButton}
                       onClick={() =>
                         this.setState({
@@ -371,88 +377,90 @@ class Bookings extends Component {
                         ? bookingStatus[1]
                         : bookingStatus[1]}
                     </Button> */}
-                    </div>
-                  ) : (
-                      <Button onClick={() => this.setState({ insertOpen: true })}>
-                        <Add />
-                        Insert
+                      </div>
+                    ) : (
+                        <Button onClick={() => this.setState({ insertOpen: true })}>
+                          <Add />
+                          Insert
                   </Button>
-                    )}
-                  <Table
-                    tableHeaderColor="primary"
-                    tableHead={tableHead}
-                    tableData={bookingsData}
-                    hasActions={(type == "past" && currentbookingStatus === bookingStatus[0]) ? true : false}
-                    extraActions={type == "past" ? extraActions : []}
-                    isReadOnly={true}
-                  />
-                  {bookingsData.length > 200 ? (<div><button onClick={this.loadMore} className={classes.loadMoreButton}>load more</button></div>) : null}
-                  {bookings.length === 0 ? (
-                    <div className={classes.noData}>
-                      <h1 style={{ fontSize: "4rem" }}>Nothing here yet</h1>
-                    </div>
-                  ) : null}
+                      )}
+                    <Table
+                      tableHeaderColor="primary"
+                      tableHead={tableHead}
+                      tableData={bookingsData}
+                      hasActions={(type == "past" && currentbookingStatus === bookingStatus[0]) ? true : false}
+                      extraActions={type == "past" ? extraActions : []}
+                      isReadOnly={true}
+                    />
+                    {bookingsData.length > 200 ? (<div><button onClick={this.loadMore} className={classes.loadMoreButton}>load more</button></div>) : null}
+                    {bookings.length === 0 ? (
+                      <div className={classes.noData}>
+                        <h1 style={{ fontSize: "4rem" }}>Nothing here yet</h1>
+                      </div>
+                    ) : null}
 
 
-                  <Dialog
-                    open={this.state.dialogOpen}
-                    TransitionComponent={Transition}
-                    keepMounted
-                    onClose={this.handleDialogClose}
-                    aria-labelledby="alert-dialog-slide-title"
-                    aria-describedby="alert-dialog-slide-description"
-                  >
-                    <DialogTitle id="alert-dialog-slide-title">
-                      {"Are you sure?"}
-                    </DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-slide-description">
-                        {(() => {
-                          switch (this.state.actionValue) {
-                            case "remove":
-                              return "You'd like to mark this booking unsuccessful ?";
-                            case "add":
-                              return "You'd like to mark this booking successful ?";
-                            default:
-                              return "";
-                          }
-                        })()}
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button
-                        onClick={this.handleDialogClose}
-                        color="secondary"
-                        value="no"
-                      >
-                        No
+                    <Dialog
+                      open={this.state.dialogOpen}
+                      TransitionComponent={Transition}
+                      keepMounted
+                      onClose={this.handleDialogClose}
+                      aria-labelledby="alert-dialog-slide-title"
+                      aria-describedby="alert-dialog-slide-description"
+                    >
+                      <DialogTitle id="alert-dialog-slide-title">
+                        {"Are you sure?"}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                          {(() => {
+                            switch (this.state.actionValue) {
+                              case "remove":
+                                return "You'd like to mark this booking unsuccessful ?";
+                              case "add":
+                                return "You'd like to mark this booking successful ?";
+                              default:
+                                return "";
+                            }
+                          })()}
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          onClick={this.handleDialogClose}
+                          color="secondary"
+                          value="no"
+                        >
+                          No
                     </Button>
-                      <Button
-                        onClick={this.handleDialogClose}
-                        color="primary"
-                        value="yes"
-                      >
-                        Yes
+                        <Button
+                          onClick={this.handleDialogClose}
+                          color="primary"
+                          value="yes"
+                        >
+                          Yes
                     </Button>
-                    </DialogActions>
-                  </Dialog>
-                  <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.insertOpen}
-                    onClose={this.insertCloseHandler}
-                  >
-                    <ManualBooking onClose={() => { 
-                      this.setState({
-                        insertOpen: false,
-                      })
-                    }} />
-                  </Modal>
-                </CardBody>
-              </Card>
-            )}
-        </GridItem>
-      </GridContainer>
+                      </DialogActions>
+                    </Dialog>
+                    <Modal
+                      aria-labelledby="simple-modal-title"
+                      aria-describedby="simple-modal-description"
+                      open={this.state.insertOpen}
+                      onClose={this.insertCloseHandler}
+                    >
+                      <ManualBooking onClose={() => {
+                        this.setState({
+                          insertOpen: false,
+                        })
+                      }} />
+                    </Modal>
+                  </CardBody>
+                </Card>
+              )}
+          </GridItem>
+        </GridContainer>
+      </div>
+
     );
   }
 }
