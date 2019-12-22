@@ -4,6 +4,7 @@ import { alertActions } from './alert.actions';
 import { history } from '../_helpers';
 
 export const vendorActions = {
+    getAnalytics,
     getVendor,
     getBookings,
     updateTable,
@@ -109,10 +110,29 @@ function getBookings({ skip, limit, type, pagination }) {
 
     function request() { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_REQUEST : vendorConstants.GET_BOOKINGS_REQUEST } }
     function success(bookings) { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_SUCCESS : vendorConstants.GET_BOOKINGS_SUCCESS, bookings, pagination } }
-    function failure(error) { return { type:(type) ? vendorConstants[type].GET_BOOKINGS_FAILURE : vendorConstants.GET_BOOKINGS_FAILURE, error } }
+    function failure(error) { return { type: (type) ? vendorConstants[type].GET_BOOKINGS_FAILURE : vendorConstants.GET_BOOKINGS_FAILURE, error } }
 }
 
-function getAvailableTables({ timestamp,  capacity, vendorId }) {
+function getAnalytics() {
+    return dispatch => {
+        dispatch(request());
+
+        vendorService.getAnalytics()
+            .then(
+                analytics => dispatch(success(analytics)),
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error))
+                }
+            );
+    };
+
+    function request() { return { type: vendorConstants.GET_ANALYTICS_REQUEST } }
+    function success(analytics) { return { type: vendorConstants.GET_ANALYTICS_SUCCESS, analytics } }
+    function failure(error) { return { type: vendorConstants.GET_ANALYTICS_FAILURE, error } }
+}
+
+function getAvailableTables({ timestamp, capacity, vendorId }) {
     return dispatch => {
         dispatch(request());
 

@@ -83,6 +83,24 @@ export function bookings(state = [], action) {
     }
 }
 
+
+export function analytics(state = [], action) {
+    switch (action.type) {
+        case vendorConstants.GET_ANALYTICS_REQUEST:
+            return {
+                loading: true
+            };
+        case vendorConstants.GET_ANALYTICS_SUCCESS:
+            return action.analytics;
+        case vendorConstants.GET_ANALYTICS_FAILURE:
+            return {
+                error: action.error
+            };
+        default:
+            return state
+    }
+}
+
 export function pastBookings(state = [], action) {
     switch (action.type) {
         case vendorConstants['past'].GET_BOOKINGS_REQUEST:

@@ -75,6 +75,7 @@ class HomePage extends React.Component {
   componentDidMount () {
     this.props.dispatch(vendorActions.getVendor({ skip: 0, limit: 200 }))
     this.props.dispatch(vendorActions.getBookings({ skip: 0, limit: 200 }))
+    this.props.dispatch(vendorActions.getAnalytics({}))
     this.props.dispatch(userActions.getUser())
     if (navigator.platform.indexOf('Win') > -1) {
       // const ps = new PerfectScrollbar(this.refs.mainPanel);
