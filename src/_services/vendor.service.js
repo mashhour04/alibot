@@ -3,6 +3,7 @@ import { authHeader, Toast } from '../_helpers';
 export const vendorService = {
     getVendor,
     getBookings,
+    getAnalytics,
     insertTable,
     updateTable,
     deleteTable,
@@ -11,7 +12,7 @@ export const vendorService = {
 };
 
 function getVendor({ skip, limit }) {
-    let apiUrl = 'https://aliserverbot.herokuapp.com';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     let url =  apiUrl + `/backend/api/vendors`;
     const requestOptions = {
         method: 'GET',
@@ -28,6 +29,21 @@ function getVendor({ skip, limit }) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
+function getAnalytics() {
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let url =  apiUrl + `/backend/api/analytics`;
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    if (requestOptions.qs) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + queryParams(requestOptions.qs);
+        delete requestOptions.qs;
+    }
+
+    return fetch(url, requestOptions).then(handleResponse);
+}
 function insertTable(table) {
     const apiUrl = process.env.REACT_APP_API_URL || 'https://aliserverbot.herokuapp.com';
     const url =  apiUrl + `/backend/api/tables/create`;
@@ -82,7 +98,7 @@ function deleteTable(u) {
 }
 
 function getBookings({ skip, limit, type }) {
-    let apiUrl = 'https://aliserverbot.herokuapp.com';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     let url =  apiUrl + `/backend/api/bookings`;
     const requestOptions = {
         method: 'GET',
@@ -101,7 +117,7 @@ function getBookings({ skip, limit, type }) {
 
 
 function getAvailableTables({ timestamp, capacity, vendorId }) {
-    let apiUrl = 'https://aliserverbot.herokuapp.com';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     let url =  apiUrl + `/backend/api/tables/getAvailable`;
     const requestOptions = {
         method: 'GET',
@@ -127,7 +143,7 @@ function getAvailableTables({ timestamp, capacity, vendorId }) {
 }
 
 function update({ update, vendorId }) {
-    let apiUrl = 'https://aliserverbot.herokuapp.com';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
     let url =  apiUrl + `/backend/api/vendors/update/${vendorId}`;
     const body = {
         ...update,
