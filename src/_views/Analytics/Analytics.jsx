@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
@@ -41,7 +42,7 @@ class Analytics extends React.Component {
                 <Card>
                     <CardHeader color="warning" stats icon>
                         <CardIcon color="warning">
-                            <PaymentRounded  />
+                            <PaymentRounded />
                         </CardIcon>
                         <p className={classes.cardCategory}>Todays' Expected Bookings</p>
                         <h3 className={classes.cardTitle}>
@@ -49,7 +50,7 @@ class Analytics extends React.Component {
                         </h3>
                     </CardHeader>
                     <CardFooter stats>
-                        
+
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -63,7 +64,7 @@ class Analytics extends React.Component {
                         <h3 className={classes.cardTitle}>$12,500</h3>
                     </CardHeader>
                     <CardFooter stats>
-                      
+
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -77,7 +78,7 @@ class Analytics extends React.Component {
                         <h3 className={classes.cardTitle}>230</h3>
                     </CardHeader>
                     <CardFooter stats>
-                        
+
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -91,7 +92,7 @@ class Analytics extends React.Component {
                         <h3 className={classes.cardTitle}>+245</h3>
                     </CardHeader>
                     <CardFooter stats>
-                        
+
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -105,7 +106,7 @@ class Analytics extends React.Component {
                         <h3 className={classes.cardTitle}>+245</h3>
                     </CardHeader>
                     <CardFooter stats>
-                        
+
                     </CardFooter>
                 </Card>
             </GridItem>
@@ -118,4 +119,8 @@ Analytics.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Analytics);
+function mapStateToProps(state) {
+    const { user, vendor, analytics } = state;
+    return { user, vendor, analytics };
+}
+export default connect(mapStateToProps)(withStyles(dashboardStyle)(Analytics));
