@@ -24,7 +24,7 @@ class CustomerChat extends React.PureComponent {
     console.log('user id', user._id)
     return (
       <MessengerCustomerChat
-        shouldShowDialog={true}
+        shouldShowDialog={this.props.shouldShowDialog ? true : false}
         pageId={process.env.REACT_APP_FACEBOOK_PAGE_ID}
         appId={process.env.REACT_APP_FACEBOOK_APP_ID}
         htmlRef={user._id}
