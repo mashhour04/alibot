@@ -10,7 +10,7 @@ import io from 'socket.io-client'
 
 // creates a beautiful scrollbar
 import PerfectScrollbar from 'perfect-scrollbar';
-import CustomerChat from '../_components/CustomerChat/CustomerChat.jsx';
+
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
 
 import { PrivateRoute } from '../components/PrivateRoute'
@@ -131,7 +131,7 @@ class HomePage extends React.Component {
                   {/* <Footer /> */}
                 </div>
               ) : null}
-              <CustomerChat />
+             
             </div>
           </div>
         </Container>

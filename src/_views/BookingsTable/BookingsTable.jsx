@@ -12,23 +12,6 @@ import Modal from "@material-ui/core/Modal";
 
 
 
-import {
-  InputLabel,
-  Input,
-  Select,
-  MenuItem,
-  Checkbox,
-  ListItemText,
-  FormControl
-} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-
-import {
-  MuiPickersUtilsProvider,
-  TimePicker,
-  DatePicker
-} from "material-ui-pickers";
-import MomentUtils from "@date-io/moment";
 import { vendorActions } from "../../_actions/vendor.actions";
 
 // core components
@@ -38,9 +21,8 @@ import Table from "../../_components/Table/Table.jsx";
 import Card from "../../_components/Card/Card.jsx";
 import CardHeader from "../../_components/Card/CardHeader.jsx";
 import CardBody from "../../_components/Card/CardBody.jsx";
-import CardFooter from "../../_components/Card/CardFooter";
 import CircularIndeterminate from "../../_components/CircularIndeterminate/Loading.jsx";
-import CustomInput from "../../_components/CustomInput/CustomInput";
+import CustomerChat from '../../_components/CustomerChat/CustomerChat.jsx';
 
 // Dialog Core Components
 import Dialog from "@material-ui/core/Dialog";
@@ -52,6 +34,7 @@ import Slide from "@material-ui/core/Slide";
 
 // View Components
 import ManualBooking from "../ManualBooking/ManualBooking";
+
 
 import { bookingActions } from "../../_actions/booking.actions";
 import Analytics from "../Analytics/Analytics";
@@ -459,8 +442,8 @@ class Bookings extends Component {
               )}
           </GridItem>
         </GridContainer>
+        <CustomerChat shouldShowDialog = {false} />
       </div>
-
     );
   }
 }
