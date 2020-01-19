@@ -5,15 +5,14 @@ import moment from 'moment/min/moment-with-locales';
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
-import { InputLabel, Input, MenuItem, Checkbox, ListItemText, FormControl } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
+import { InputLabel, Input, MenuItem, ListItemText, FormControl, Select } from '@material-ui/core';
 
-import { MuiPickersUtilsProvider, TimePicker, DatePicker, Day } from 'material-ui-pickers';
-import { Timepicker } from 'react-timepicker';
+import { MuiPickersUtilsProvider, DatePicker, Day } from 'material-ui-pickers';
+
 import MomentUtils from '@date-io/moment';
 import { vendorActions } from '../../_actions/vendor.actions';
 import { bookingActions } from '../../_actions/booking.actions';
-import Select from 'react-select';
+import {default as ReactSelect} from 'react-select';
 // core components
 import GridItem from "../../_components/Grid/GridItem.jsx";
 import GridContainer from "../../_components/Grid/GridContainer.jsx";
@@ -25,7 +24,7 @@ import CircularIndeterminate from '../../_components/CircularIndeterminate/Loadi
 import CustomInput from "../../_components/CustomInput/CustomInput";
 import { Toast } from "../../_helpers";
 
-
+import statics from "../../_assets/statics/tables.json";
 
 // Remember to include timepicker.css
 // If you can import CSS in JS:
@@ -87,6 +86,7 @@ class ManualBooking extends Component {
         super()
 
         this.state = {
+            selectedTime: '',
             selectedDate: new Date(),
             selectedDay: moment().startOf('day').toDate(),
             table: undefined,
@@ -128,8 +128,13 @@ class ManualBooking extends Component {
         }
     }
 
-    handleDateChange = ({ hours, minutes, date }) => {
+    handleDateChange = ({ hours, minutes, date, target }) => {
         console.log('the date', date);
+        if (target) {
+            const { value } = target;
+            hours = parseInt(value.split(':')[0], 10);
+            minutes = parseInt(value.split(':')[1], 10);
+        }
         // const { selectedDate } = this.state;
         let { selectedDay } = this.state;
         let time = moment(selectedDay);
@@ -212,7 +217,7 @@ class ManualBooking extends Component {
     }
     render() {
         const { classes, availableTables } = this.props;
-        const { selectedDate, capacity } = this.state;
+        const { selectedDate, capacity, selectedTime } = this.state;
         const availableOptions = (availableTables.length) ? availableTables.map((table) => {
             table.label = (table.name && table.name !== '') ? table.name : table.altId;
             table.value = table._id;
@@ -292,7 +297,7 @@ class ManualBooking extends Component {
                             </MuiPickersUtilsProvider>
                         </GridItem>
                     </GridContainer>
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                    {/* <MuiPickersUtilsProvider utils={MomentUtils}>
                         <Grid container className={classes.grid} justify="space-around" style={{ width: "100%" }}>
                             <Timepicker
                                 margin="normal"
@@ -304,7 +309,37 @@ class ManualBooking extends Component {
                                 style={{ width: "100%" }}
                             />
                         </Grid>
-                    </MuiPickersUtilsProvider>
+                    </MuiPickersUtilsProvider> */}
+                    <GridContainer>
+              <GridItem xs={12} xm={12} md={12}>
+                <FormControl
+                  fullWidth={true}
+                  className={classes.formControl}
+                  style={{ width: "100%" }}
+                >
+                  <InputLabel
+                    className={classes.labelRoot}
+                    htmlFor="select-multiple-checkbox"
+                  >
+                    Time
+                  </InputLabel>
+                  <Select
+                    name={"time"}
+                    value={selectedTime}
+                    onChange={this.handleDateChange}
+                    input={<Input id="select-hours" />}
+                    style={{ width: "100%" }}
+                  >
+                    {statics.hoursOfDay.map((value, key) => (
+                      <MenuItem key={key} value={value}>
+                        <ListItemText primary={value} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </GridItem>
+            </GridContainer>
+         
                     <GridContainer>
                         {
                             (availableTables && availableTables.length >= 0) ? <GridItem xs={12} sm={12} md={12} style={{ marginTop: '10px' }}>
@@ -312,7 +347,7 @@ class ManualBooking extends Component {
                                     fullWidth={true}
                                     className={classes.formControl}
                                 >
-                                    <Select
+                                    <ReactSelect
                                         multiple
                                         value={availableOptions.length ? (table) : ''}
                                         name={'table'}
@@ -329,7 +364,7 @@ class ManualBooking extends Component {
                                                 <ListItemText primary={(table.name && table.name !== '') ? table.name : table.altId} />
                                             </MenuItem>
                                         ))} */}
-                                    </Select>
+                                    </ReactSelect>
                                 </FormControl>
                             </GridItem> : (availableTables && availableTables.loading) ? <CircularIndeterminate></CircularIndeterminate> : <div></div>
                         }

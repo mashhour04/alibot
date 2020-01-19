@@ -17,13 +17,13 @@ function getAll() {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
+function addBooking({ vendorId, userId, tableId, timestamp, name, email, capacity }) {
     const apiUrl = process.env.REACT_APP_API_URL || 'https://aliserverbot.herokuapp.com';
     const url =  apiUrl + `/backend/api/bookings/create`;
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
-        body: JSON.stringify({ vendorId, tableId, timestamp, name, email, capacity })
+        body: JSON.stringify({ vendorId, userId , tableId, timestamp, name, email, capacity })
     };
     return fetch(url, requestOptions).then(handleResponse).then(response =>{
         Toast.fire({
