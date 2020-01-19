@@ -26,14 +26,23 @@ function getBookings(token) {
     function failure(error) { return { type: bookingConstants.GET_BOOKERS_FAILURE, error } }
 }
 
-function addBooking({ vendorId, tableId, timestamp, name, email, capacity }) {
+function addBooking({ vendorId, userId, tableId, timestamp, name, email, capacity }) {
     return dispatch => {
         dispatch(request());
 
-        bookingService.addBooking({ vendorId, tableId, timestamp, email, name, capacity })
+        bookingService.addBooking({ vendorId, userId, tableId, timestamp, email, name, capacity })
             .then(
                 response => {
                     dispatch(success(response))
+                    if (userId) {
+                        if (window.MessengerExtensionsError) {
+                            return window.location.href = '/book';
+                        }
+
+                        if (!window.MessengerExtensionsError) {
+                            return window.MessengerExtensions.requestCloseBrowser(() => {}, (err) => window.location.href = '/book' );
+                        }
+                    }
                     window.location.href = '/';
                 },
                 error => {

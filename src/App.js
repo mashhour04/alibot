@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import { Route, Router } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import ReduxToastr from "react-redux-toastr";
 
-import { history, store, chatPlugin } from "./_helpers";
+import { store } from "./_helpers";
 
+import CustomerBooking from "./_views/CustomerBooking/CustomerBooking";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
-import { PrivateRoute, PublicRoute } from "./components/PrivateRoute";
+
 // import PrivateRoute from 'react-private-route'
 
 import { Switch, BrowserRouter } from "react-router-dom";
@@ -32,6 +33,10 @@ class App extends Component {
 
   render() {
     const isAuthenticated = localStorage.getItem("user");
+
+    const client = window.verifyToken();
+    const session = client ? client.session : {};
+    const vendor = session.vendor;
     if (alert.message) {
       toastr.error(alert.message);
     }
@@ -52,6 +57,13 @@ class App extends Component {
                 exact
                 path="/login"
                 component={isAuthenticated ? HomePage : LoginPage}
+              />
+
+              <Route
+                exact
+                path="/book"
+                component={(client && vendor) ? CustomerBooking : LoginPage }
+                
               />
               {/* render={props =>
                     localStorage.getItem("user") ? (

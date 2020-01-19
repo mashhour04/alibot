@@ -18,6 +18,10 @@ import "./_assets/css/fontawesome-all.css";
 import './_assets/vendors/css/vendor.bundle.addons.css';
 import './_assets/vendors/css/vendor.bundle.base.css';
 import './_assets/css/magnific-popup.css';
+
+// Messenger Extension For Webview
+import './_helpers/jwt-decode';
+import './_helpers/messenger-extension';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
