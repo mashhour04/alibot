@@ -433,7 +433,7 @@ class UserProfile extends Component {
                       <InputLabel htmlFor="age-simple">Price</InputLabel>
                       <Select
                         name={'priceLevel'}
-                        value={priceLevel ? priceLevel : vendor.priceLevel ? vendor.priceLevel : '$'}
+                        value={priceLevel ? priceLevel : vendor.priceLevel ? vendor.priceLevel : '10-25'}
                         onChange={this.onVendorChange}
                         renderValue={selected => selected}
                         style={{ minWidth: "120px" }}

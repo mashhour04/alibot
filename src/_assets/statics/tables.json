@@ -269,16 +269,16 @@
     ],
     "prices": [
         {
-            "label": "$",
-            "value": "$"
+            "label": "$ (10 to 25 TND)",
+            "value": "$ (10 to 25 TND)"
         },
         {
-            "label": "$$",
-            "value": "$$"
+            "label": "$$ (25 to 50 TND)",
+            "value": "$$ (25 to 50 TND)"
         },
         {
-            "label": "$$$",
-            "value": "$$$"
+            "label": "$$$ (50 TND and More)",
+            "value": "$$$ (50 TND and More)"
         }
     ]
 }
