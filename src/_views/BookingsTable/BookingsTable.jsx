@@ -448,9 +448,7 @@ class Bookings extends Component {
   }
 }
 
-function changePastBookingStatus(booking, status) {
-  console.log("we should change ", booking, "to be", status);
-}
+
 function mapStateToProps(state) {
   const { vendor, bookings, pastBookings, addBooking } = state;
   return { vendor, bookings, pastBookings, addBooking };
