@@ -81,7 +81,7 @@ const styles = {
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
-  }
+}
 
 
 class ComingSoon extends Component {
@@ -115,11 +115,11 @@ class ComingSoon extends Component {
         console.log('event', e.target.innerText);
         const value = e.target.innerText;
         if (value === 'YES' && this.dialogRow) {
-          this.props.dispatch(dealsActions.deleteDeal({ row: this.dialogRow }))
-          this.props.dispatch(dealsActions.getDeals({ skip: 0, limit: 200 }));
+            this.props.dispatch(dealsActions.deleteDeal({ row: this.dialogRow }))
+            this.props.dispatch(dealsActions.getDeals({ skip: 0, limit: 200 }));
         }
         this.setState({ dialogOpen: false });
-      };
+    };
 
     getDeals = () => {
         this.props.dispatch(dealsActions.getDeals({ skip: 0, limit: 20 }));
@@ -155,29 +155,30 @@ class ComingSoon extends Component {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     {deals.loading ? <CircularIndeterminate></CircularIndeterminate> :
-                        deals.allDeals && deals.allDeals.length === 0 ?
-                            <div className={classes.noData}>
-                                <h1 style={{ fontSize: "4rem" }}>Nothing here yet</h1>
-                            </div> :
-                            <Card>
-                                <CardHeader color="primary">
-                                    <h4 className={classes.cardTitleWhite}>Deals Management</h4>
-                                    <p className={classes.cardCategoryWhite}> Here you can check your check your created deals and create a deal        </p>
-                                </CardHeader>
-                                <CardBody>
-                                    <a className="nav-link" href="/create-deal">
-                                        <Button onClick={() => this.setState({ modalOpen: true })}><Add></Add>Create a Deal</Button>
-                                    </a>
-                                    <Table
-                                        tableHeaderColor="primary"
-                                        tableHead={["Deal name", "Deal type", "Duration", "Days Of The Week", "Status", "Action"]}
-                                        tableData={data}
-                                        scrollable={true}
-                                        hasActions={true}
-                                        extraActions={this.actions}
-                                    />
-                                </CardBody>
-                            </Card>
+                        <Card>
+                            <CardHeader color="primary">
+                                <h4 className={classes.cardTitleWhite}>Deals Management</h4>
+                                <p className={classes.cardCategoryWhite}> Here you can check your check your created deals and create a deal        </p>
+                            </CardHeader>
+                            <CardBody>
+                                <a className="nav-link" href="/create-deal">
+                                    <Button onClick={() => this.setState({ modalOpen: true })}><Add></Add>Create a Deal</Button>
+                                </a>
+                                <Table
+                                    tableHeaderColor="primary"
+                                    tableHead={["Deal name", "Deal type", "Duration", "Days Of The Week", "Status", "Action"]}
+                                    tableData={data}
+                                    scrollable={true}
+                                    hasActions={true}
+                                    extraActions={this.actions}
+                                />
+                                {data.length === 0 ? (
+                                    <div className={classes.noData}>
+                                        <h1 style={{ fontSize: "4rem" }}>No Deals Yet</h1>
+                                    </div>
+                                ) : null}
+                            </CardBody>
+                        </Card>
                     }
                 </GridItem>
 
