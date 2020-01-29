@@ -64,7 +64,7 @@ class CustomTable extends Component {
                 return (
                   <TableRow key={key}>
                     {Object.keys(row).map((prop, key) => {
-                      if (prop === '_id') { return; }
+                      if (prop === '_id' || prop === 'payload') { return; }
                       return (
                         <CustomTableCell cellProps={{
                           key,

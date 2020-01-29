@@ -2,7 +2,9 @@ import { authHeader, Toast } from '../_helpers';
 
 export const dealsService = {
     getDeals,
-    createDeal
+    createDeal,
+    updateDeal,
+    deleteDeal
 };
 
 
@@ -34,9 +36,53 @@ function createDeal(dealData) {
         body: JSON.stringify(dealData)
     };
     return fetch(url, requestOptions).then(handleResponse).then(response => {
-        window.location.href = '/get-deals';
+        Toast.fire({
+            type: 'success',
+            title: 'deal has been added',
+        })
+        setTimeout(() => { window.location.href = '/get-deals'; }, 3000);
     }).catch((error) => {
     })
+}
+
+function updateDeal(u) {
+    const dealId = u.row._id || u.row.id;
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://aliserverbot.herokuapp.com';
+    const url =  apiUrl + `/backend/api/deals/`;
+    console.log('dealId', dealId);
+    let update = {};
+    if (u.name === 'status' || u.name === 'name') {
+        update[u.name] = u.value;
+    } else {
+        update.availability = { [u.name]: u.value };
+    }
+
+    const body = { dealId, update };
+    const requestOptions = {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: authHeader()
+    };
+
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+function deleteDeal(u) {
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://aliserverbot.herokuapp.com';
+    const url =  apiUrl + `/backend/api/deals/`;
+    const dealId = u.row._id || u.row.id;
+    let update = {
+        removed: true
+    };
+
+    const body = { dealId, update };
+    const requestOptions = {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: authHeader()
+    };
+
+    return fetch(url, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
@@ -53,10 +99,6 @@ function handleResponse(response) {
             }
             return Promise.reject(error);
         }
-        Toast.fire({
-            type: 'success',
-            title: 'deal has been added',
-        })
         return data;
     });
 }
