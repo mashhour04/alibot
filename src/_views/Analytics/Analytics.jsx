@@ -35,8 +35,17 @@ import dashboardStyle from "../../_assets/jss/material-dashboard-react/views/das
 
 class Analytics extends React.Component {
     render() {
-        const { classes } = this.props;
-        return (<GridContainer>
+        const { classes,  analytics } = this.props;
+        let bookings = 0; let visitors = 0; let loyalUsers = 0; let newUsers = 0; let fans = 0;
+        
+        if (analytics && typeof analytics.bookings !== "undefined" ) {
+            bookings = analytics.bookings;
+            visitors = analytics.visitors;
+            loyalUsers = analytics.loyalUsers;
+            newUsers = analytics.newUsers;
+        }
+        return (
+        <GridContainer>
 
             <GridItem xs={12} sm={6} md={3}>
                 <Card>
@@ -46,7 +55,7 @@ class Analytics extends React.Component {
                         </CardIcon>
                         <p className={classes.cardCategory}>Todays' Expected Bookings</p>
                         <h3 className={classes.cardTitle}>
-                            4,250 <small>$</small>
+                            {bookings}
                         </h3>
                     </CardHeader>
                     <CardFooter stats>
@@ -61,27 +70,27 @@ class Analytics extends React.Component {
                             <ShoppingCartSharp />
                         </CardIcon>
                         <p className={classes.cardCategory}>Todays' Expected Visitors</p>
-                        <h3 className={classes.cardTitle}>$12,500</h3>
-                    </CardHeader>
+                        <h3 className={classes.cardTitle}>{visitors}</h3>
+                       </CardHeader>
                     <CardFooter stats>
 
                     </CardFooter>
                 </Card>
             </GridItem>
-            <GridItem xs={12} sm={6} md={3}>
+            {/* <GridItem xs={12} sm={6} md={3}>
                 <Card>
                     <CardHeader color="danger" stats icon>
                         <CardIcon color="danger">
                             <AccessibilityNew />
                         </CardIcon>
                         <p className={classes.cardCategory}>Fans liked your FB page</p>
-                        <h3 className={classes.cardTitle}>230</h3>
+                        <h3 className={classes.cardTitle}>{fans}</h3>
                     </CardHeader>
                     <CardFooter stats>
 
                     </CardFooter>
                 </Card>
-            </GridItem>
+            </GridItem> */}
             <GridItem xs={12} sm={6} md={3}>
                 <Card>
                     <CardHeader color="info" stats icon>
@@ -89,7 +98,7 @@ class Analytics extends React.Component {
                             <Textsms />
                         </CardIcon>
                         <p className={classes.cardCategory}>New Users</p>
-                        <h3 className={classes.cardTitle}>+245</h3>
+                        <h3 className={classes.cardTitle}>{newUsers}</h3>
                     </CardHeader>
                     <CardFooter stats>
 
@@ -103,7 +112,7 @@ class Analytics extends React.Component {
                             <Textsms />
                         </CardIcon>
                         <p className={classes.cardCategory}>Loyal Users</p>
-                        <h3 className={classes.cardTitle}>+245</h3>
+                        <h3 className={classes.cardTitle}>{loyalUsers}</h3>
                     </CardHeader>
                     <CardFooter stats>
 

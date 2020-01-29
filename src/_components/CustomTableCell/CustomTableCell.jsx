@@ -10,6 +10,7 @@ import Input from "@material-ui/core/Input";
 import TableCell from "@material-ui/core/TableCell";
 
 import { vendorActions } from "../../_actions/vendor.actions";
+import { dealsActions } from "../../_actions/deals.actions";
 import statics from "../../_assets/statics/tables.json";
 import CustomInput from "../CustomInput/CustomInput";
 
@@ -38,7 +39,21 @@ class CustomTableCell extends Component {
         this.setState({
             row
         }, () => {
-            this.props.dispatch(vendorActions.updateTable({ row, name, value }));
+            if(row.payload && row.payload.source === 'deals') {
+                console.log('request to update a deal', row, name)
+                row._id = row.payload._id;
+                if(name === 'daysOfWeek') {
+                    const newVal = value.map(o => {
+                        const indexOfValue = statics[name].findIndex(p => p.value === o);
+                        return indexOfValue === 0 ? 6 : indexOfValue - 1;
+                    }).filter(o => o > -1);
+                    console.log('new value', newVal)
+                    return this.props.dispatch(dealsActions.updateDeal({ row, name, value: newVal }));
+                }
+                this.props.dispatch(dealsActions.updateDeal({ row, name, value }));
+            } else { 
+                this.props.dispatch(vendorActions.updateTable({ row, name, value }));
+            }
         })
 
     }
@@ -77,7 +92,6 @@ class CustomTableCell extends Component {
 
     renderCell = (element, prop) => {
         if (!Array.isArray(element)) {
-
             return element
         }
         return (
