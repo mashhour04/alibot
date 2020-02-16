@@ -8,6 +8,7 @@ import moment from "moment";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Add from "@material-ui/icons/Add";
+import GetApp from '@material-ui/icons/GetApp';
 import Modal from "@material-ui/core/Modal";
 
 
@@ -84,6 +85,13 @@ const styles = theme => ({
       background: "#FFFFFF !important",
       color: "#1775f1 !important"
     }
+  },
+  pastBookingsDownload: {
+    textDecoration: 'none',
+    "&:after": {
+      textDecoration: 'none',
+    }
+  
   },
   noData: {
     width: "100%",
@@ -224,6 +232,7 @@ class Bookings extends Component {
   render() {
     const { location, classes } = this.props;
     const { currentbookingStatus } = this.state;
+    let user = JSON.parse(localStorage.getItem('user'));
     const tableHead = [
       "#",
       "Name",
@@ -342,24 +351,13 @@ class Bookings extends Component {
                             }
                           >
                             {value}
-                          </Button>;
+                          </Button>
                         })}
-
-                        {/* <Button
-                      className={classes.pastBookingsButton}
-                      onClick={() =>
-                        this.setState({
-                          currentbookingStatus:
-                            currentbookingStatus == bookingStatus[1]
-                              ? bookingStatus[1]
-                              : bookingStatus[1]
-                        })
-                      }
-                    >
-                      {currentbookingStatus == bookingStatus[1]
-                        ? bookingStatus[1]
-                        : bookingStatus[1]}
-                    </Button> */}
+                        <a className={classes.pastBookingsDownload} href={`${process.env.REACT_APP_API_URL}/api/bookings/?type=${type}&limit=5000&token=${user.token}`} >
+                          <Button  >
+                            <GetApp /> CSV Download
+                        </Button>
+                        </a>
                       </div>
                     ) : (
                         <Button onClick={() => this.setState({ insertOpen: true })}>
@@ -442,7 +440,7 @@ class Bookings extends Component {
               )}
           </GridItem>
         </GridContainer>
-        <CustomerChat shouldShowDialog = {false} />
+        <CustomerChat shouldShowDialog={false} />
       </div>
     );
   }
