@@ -353,7 +353,7 @@ class Bookings extends Component {
                             {value}
                           </Button>
                         })}
-                        <a className={classes.pastBookingsDownload} href={`${process.env.REACT_APP_API_URL}/api/bookings/?type=${type}&limit=5000&token=${user.token}`} >
+                        <a className={classes.pastBookingsDownload} href={`${process.env.REACT_APP_API_URL}/api/bookings/?type=${type}&limit=5000&token=${user.token}&csv=1`} >
                           <Button  >
                             <GetApp /> CSV Download
                         </Button>
