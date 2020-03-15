@@ -113,7 +113,7 @@ class RegisterPage extends Component {
                     <div className="login-block-header">
                         <div className="login-logo">
                             <img src="images/Logo.png" alt="" className="img-fluid" /> </div>
-                        <h1>Welcome to Aliboard</h1>
+                        <h1>Welcome to Spoon.ai Dashboard</h1>
                     </div>
 
                     <div className="col-12 grid-margin">

@@ -47,7 +47,7 @@ class LoginPage extends Component {
                     <div className="login-block-header">
                         <div className="login-logo">
                             <img src="images/Logo.png" alt="" className="img-fluid" /> </div>
-                        <h1>Welcome back to Aliboard</h1>
+                        <h1>Welcome back to Spoon.ai Dashboard</h1>
                     </div>
                     <div className="login-block">
                         <Form onSubmit={this.handleSubmit}>

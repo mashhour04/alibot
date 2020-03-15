@@ -14,7 +14,7 @@ const dashboardRoutes = [
   {
     path: "/dashboard",
     sidebarName: "Dashboard",
-    navbarName: "Ali Dashboard",
+    navbarName: "Spoon.ai Dashboard",
     icon: Dashboard,
     component: BookingsTable,
     extra: {

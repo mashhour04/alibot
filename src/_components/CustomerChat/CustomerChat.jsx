@@ -32,7 +32,7 @@ class CustomerChat extends React.PureComponent {
         greetingDialogDelay={30}
         version='4.0'
         loggedInGreeting='We made it even easier for you to recieve your bookings'
-        loggedOutGreeting='Let ali reports you your daily bookings, log in messenger. Enjoy the experience'
+        loggedOutGreeting='Let spoon.ai reports you your daily bookings, log in messenger. Enjoy the experience'
       />
     );
   }

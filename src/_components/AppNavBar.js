@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import connect from "react-redux/lib/connect/connect";
 import MenuIcon from "mdi-react/MenuIcon";
-import MagnifyIcon from "mdi-react/MagnifyIcon";
 import SettingsIcon from "mdi-react/SettingsIcon";
 import LogoutIcon from "mdi-react/LogoutIcon";
 import ArrowCollapseDownIcon from "mdi-react/ArrowCollapseDownIcon";
@@ -66,16 +65,16 @@ class AppNavbar extends Component {
 
   render() {
     let { profile } = this.props;
-    console.log('profile in nav bar', profile)
-    
+    console.log("profile in nav bar", profile);
+
     return (
       <Nav className="navbar col-lg-12 col-12 p-0 fixed-top  d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <a className="navbar-brand brand-logo" href="../../index.html">
-            <img src="/images/nav-logo-back-2.png" alt="logo" />
+            <img src="/images/spoon-ai-cover.jpg" alt="logo" />
           </a>
           <a className="navbar-brand brand-logo-mini" href="../../index.html">
-            <img src="/images/nav-logo-back-2.png" alt="logo" />
+            <img src="/images/spoon-ai-logo.png" alt="logo" />
           </a>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end justify-content-lg-start">
@@ -95,7 +94,11 @@ class AppNavbar extends Component {
               toggle={this.toggleProfile}
             >
               <DropdownToggle className="nav-link" nav>
-                <span className="nav-profile-name">{ profile.firstName ? `${profile.firstName} ${profile.lastName}` : 'Wicked Ninja' }</span>
+                <span className="nav-profile-name">
+                  {profile.firstName
+                    ? `${profile.firstName} ${profile.lastName}`
+                    : "Wicked Ninja"}
+                </span>
                 <span>
                   <ArrowCollapseDownIcon
                     style={{ marginLeft: "5px" }}
