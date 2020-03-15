@@ -103,7 +103,7 @@
     "dev": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && export REACT_APP_API_URL=\"http://localhost:8000\" && node scripts/start.js",
     "production": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642  && export REACT_APP_API_URL = \"https://spoonapi.herokuapp.com\" && node scripts/start.js",
     "tunnel": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && node scripts/start.js",
-    "build": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && node scripts/build.js",
+    "build": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && export REACT_APP_API_URL = \"https://spoonapi.herokuapp.com\" && node scripts/build.js",
     "test": "node scripts/test.js",
     "deploy-captain-no-build": "tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./build/* && caprover deploy -t ./deploy.tar",
     "deploy-captain": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=155900741616957  && export REACT_APP_API_URL=https://spoonapi.herokuapp.com && npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./build/* && caprover deploy -t ./deploy.tar"
