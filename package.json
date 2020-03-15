@@ -101,7 +101,7 @@
   "scripts": {
     "start": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && export REACT_APP_API_URL=\"https://spoonapi.herokuapp.com\" && node scripts/start.js",
     "dev": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && export REACT_APP_API_URL=\"http://localhost:8000\" && node scripts/start.js",
-    "production": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642  && export REACT_APP_API_URL = \"https://spoonapi.herokuapp.com\" && node scripts/start.js",
+    "production": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642  && export REACT_APP_API_URL=\"https://spoonapi.herokuapp.com\" && node scripts/start.js",
     "tunnel": "export REACT_APP_FACEBOOK_PAGE_ID=420303685413981 && export REACT_APP_FACEBOOK_APP_ID=2825427557522642 && node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
