@@ -12,7 +12,7 @@ export const vendorService = {
 };
 
 function getVendor({ skip, limit }) {
-    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.Spoon.ai.xyz';
     let url =  apiUrl + `/backend/api/vendors`;
     const requestOptions = {
         method: 'GET',
@@ -30,7 +30,7 @@ function getVendor({ skip, limit }) {
 }
 
 function getAnalytics() {
-    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.Spoon.ai.xyz';
     let url =  apiUrl + `/backend/api/analytics`;
     const requestOptions = {
         method: 'GET',
@@ -98,7 +98,7 @@ function deleteTable(u) {
 }
 
 function getBookings({ skip, limit, type }) {
-    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.Spoon.ai.xyz';
     let url =  apiUrl + `/backend/api/bookings`;
     const requestOptions = {
         method: 'GET',
@@ -117,7 +117,7 @@ function getBookings({ skip, limit, type }) {
 
 
 function getAvailableTables({ timestamp, capacity, vendorId }) {
-    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.Spoon.ai.xyz';
     let url =  apiUrl + `/backend/api/tables/getAvailable`;
     const requestOptions = {
         method: 'GET',
@@ -143,7 +143,7 @@ function getAvailableTables({ timestamp, capacity, vendorId }) {
 }
 
 function update({ update, vendorId }) {
-    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
+    let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.Spoon.ai.xyz';
     let url =  apiUrl + `/backend/api/vendors/update/${vendorId}`;
     const body = {
         ...update,

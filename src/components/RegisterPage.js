@@ -119,7 +119,7 @@ class RegisterPage extends Component {
                     <div className="col-12 grid-margin">
                         <Card>
                             <CardBody>
-                                <CardTitle>register as a vendor of your choice in Alibot</CardTitle>
+                                <CardTitle>register as a vendor of your choice in Spoon.ai</CardTitle>
                                 <CardSubtitle>Spoon.ai is the virtual assistant and hub for both restaurant owners and their customers where for the customers it shows them different restaurants to reserve a table or many tables at time they want</CardSubtitle>
 
                                 <div role="application" className="wizard clearfix vertical" id="steps-uid-1">
