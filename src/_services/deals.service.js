@@ -25,6 +25,7 @@ function getDeals({ skip, limit }) {
 
     return fetch(url, requestOptions).then(handleResponse);
 }
+//Rebuild
 
 function createDeal(dealData) {
     let apiUrl = process.env.REACT_APP_API_URL || 'https://bot.prod.alibot.xyz';
