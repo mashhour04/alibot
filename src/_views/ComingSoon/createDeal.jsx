@@ -1,12 +1,13 @@
 import React from "react";
 import { Component } from "react";
 import { dealsActions } from "../../_actions/deals.actions";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 import "react-under-construction/build/css/index.css";
 import Check from "@material-ui/icons/Check";
+import CurrencyInput from "react-currency-input-field";
 
 import Calendar from "rc-calendar";
 
@@ -23,6 +24,8 @@ import CardHeader from "../../_components/Card/CardHeader.jsx";
 import CardBody from "../../_components/Card/CardBody.jsx";
 import CardFooter from "../../_components/Card/CardFooter.jsx";
 
+import { MuiPickersUtilsProvider, DateTimePicker } from "material-ui-pickers";
+import MomentUtils from "@date-io/moment";
 //material ui component
 import {
   Select,
@@ -35,7 +38,7 @@ import {
   RadioGroup,
   FormHelperText,
   FormControlLabel,
-  FormLabel
+  FormLabel,
 } from "@material-ui/core";
 
 import statics from "../../_assets/statics/tables.json";
@@ -43,13 +46,13 @@ import statics from "../../_assets/statics/tables.json";
 const styles = {
   label: {
     color: "black",
-    fontSize: "18px"
+    fontSize: "18px",
   },
   dealName: {
     width: "300px",
     border: "2px solid #4692f7",
     height: "37px",
-    borderRadius: "6px"
+    borderRadius: "6px",
   },
   createDeal: {
     backgroundColor: "#1875f0",
@@ -61,14 +64,14 @@ const styles = {
     marginTop: "74px",
     marginLeft: "620px",
     "&:hover,&:focus": {
-      backgroundColor: "#0b438e"
-    }
+      backgroundColor: "#0b438e",
+    },
   },
   checkedIcon: {
     width: "24px",
     height: "24px",
     border: "2px solid #4692f7",
-    borderRadius: "3px"
+    borderRadius: "3px",
   },
   checkedRadioIcon: {
     // border: "2=px solid #4692f7",
@@ -81,7 +84,7 @@ const styles = {
     height: "7px",
     padding: "10px",
     border: "2px solid #4692f7",
-    borderRadius: "3px"
+    borderRadius: "3px",
   },
   firstAvailabilityType: {
     background: "white",
@@ -89,7 +92,7 @@ const styles = {
     border: "none",
     width: "220px",
     height: "50px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   secondAvailabilityType: {
     background: "white",
@@ -97,11 +100,11 @@ const styles = {
     border: "none",
     width: "220px",
     height: "50px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   availabilityTypes: {
-    marginLeft: "300px"
-  }
+    marginLeft: "300px",
+  },
 };
 
 const date = "2015-06-26";
@@ -115,7 +118,7 @@ class createDeal extends Component {
       { key: 3, value: "Wednesday" },
       { key: 4, value: "Thursday" },
       { key: 5, value: "Friday" },
-      { key: 6, value: "Saturday" }
+      { key: 6, value: "Saturday" },
     ],
     dealOfTheWeekChecked: false,
     inBotDealChecked: false,
@@ -125,17 +128,23 @@ class createDeal extends Component {
     dealData: {
       name: "",
       type: "",
+      price: undefined,
+      initialPrice: undefined,
       availability: {
+        period: {
+          from: new Date(),
+          to: new Date(),
+        },
         daysOfWeek: [],
-        type: ""
+        type: "",
       },
       description: "",
       limit: {
-        type: ''
+        type: "",
       },
-    }
+    },
   };
-  changeDealType = event => {
+  changeDealType = (event) => {
     let { dealData, dealOfTheWeekChecked, inBotDealChecked } = this.state;
     dealData.type = event.target.value;
 
@@ -145,60 +154,65 @@ class createDeal extends Component {
       this.setState({
         dealData,
         inBotDealChecked,
-        dealOfTheWeekChecked
+        dealOfTheWeekChecked,
       });
     } else {
       dealOfTheWeekChecked = !this.state.dealOfTheWeekChecked;
       inBotDealChecked = false;
     }
     this.setState({
-    dealData,
+      dealData,
       inBotDealChecked,
-      dealOfTheWeekChecked
+      dealOfTheWeekChecked,
     });
   };
 
-  changeDealLimit = event => {
+  changeDealLimit = (event) => {
     let { dealData, limitedChecked, noLimitChecked } = this.state;
 
     if (event.target.value == "limited") {
-        dealData.limit.type = 'limited';
-        limitedChecked = true;
-        noLimitChecked = false;
+      dealData.limit.type = "limited";
+      limitedChecked = true;
+      noLimitChecked = false;
     } else {
-      dealData.limit.type = 'noLimit';
+      dealData.limit.type = "noLimit";
       limitedChecked = false;
       noLimitChecked = true;
     }
     this.setState({
-        dealData, limitedChecked, noLimitChecked
+      dealData,
+      limitedChecked,
+      noLimitChecked,
     });
   };
-  
-  stopDealAfter = event => {
+
+  stopDealAfter = (event) => {
     let { dealData } = this.state;
-      dealData.limit.value = event.target.value;
+    dealData.limit.value = event.target.value;
     this.setState({
       dealData,
     });
   };
-  changeAvailabilityType = typeClass => {
+  changeAvailabilityType = (typeClass) => {
     if (document.getElementById(typeClass)) {
       document.getElementById(typeClass).style.background = "#1875f0";
       document.getElementById(typeClass).style.color = "white";
       const { dealData } = this.state;
       if (typeClass == "firstAvailabilityType") {
-        dealData.availability.type = 'anytime';
+        dealData.availability.type = "anytime";
         document.getElementById("secondAvailabilityType").style.background =
           "white";
         document.getElementById("secondAvailabilityType").style.color = "black";
         this.setState({
-            showCalendar: false, dealData
+          showCalendar: false,
+          dealData,
         });
       } else {
-        dealData.availability.type = 'specificPeriod';
+        dealData.availability.type = "specificPeriod";
+        dealData.availability.period = { from: undefined, to: undefined };
         this.setState({
-          showCalendar: true, dealData
+          showCalendar: true,
+          dealData,
         });
         document.getElementById("firstAvailabilityType").style.background =
           "white";
@@ -206,26 +220,41 @@ class createDeal extends Component {
       }
     }
   };
+  handleDateChange = ({ date, key }) => {
+    const { dealData } = this.state;
+    dealData.availability.period[key] = new Date(date);
+    this.setState({ dealData });
+    console.log("DAT CHANGED", date);
+  };
   createDeal = () => {
     this.props.dispatch(dealsActions.createDeal(this.state.dealData));
-  }
+  };
   selectFromDate(jsDate, dateString) {}
   selectToDate(jsDate, dateString) {}
-  assignDealName = event => {
+  assignDealName = (event) => {
     const { dealData } = this.state;
     dealData.name = event.target.value;
     this.setState({
-      dealData
+      dealData,
     });
   };
-  changeDealDescription = event => {
+  assignKey = (key, value) => {
+    const { dealData } = this.state;
+    console.log(`setting ${key} to value`, value);
+    dealData[key] = value;
+    this.setState({
+      dealData,
+    });
+  };
+
+  changeDealDescription = (event) => {
     const { dealData } = this.state;
     dealData.description = event.target.value;
     this.setState({
-      dealData
+      dealData,
     });
   };
-  changeDaysOfWeek = event => {
+  changeDaysOfWeek = (event) => {
     const { dealData } = this.state;
     if (!dealData.availability.daysOfWeek.includes(event.target.value)) {
       dealData.availability.daysOfWeek.push(event.target.value);
@@ -236,7 +265,7 @@ class createDeal extends Component {
       );
     }
     this.setState({
-      dealData
+      dealData,
     });
   };
   render() {
@@ -252,16 +281,44 @@ class createDeal extends Component {
         <div className={classes.availabilityTypes}>
           {/* <Calendar /> */}
           {/* <Calendar /> */}
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker
+              className={classes.dealName}
+              margin="normal"
+              label="Date"
+              minDate={new Date()}
+              style={{ width: "250px" }}
+              value={this.state.dealData.availability.period.from}
+              onChange={(date) => {
+                this.handleDateChange({ date, key: "from" });
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker
+              className={classes.dealName}
+              margin="normal"
+              label="Date"
+              minDate={
+                this.state.dealData.availability.period.from || new Date()
+              }
+              value={this.state.dealData.availability.period.to}
+              onChange={(date) => {
+                this.handleDateChange({ date, key: "to" });
+              }}
+              style={{ width: "250px" }}
+            />
+          </MuiPickersUtilsProvider>
+          {/* <input
+            className={classes.dealName}
+            style={{ width: "250px" }}
+            type="text"
+          />
           <input
             className={classes.dealName}
             style={{ width: "250px" }}
             type="text"
-          ></input>
-          <input
-            className={classes.dealName}
-            style={{ width: "250px" }}
-            type="text"
-          ></input>
+          /> */}
         </div>
       </div>
     ) : null;
@@ -277,13 +334,50 @@ class createDeal extends Component {
             onChange={this.assignDealName}
             type="text"
             placeholder="Insert Deal Name"
-          ></input>
+          />
         </div>
         <br />
         <br />
         <div>
           <label className={classes.label}>
-            What is the type of you Deal?{" "}
+            What is the price of your Deal?{" "}
+          </label>{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <CurrencyInput
+            className={classes.dealName}
+            onChange={(value) => {
+              this.assignKey("price", value);
+            }}
+            placeholder="15dt"
+            allowDecimals={true}
+            decimalsLimit={2}
+            prefix="dt "
+          />
+        </div>
+        <br />
+        <br />
+        <div>
+          <label className={classes.label}>
+            What is the initial price of your Deal?{" "}
+          </label>{" "}
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <CurrencyInput
+            className={classes.dealName}
+            onChange={(value) => {
+              this.assignKey("initialPrice", value);
+            }}
+            placeholder="10dt"
+            allowDecimals={true}
+            decimalsLimit={2}
+            prefix="dt "
+          />
+        </div>
+
+        <br />
+        <br />
+        <div>
+          <label className={classes.label}>
+            What is the type of your Deal?{" "}
           </label>{" "}
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <input
@@ -321,7 +415,7 @@ class createDeal extends Component {
                   icon={<Check className={classes.uncheckedIcon} />}
                   classes={{
                     checked: classes.checked,
-                    root: classes.root
+                    root: classes.root,
                   }}
                 />
                 {day.value} &nbsp;&nbsp;
@@ -363,7 +457,7 @@ class createDeal extends Component {
             className={classes.dealName}
             type="text"
             placeholder="Example: get a free Desert and benefit from a 20% bill discount"
-          ></input>
+          />
           <label
             style={{ marginLeft: "300px", marginTop: "10px" }}
             className={classes.label}
@@ -405,10 +499,11 @@ class createDeal extends Component {
           />{" "}
           No limit
         </div>
-        <button className={classes.createDeal} onClick={this.createDeal}>Submit for review</button>
+        <button className={classes.createDeal} onClick={this.createDeal}>
+          Submit for review
+        </button>
       </div>
     );
   }
 }
 export default connect(null)(withStyles(styles)(createDeal));
-
